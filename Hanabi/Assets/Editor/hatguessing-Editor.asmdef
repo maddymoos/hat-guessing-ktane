@@ -1,0 +1,10 @@
+{
+  "name": "hatguessing-Editor",
+  "references": [
+    "hatguessing"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": []
+}
