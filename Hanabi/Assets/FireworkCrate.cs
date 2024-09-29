@@ -220,6 +220,7 @@ public class FireworkCrate : MonoBehaviour
     IEnumerator PlayHand()
     {
         Cluing = 0;
+        play = false;
         string playedhand = "";
         int score = 0;
         List<int> ActiveCards = new List<int>();
@@ -825,7 +826,9 @@ public class FireworkCrate : MonoBehaviour
     {
         Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
         string HSText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
-        int highscore = int.Parse(Regex.Match(HSText, @"\n([1234567890])").ToString());
+        int highscore = int.Parse(Regex.Match(HSText, @"\n([1234567890]+)").ToString());
+        Debug.Log(HSText);
+        Debug.Log(highscore);
         if (totalscore > highscore)
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
@@ -1063,7 +1066,8 @@ public class FireworkCrate : MonoBehaviour
             Debug.LogFormat("No saved high score!");
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n0");
         }
-        for(int i = 0; i < 2; i++)
+        print(Application.persistentDataPath);
+        for (int i = 0; i < 2; i++)
         {
             HighScoreDisplay[i].text = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         }
