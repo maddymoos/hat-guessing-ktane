@@ -829,7 +829,7 @@ public class FireworkCrate : MonoBehaviour
         if (totalscore > highscore)
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n"+totalscore+"\n"+(ActiveModifiers.Where(x=>x).Count() == 0 ? "Base Deck" : green[0] ? Modifiers[0] + (green[1] ? "\n" + Modifiers[1] : "") : green[1] ? Modifiers[1] : ""));
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n"+totalscore+"\n"+(ActiveModifiers.Where(x=>x).Count() == 0 ? "Base Deck" : green[0] ? (SuitOrder.IndexOf(Modifiers[0]) < 5 ? "Anti-" + Modifiers[0] : Modifiers[0]) + (green[1] ? "\n" + (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : "") : green[1] ? (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : ""));
             for(int i = 0; i < 2; i++)
             {
                 HighScoreDisplay[i].text = "NEW HIGH SCORE!\n" + File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
