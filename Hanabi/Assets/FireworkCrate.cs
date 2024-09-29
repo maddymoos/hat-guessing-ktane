@@ -459,7 +459,8 @@ public class FireworkCrate : MonoBehaviour
         reset:
         foreach (var card in HandCards)
         {
-                float t = 0;
+            Audio.PlaySoundAtTransform("Succ", transform);
+            float t = 0;
                 while (t < 1)
                 {
                     t += Time.deltaTime * 8f;
@@ -697,6 +698,7 @@ public class FireworkCrate : MonoBehaviour
         {
             if(all || (rank && (card.Item2 == clueval+1 || EveryNumber.Contains(card.Item1)) && !Numberless.Contains(card.Item1)) || (!rank && (card.Item1 == RealActiveSuit[clueval] || Multicolor.Contains(card.Item1))))
             {
+                Audio.PlaySoundAtTransform("Succ", transform);
                 float t = 0;
                 while(t < 1)
                 {
@@ -748,6 +750,7 @@ public class FireworkCrate : MonoBehaviour
 
     void GenerateDeck()
     {
+        Audio.PlaySoundAtTransform("Start", transform);
         totalscore = 0;
         discards = 4;
         started = true;
@@ -957,6 +960,8 @@ public class FireworkCrate : MonoBehaviour
 
             }
             CardCounter.text = Deck.Count().ToString();
+
+            Audio.PlaySoundAtTransform("Deal", transform);
             float angle = Rnd.Range(-20f, 20f);
             float Timer = 0;
             bool donethateverytime = false;
@@ -1038,6 +1043,7 @@ public class FireworkCrate : MonoBehaviour
         green[i] = !green[i];
         if (green[i])
         {
+            Audio.PlaySoundAtTransform("UIPress", transform);
             over[i] = true;
             foreach (var highlight in ModHL(ModifierButtons[i]))
             {
@@ -1049,6 +1055,7 @@ public class FireworkCrate : MonoBehaviour
         }
         else
         {
+            Audio.PlaySoundAtTransform("UIUnpress", transform);
             foreach (var highlight in ModHL(ModifierButtons[i]))
             {
                 highlight.color = new Color32(255, 100, 00, 255);

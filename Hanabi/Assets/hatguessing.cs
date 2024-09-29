@@ -249,7 +249,7 @@ public class hatguessing : MonoBehaviour {
                 {
                     for(int i=0;i<50; i++)
                     Fireworks.Add(new Tuple<int, int, string>(Rnd.Range(0, 4), Rnd.Range(0, 5), ""));
-                    StartCoroutine(TransGender());
+                    StartCoroutine(Transgender());
                 }
                 foreach (var firework in Fireworks)
                 {
@@ -800,7 +800,7 @@ SolveCards();
         }
     }
 
-    IEnumerator TransGender()
+    IEnumerator Transgender()
     {
         yield return null;
         NameText[2].text = "TRANS";
