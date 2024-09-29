@@ -90,6 +90,8 @@ public class FireworkCrate : MonoBehaviour
     private List<Tuple<string, int>> Deck = new List<Tuple<string, int>>();
     private List<Tuple<string, int>> HandCards = new List<Tuple<string, int>>();
     private List<string> RealActiveSuit = new List<string>();
+    private Coroutine[] ButtonAnims = new Coroutine[3];
+
     private String[] SuitOrder =
     {
         "Red",
@@ -157,6 +159,16 @@ public class FireworkCrate : MonoBehaviour
         {"Pink", new Tuple < string, string >("Pink (+1 [#] Suit)", "Pink in Pairs x1.5")},
         {"Omni", new Tuple < string, string >("Omni (+1 [#M] Suit)", "Every Omni x1.75")}
     };
+
+    private float ButtonEasing(float t)
+    {
+        if (t < 0.5f)
+            return Easing.InOutSine(t * 2, 1, 0, 1);
+        if (t < 0.8f)
+            return Easing.InOutSine((t - 0.5f) / 0.3f, 0, 1.25f, 1);
+        return Easing.InOutSine((t - 0.8f) / 0.2f, 1.25f, 1, 1);
+    }
+
     void Awake()
     {
 
@@ -215,6 +227,20 @@ public class FireworkCrate : MonoBehaviour
             StartCoroutine(PlayHand());
             return false;
         };
+    }
+
+    IEnumerator ButtonAnim(Transform trans, float duration = 0.2f)
+    {
+        Debug.Log(trans.name);
+        trans.localScale = Vector3.one * 0.05f;
+        float timer = 0;
+        while (timer < duration)
+        {
+            yield return null;
+            timer += Time.deltaTime;
+            trans.localScale = Vector3.one * 0.05f * ((ButtonEasing(timer / duration) / 10) + 0.9f);
+        }
+        trans.localScale = Vector3.one * 0.05f;
     }
 
     IEnumerator PlayHand()
@@ -750,6 +776,9 @@ public class FireworkCrate : MonoBehaviour
 
     void GenerateDeck()
     {
+        if (ButtonAnims[2] != null)
+            StopCoroutine(ButtonAnims[2]);
+        ButtonAnims[2] = StartCoroutine(ButtonAnim(StartButton.transform));
         Audio.PlaySoundAtTransform("Start", transform);
         totalscore = 0;
         discards = 4;
@@ -1040,6 +1069,9 @@ public class FireworkCrate : MonoBehaviour
 
     void ModifierSelect(int i)
     {
+        if (ButtonAnims[i] != null)
+            StopCoroutine(ButtonAnims[i]);
+        ButtonAnims[i] = StartCoroutine(ButtonAnim(ModifierButtons[i].transform));
         green[i] = !green[i];
         if (green[i])
         {
