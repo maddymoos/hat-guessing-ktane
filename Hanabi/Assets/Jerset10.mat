@@ -6,13 +6,13 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Text - Copy
+  m_Name: Jerset10
   m_Shader: {fileID: 4800000, guid: 96ecaddf939c643479c76e0b54ad48ac, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3002
+  m_CustomRenderQueue: 3005
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -39,7 +39,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 95ee1d0c0968e5e4a8ebeac41583721b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 779697163038b3d43a1942ee024b773f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
