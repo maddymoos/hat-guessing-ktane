@@ -45,7 +45,7 @@ public class FireworkCrate : MonoBehaviour
     public Sprite[] SuitImages;
     public Sprite[] NumberNumbers;
 
-    private float[] HSV = { 0, 200f / 255f, 215f / 255f, 113f / 255f, 238f / 255f, 1, 1 };
+    private float[] HSV = { 0, 200f / 255f, 215f / 255f, 113f / 255f, 238f / 255f, 1, 1, 100f/255f, 116f/255, 98f/255, 110f/255, 96f/255f, 135f/255f  };
 
     public Transform[] WiggleTransforms;
     private float[] wigglenums;
@@ -55,6 +55,7 @@ public class FireworkCrate : MonoBehaviour
     public TextMesh CardCounter;
     public TextMesh[] PlayDisplay;
     public TextMesh[] HighScoreDisplay;
+    public TextMesh[] BestHandDisplay;
     public TextMesh[] TotalScore;
     public TextMesh[] AddedScore;
     public SpriteRenderer SuitClue;
@@ -65,6 +66,7 @@ public class FireworkCrate : MonoBehaviour
     private bool play;
     private bool animating;
     private bool anyclue;
+    private bool newbest;
     private int Round;
 
     private bool Solved;
@@ -105,7 +107,8 @@ public class FireworkCrate : MonoBehaviour
         "Brown",
         "White",
         "Pink",
-        "Omni"
+        "Omni",
+        "Muddy Rainbow"
     };
     private String[] Modifiers =
     {
@@ -120,7 +123,8 @@ public class FireworkCrate : MonoBehaviour
         "Brown",
         "White",
         "Pink",
-        "Omni"
+        "Omni",
+        "Muddy Rainbow"
     };
     private String[] Colorless =
     {
@@ -129,11 +133,13 @@ public class FireworkCrate : MonoBehaviour
     private String[] Multicolor =
     {
         "Rainbow",
-        "Omni"
+        "Omni",
+        "Muddy Rainbow"
     };
     private String[] Numberless =
     {
-        "Brown"
+        "Brown",
+        "Muddy Rainbow"
     };
     private String[] EveryNumber =
     {
@@ -157,7 +163,8 @@ public class FireworkCrate : MonoBehaviour
         {"Brown", new Tuple < string, string >("Brown (+1 [0] Suit)", "3 Of A Kind x1.3")},
         {"White", new Tuple < string, string >("White (+1 [C] Suit)", "Ignored For Flush")},
         {"Pink", new Tuple < string, string >("Pink (+1 [#] Suit)", "Pink in Pairs x1.5")},
-        {"Omni", new Tuple < string, string >("Omni (+1 [#M] Suit)", "Every Omni x1.75")}
+        {"Omni", new Tuple < string, string >("Omni (+1 [#M] Suit)", "Every Omni x1.75")},
+        {"Muddy Rainbow", new Tuple < string, string >("M. R. (+1 [0M] Suit)", "Unused M. R. x2")}
     };
 
     private float ButtonEasing(float t)
@@ -231,7 +238,7 @@ public class FireworkCrate : MonoBehaviour
 
     IEnumerator ButtonAnim(Transform trans, float duration = 0.2f)
     {
-        Debug.Log(trans.name);
+        //Debug.Log(trans.name);
         trans.localScale = Vector3.one * 0.05f;
         float timer = 0;
         while (timer < duration)
@@ -267,7 +274,7 @@ public class FireworkCrate : MonoBehaviour
         }
         else if(Flush(HandCards) && Straight(HandCards))
         {
-            playedhand = "Sraight Flush";
+            playedhand = "Straight Flush";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 250;
             Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.StraightFlush[Rnd.Range(0, HandResponses.StraightFlush.Count())]);
@@ -418,6 +425,11 @@ public class FireworkCrate : MonoBehaviour
                 score = (int)(score * 1.75);
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Omni modifier, the omni multiplies your chips by 1.75x! Your earned chips are now {1}!", _moduleId, score);
             }
+            if (ActiveModifiers[12] && HandCards[i].Item1 == "Muddy Rainbow" && !ActiveCards.Contains(i))
+            {
+                score = (int)(score * 2);
+                Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
+            }
         }
         if(score < 40)
             Audio.PlaySoundAtTransform("SmallHit", Module.transform);
@@ -435,7 +447,15 @@ public class FireworkCrate : MonoBehaviour
             PlayDisplay[i].text = playedhand;
             AddedScore[i].text = "+" + score;
         }
-        Debug.LogFormat("[Hanabi Poker #{0}]: This leaves a total of {1} chips! Nice hand.", _moduleId, score);
+        //Debug.LogFormat("[Hanabi Poker #{0}]: This leaves a total of {1} chips! Nice hand.", _moduleId, score);
+        string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"));
+        int besthand = int.Parse(Regex.Match(BHText, @"\n([1234567890]+)").ToString());
+        if (score > besthand)
+        {
+            newbest = true;
+            Debug.LogFormat("[Hanabi Poker #{0}]: That's a new best hand!", _moduleId);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"), "Best Hand\n" + score + "\n" + playedhand + "\n" +(ActiveModifiers.Where(x => x).Count() == 0 ? "Base Deck" : green[0] ? (SuitOrder.IndexOf(Modifiers[0]) < 5 ? "Anti-" + Modifiers[0] : Modifiers[0]) + (green[1] ? "\n" + (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : "") : green[1] ? (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : ""));
+        }
         yield return new WaitForSeconds(1f);
         while(score > 0)
         {
@@ -453,6 +473,7 @@ public class FireworkCrate : MonoBehaviour
         Debug.LogFormat("[Hanabi Poker #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
         if (totalscore >= 150 && !Solved)
         {
+            Audio.PlaySoundAtTransform("SolveSound", transform);
             Debug.LogFormat("[Hanabi Poker #{0}]: And that's all you need! Chip goal reached. Module solved, but you can keep playing if you like.", _moduleId);
             Solved = true;
             Module.HandlePass();
@@ -660,7 +681,7 @@ public class FireworkCrate : MonoBehaviour
             {
                 RealActiveSuit = ActiveSuit.Where(x => !Colorless.Contains(x) && !Multicolor.Contains(x)).ToList();
                 RealActiveSuit = RealActiveSuit.OrderBy(x => SuitOrder.IndexOf(x)).ToList();
-                Debug.Log(RealActiveSuit.Join(" "));
+                //Debug.Log(RealActiveSuit.Join(" "));
                 if(HandCards.Where(x => Multicolor.Contains(x.Item1)).Count() != 0)
                 {
                     anyclue = true;
@@ -797,6 +818,8 @@ public class FireworkCrate : MonoBehaviour
             TotalScore[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
             HighScoreDisplay[0].color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine((5f - f) / 2f));
             HighScoreDisplay[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
+            BestHandDisplay[0].color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine((5f - f) / 2f));
+            BestHandDisplay[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
             yield return null;
             f -= Time.deltaTime * 2f;
             Background.material.color = Color32.Lerp(new Color32(15, 26, 19, 255), new Color32(92, 206, 132, 255), easeInSine((5f - f) / 2f));
@@ -857,10 +880,9 @@ public class FireworkCrate : MonoBehaviour
     IEnumerator ResetMod()
     {
         Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
+        string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         string HSText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         int highscore = int.Parse(Regex.Match(HSText, @"\n([1234567890]+)").ToString());
-        Debug.Log(HSText);
-        Debug.Log(highscore);
         if (totalscore > highscore)
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
@@ -868,6 +890,7 @@ public class FireworkCrate : MonoBehaviour
             for(int i = 0; i < 2; i++)
             {
                 HighScoreDisplay[i].text = "NEW HIGH SCORE!\n" + File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
+            
             }
         }
         else
@@ -877,8 +900,24 @@ public class FireworkCrate : MonoBehaviour
                 HighScoreDisplay[i].text = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
             }
         }
+        if (newbest)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                BestHandDisplay[i].text = "NEW BEST HAND!\n" + File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"));
 
-            play = false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                BestHandDisplay[i].text = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"));
+            }
+        }
+        newbest = false;
+
+        play = false;
         TotalScore[1].text = totalscore.ToString();
         TotalScore[0].text = totalscore.ToString();
         StartCoroutine(DiscardCards(false, 0, true));
@@ -915,6 +954,8 @@ public class FireworkCrate : MonoBehaviour
             TotalScore[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
             HighScoreDisplay[0].color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine((5f - f) / 2f));
             HighScoreDisplay[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
+            BestHandDisplay[0].color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine((5f - f) / 2f));
+            BestHandDisplay[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
             Background.material.color = Color32.Lerp(new Color32(15, 26, 19, 255), new Color32(92, 206, 132, 255), easeInSine((5f - f) / 2f));
             SetupScale.localScale = Vector3.Lerp(new Vector3(.1f, .1f, 1f), new Vector3(0f, 0f, 1f), easeInSine((5f - f) / 2f));
         }
@@ -1105,10 +1146,15 @@ public class FireworkCrate : MonoBehaviour
             Debug.LogFormat("No saved high score!");
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n0");
         }
-        print(Application.persistentDataPath);
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "HPBestHand.txt")))
+        {
+            Debug.LogFormat("No saved best hand!");
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"), "Best Hand\n0");
+        }
         for (int i = 0; i < 2; i++)
         {
             HighScoreDisplay[i].text = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
+            BestHandDisplay[i].text = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"));
         }
         Round++;
         Debug.LogFormat("[Hanabi Poker #{0}]: Welcome to Hanabi Poker!", _moduleId);
@@ -1164,11 +1210,19 @@ public class FireworkCrate : MonoBehaviour
                 CardRenderer(Cards[j]).color = SuitColors[7];
                 CardNumber(Cards[j]).color = NumberColors[7];
             }
+            if (HandCards[j].Item1 == "Muddy Rainbow")
+            {
+                CardRenderer(Cards[j]).color = SuitColors[12];
+                CardNumber(Cards[j]).color = NumberColors[12];
+            }
         }
         HSV[0]++;
         SelectButtonColors[7] = HsvToRgb(HSV[0], HSV[1], HSV[2]);
         SuitColors[7] = HsvToRgb(HSV[0], HSV[3], HSV[4]);
         NumberColors[7] = HsvToRgb(HSV[0], HSV[5], HSV[6]);
+        SelectButtonColors[12] = HsvToRgb(HSV[0], HSV[7], HSV[8]);
+        SuitColors[12] = HsvToRgb(HSV[0], HSV[9], HSV[10]);
+        NumberColors[12] = HsvToRgb(HSV[0], HSV[11], HSV[12]);
         bgoffset++;
         Background.material.mainTextureOffset = new Vector2(.25f * (bgoffset / (int)speed % 4), .5f * (bgoffset / (int)speed / 4 % 2));
         if (bgoffset % 50 == 0)
