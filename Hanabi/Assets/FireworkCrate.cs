@@ -209,7 +209,7 @@ public class FireworkCrate : MonoBehaviour
         {"White", new Tuple < string, string >("White (+1 [C] Suit)", "Ignored For Flush")},
         {"Pink", new Tuple < string, string >("Pink (+1 [#] Suit)", "Pink in Pairs x1.5")},
         {"Omni", new Tuple < string, string >("Omni (+1 [#M] Suit)", "Every Omni x1.75")},
-        {"Muddy Rainbow", new Tuple < string, string >("Muddy R (+1 [0M] Suit)", "Unused M. R. x2")},
+        {"Muddy Rainbow", new Tuple < string, string >("Mud R. (+1 [0M] Suit)", "Unused M. R. x2")},
         {"Null", new Tuple < string, string >("Null (+1 [0C] Suit)", "Single Null +Discard")},
         {"Light Pink", new Tuple < string, string >("L Pink (+1 [#C] Suit)", "L. Pink +5xL. Pink")},
         {"Dark Null", new Tuple < string, string >("Dark Null (+1 [S0C] Suit)", "Placeholder")},
@@ -1317,9 +1317,9 @@ public class FireworkCrate : MonoBehaviour
             {
                 ModColor(ModifierButtons[j / 2])[j % 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j / 2])];
             }
-        if(riffrafftimer != 0)
+        if(riffrafftimer >= 0)
         riffrafftimer--;
-        if (riffrafftimer >= 0)
+        if (riffrafftimer > 0)
         for(int p=0;p<4;p++)
         {
                 if (Modifiers[p % 2] == "Riff-Raff")
