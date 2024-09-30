@@ -60,6 +60,7 @@ public class FireworkCrate : MonoBehaviour
     public TextMesh[] TotalScore;
     public TextMesh[] AddedScore;
     public SpriteRenderer SuitClue;
+    public SpriteRenderer RiffRaffOverlay;
     private bool[] green = new bool[2];
     private bool[] over = new bool[2];
     private bool[] ActiveModifiers;
@@ -221,7 +222,7 @@ public class FireworkCrate : MonoBehaviour
         {"Gray Pink", new Tuple < string, string >("Gray Pink (+1 [S#C] Suit)", "Placeholder")},
         {"Dark Pink", new Tuple < string, string >("Dark Pink (+1 [S#] Suit)", "Placeholder")},
         {"Dark Omni", new Tuple < string, string >("Dark Omni (+1 [S#M] Suit)", "Placeholder")},
-        {"Riff-Raff", new Tuple < string, string >("Riff-Raff [Expert]", "+2 to 4 Modifiers")}
+        {"Riff-Raff", new Tuple < string, string >("Riff-Raff [E]", "+2 to 4 Modifiers")}
     };
 
     private float ButtonEasing(float t)
@@ -544,7 +545,7 @@ public class FireworkCrate : MonoBehaviour
         }
         Audio.PlaySoundAtTransform("Bank", transform);
         Debug.LogFormat("[Hanabi Poker #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
-        if (totalscore >= 150 && !Solved)
+        if (totalscore >= (ActiveModifiers[23] ? 225 : 150) && !Solved)
         {
             Audio.PlaySoundAtTransform("SolveSound", transform);
             Debug.LogFormat("[Hanabi Poker #{0}]: And that's all you need! Chip goal reached. Module solved, but you can keep playing if you like.", _moduleId);
@@ -944,12 +945,39 @@ public class FireworkCrate : MonoBehaviour
         }
         if (ActiveSuit.Contains("Riff-Raff"))
         {
+            float t = 0;
+            while (t < 1)
+            {
+                yield return null;
+                t += Time.deltaTime * 3f;
+                RiffRaffOverlay.color = Color.Lerp(new Color(1,1,1,0), new Color(1,1,1,.5f), t);
+            }
             for (int i = 0; i < edging; i++)
             {
                 ActiveSuit.Add(Modifiers[i + 2]);
                 ActiveModifiers[SuitOrder.IndexOf(Modifiers[i + 2])] = true;
                 Debug.LogFormat("[Hanabi Poker #{0}]: Riff-Raff adds {1} to the fray!", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[i + 2]) < 5 ? "Anti-" : "") + Modifiers[i + 2]);
+                float angle = Rnd.Range(-20f, 20f);
+                SuitClue.sprite = SuitImages[Array.IndexOf(SuitOrder, Modifiers[i+2])];
+                 t = 0;
+                while (t < 1)
+                {
+                    yield return null;
+                    t += Time.deltaTime * 2f;
+                    SuitClue.transform.localScale = Vector3.Lerp(new Vector3(0f, 0f, 100f), new Vector3(0.0025f, 0.0025f, 100f), t);
+                    SuitClue.color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine(t));
+                    SuitClue.transform.localEulerAngles = Vector3.Lerp(new Vector3(90f, 0f, 0f), new Vector3(90f, angle, 0f), t);
+                }
+                yield return new WaitForSeconds(.05f);
             }
+             t = 1;
+            while (t >0)
+            {
+                yield return null;
+                t -= Time.deltaTime * 3f;
+                RiffRaffOverlay.color = Color.Lerp(new Color(1, 1, 1, 0), new Color(1, 1, 1, .5f), t);
+            }
+            RiffRaffOverlay.color = new Color(1, 1, 1, 00);
             ActiveSuit.Remove("Riff-Raff");
         }
         for (int i = 0; i < 5; i++)
@@ -1239,8 +1267,9 @@ public class FireworkCrate : MonoBehaviour
                 if (green[i])
                     highlight.color = new Color32(53, 210, 93, 255);
             }
-            if (Modifiers[i] == "Riff-Raff" && Rnd.Range(0, 25) == 0)
+            if (Modifiers[i] == "Riff-Raff" && Rnd.Range(0, 10) == 0)
             {
+                Audio.PlaySoundAtTransform("RiffRaffBuzz", transform);
                 riffrafftimer = 5;
                 ledge = Rnd.Range(2, edging + 1);
             }
