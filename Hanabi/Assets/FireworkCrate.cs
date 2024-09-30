@@ -18,6 +18,7 @@ using Wawa.Recall;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.SocialPlatforms.Impl;
 using System.IO;
+using UnityEditorInternal;
 public class FireworkCrate : MonoBehaviour
 {
 
@@ -108,7 +109,18 @@ public class FireworkCrate : MonoBehaviour
         "White",
         "Pink",
         "Omni",
-        "Muddy Rainbow"
+        "Muddy Rainbow",
+        "Null",
+        "Light Pink",
+        "Dark Null",
+        "Dark Brown",
+        "Cocoa Rainbow",
+        "Gray",
+        "Dark Rainbow",
+        "Gray Pink",
+        "Dark Pink",
+        "Dark Omni",
+        "Riff-Raff"
     };
     private String[] Modifiers =
     {
@@ -124,35 +136,64 @@ public class FireworkCrate : MonoBehaviour
         "White",
         "Pink",
         "Omni",
-        "Muddy Rainbow"
+        "Muddy Rainbow",
+        "Null",
+        "Light Pink",
+        "Riff-Raff"
     };
     private String[] Colorless =
     {
-        "White"
+        "White",
+        "Null",
+        "Light Pink",
+        "Gray",
+        "Gray Pink",
+        "Dark Null",
+        "Riff-Raff"
     };
     private String[] Multicolor =
     {
         "Rainbow",
         "Omni",
-        "Muddy Rainbow"
+        "Muddy Rainbow",
+        "Dark Rainbow",
+        "Cocoa Rainbow",
+        "Dark Omni"
     };
     private String[] Numberless =
     {
         "Brown",
-        "Muddy Rainbow"
+        "Null",
+        "Muddy Rainbow",
+        "Dark Brown",
+        "Dark Null",
+        "Cocoa Rainbow",
+        "Riff-Raff"
     };
     private String[] EveryNumber =
     {
         "Pink",
-        "Omni"
+        "Omni",
+        "Light Pink",
+        "Dark Pink",
+        "Dark Omni",
+        "Gray Pink"
     };
     private String[] Singlet =
     {
         "Black",
+        "Dark Null",
+        "Dark Brown",
+        "Cocoa Rainbow",
+        "Dark Rainbow",
+        "Gray Pink",
+        "Gray",
+        "Dark Pink",
+        "Dark Omni",
     };
     private Dictionary<string, Tuple<string, string>> ModifierList = new Dictionary<string, Tuple<string, string>>
     {
-        {"Red",    new Tuple<string,string>("Anti-Red (-1 Suit)", "Fives +10")},
+        {"Red",    new Tuple<string,string>("Anti-Red (-1 Suit)", "Fives +15")},
         {"Yellow", new Tuple < string, string >("Anti-Yellow (-1 Suit)", "Straight x1.2")},
         {"Green", new Tuple < string, string >("Anti-Green (-1 Suit)", "Pairs +5")},
         {"Blue", new Tuple < string, string >("Anti-Blue (-1 Suit)", "Full House x1.2")},
@@ -164,7 +205,18 @@ public class FireworkCrate : MonoBehaviour
         {"White", new Tuple < string, string >("White (+1 [C] Suit)", "Ignored For Flush")},
         {"Pink", new Tuple < string, string >("Pink (+1 [#] Suit)", "Pink in Pairs x1.5")},
         {"Omni", new Tuple < string, string >("Omni (+1 [#M] Suit)", "Every Omni x1.75")},
-        {"Muddy Rainbow", new Tuple < string, string >("M. R. (+1 [0M] Suit)", "Unused M. R. x2")}
+        {"Muddy Rainbow", new Tuple < string, string >("Muddy R (+1 [0M] Suit)", "Unused M. R. x2")},
+        {"Null", new Tuple < string, string >("Null (+1 [0C] Suit)", "Single Null +Discard")},
+        {"Light Pink", new Tuple < string, string >("L Pink (+1 [#C] Suit)", "L. Pink +5xL. Pink")},
+        {"Dark Null", new Tuple < string, string >("Dark Null (+1 [S0C] Suit)", "Placeholder")},
+        {"Dark Brown", new Tuple < string, string >("Dark Brown (+1 [S0] Suit)", "Placeholder")},
+        {"Cocoa Rainbow", new Tuple < string, string >("Cocoa R (+1 [S0M] Suit)", "Placeholder")},
+        {"Gray", new Tuple < string, string >("Gray (+1 [SC] Suit)", "Placeholder")},
+        {"Dark Rainbow", new Tuple < string, string >("Dark R (+1 [SM] Suit)", "Placeholder")},
+        {"Gray Pink", new Tuple < string, string >("Gray Pink (+1 [S#C] Suit)", "Placeholder")},
+        {"Dark Pink", new Tuple < string, string >("Dark Pink (+1 [S#] Suit)", "Placeholder")},
+        {"Dark Omni", new Tuple < string, string >("Dark Omni (+1 [S#M] Suit)", "Placeholder")},
+        {"Riff-Raff", new Tuple < string, string >("Riff-Raff [Expert]", "+2 to 4 Modifiers")}
     };
 
     private float ButtonEasing(float t)
@@ -370,14 +422,20 @@ public class FireworkCrate : MonoBehaviour
             {
                 if (ActiveModifiers[0] && card.Item2 == 5)
                 {
-                    score += 10;
-                    Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Red modifier, the used 5 added ten chips! Your earned chips are now {1}!", _moduleId, score);
+                    score += 15;
+                    Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Red modifier, the used 5 added fifteen chips! Your earned chips are now {1}!", _moduleId, score);
 
                 }
                 if (ActiveModifiers[6] && card.Item1 == "Black")
                 {
                     score += 10;
                     Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Black modifier, the used black card added ten chips! Your earned chips are now {1}!", _moduleId, score);
+
+                }
+                if (ActiveModifiers[14] && card.Item1 == "Light Pink")
+                {
+                    score += 5*HandCards.Where(x=>x.Item1=="Light Pink").Count();
+                    Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Light Pink modifier, the used light pink card added {2} chips! Your earned chips are now {1}!", _moduleId, score, 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count());
 
                 }
             }
@@ -387,6 +445,12 @@ public class FireworkCrate : MonoBehaviour
         {
             score += 5;
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Green modifier, the pair in your hand added five chips! Your earned chips are now {1}!", _moduleId, score);
+
+        }
+        if (ActiveModifiers[13] && HandCards.Where(x=>x.Item1 == "Null").Count() == 1)
+        {
+            discards++;
+            Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Null modifier, your lone Null gifted you a discard! Your earned chips are now {1}!", _moduleId, score);
 
         }
 
@@ -454,7 +518,7 @@ public class FireworkCrate : MonoBehaviour
         {
             newbest = true;
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new best hand!", _moduleId);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"), "Best Hand\n" + score + "\n" + playedhand + "\n" +(ActiveModifiers.Where(x => x).Count() == 0 ? "Base Deck" : green[0] ? (SuitOrder.IndexOf(Modifiers[0]) < 5 ? "Anti-" + Modifiers[0] : Modifiers[0]) + (green[1] ? "\n" + (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : "") : green[1] ? (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : ""));
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"), "Best Hand\n" + score + "\n" + playedhand + ActiveModifierNames());
         }
         yield return new WaitForSeconds(1f);
         while(score > 0)
@@ -614,13 +678,33 @@ public class FireworkCrate : MonoBehaviour
         return hand.Select(x => x.Item2).ToList();
     }
 
+    string ActiveModifierNames()
+    {
+        string allmods = "";
+        for(int i = 0; i < ActiveModifiers.Length; i++)
+        {
+            if (ActiveModifiers[i])
+            {
+                if(i<5)
+                    allmods += "\nAnti-" + SuitOrder[i];
+                else
+                allmods += "\n" + SuitOrder[i];
+            }
+        }
+        if(allmods == "")
+        {
+            return "Base Deck";
+        }
+        return allmods;
+    }
+
     IEnumerator Clue(bool rank)
     {
         anyclue = false;
         yield return null;
         float t = 0;
         if (!animating)
-            if(discards == 0)
+            if(discards == 0 || (rank && HandCards.Where(x=> !Colorless.Contains(x.Item1)).Count() == 0) || (!rank && HandCards.Where(x => !Numberless.Contains(x.Item1)).Count() == 0))
             {
                 float angle = Rnd.Range(-20f, 20f);
                 CardCounter.text = "X";
@@ -640,6 +724,7 @@ public class FireworkCrate : MonoBehaviour
             }
             else if (rank)
             {
+                
                 if (HandCards.Where(x => EveryNumber.Contains(x.Item1)).Count() != 0)
                 {
                     anyclue = true;
@@ -845,6 +930,17 @@ public class FireworkCrate : MonoBehaviour
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: Shuffling a deck together with the modifiers {1} and {2} for round {3}!", _moduleId, (Array.IndexOf(SuitOrder, ActiveSuit[0]) < 5 ? "Anti-" : "") + ActiveSuit[0], (Array.IndexOf(SuitOrder, ActiveSuit[1]) < 5 ? "Anti-" : "") + ActiveSuit[1], Round);
         }
+        if (ActiveSuit.Contains("Riff-Raff"))
+        {
+            int edging = Rnd.Range(2, 5);
+            for (int i = 0; i < edging; i++)
+            {
+                ActiveSuit.Add(Modifiers[i + 2]);
+                ActiveModifiers[SuitOrder.IndexOf(Modifiers[i + 2])] = true;
+                Debug.LogFormat("[Hanabi Poker #{0}]: Riff-Raff adds {1} to the fray!", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[i+2]) < 5 ? "Anti-" : "") + Modifiers[i+2]);
+            }
+            ActiveSuit.Remove("Riff-Raff");
+        }
         for (int i = 0; i < 5; i++)
         {
             if (ActiveSuit.Contains(SuitOrder[i]))
@@ -886,7 +982,7 @@ public class FireworkCrate : MonoBehaviour
         if (totalscore > highscore)
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n"+totalscore+"\n"+(ActiveModifiers.Where(x=>x).Count() == 0 ? "Base Deck" : green[0] ? (SuitOrder.IndexOf(Modifiers[0]) < 5 ? "Anti-" + Modifiers[0] : Modifiers[0]) + (green[1] ? "\n" + (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : "") : green[1] ? (SuitOrder.IndexOf(Modifiers[1]) < 5 ? "Anti-" + Modifiers[1] : Modifiers[1]) : ""));
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n"+totalscore+ ActiveModifierNames());
             for(int i = 0; i < 2; i++)
             {
                 HighScoreDisplay[i].text = "NEW HIGH SCORE!\n" + File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
@@ -942,6 +1038,10 @@ public class FireworkCrate : MonoBehaviour
                 ModName(modbutton)[i].text = ModifierList[Modifiers[j]].Item1;
                 ModEffect(modbutton)[i].text = ModifierList[Modifiers[j]].Item2;
                 ModColor(modbutton)[i].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j])];
+                if (Modifiers[j] == "Riff-Raff")
+                    ModColor(modbutton)[i].sprite = CardBacks[3];
+                else
+                    ModColor(modbutton)[i].sprite = CardBacks[2];
             }
             j++;
         }
@@ -1161,7 +1261,7 @@ public class FireworkCrate : MonoBehaviour
         Background.material.color = new Color32(15, 26, 19, 255);
 
         Modifiers = Modifiers.Shuffle();
-        ActiveModifiers = new bool[Modifiers.Length];
+        ActiveModifiers = new bool[SuitOrder.Length];
         wiggleup = new bool[WiggleTransforms.Count()];
         wigglenums = new float[WiggleTransforms.Count()];
         for (int i = 0; i < WiggleTransforms.Count(); i++)
@@ -1180,6 +1280,10 @@ public class FireworkCrate : MonoBehaviour
                 ModName(modbutton)[i].text = ModifierList[Modifiers[j]].Item1;
                 ModEffect(modbutton)[i].text = ModifierList[Modifiers[j]].Item2;
                 ModColor(modbutton)[i].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j])];
+                if (Modifiers[j] == "Riff-Raff")
+                ModColor(modbutton)[i].sprite = CardBacks[3];
+                else
+                ModColor(modbutton)[i].sprite = CardBacks[2];
             }
             j++;
         }
