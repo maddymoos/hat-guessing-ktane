@@ -547,7 +547,8 @@ public class FireworkCrate : MonoBehaviour
         Debug.LogFormat("[Hanabi Poker #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
         if (totalscore >= (ActiveModifiers[23] ? 225 : 150) && !Solved)
         {
-            Audio.PlaySoundAtTransform("SolveSound", transform);
+            yield return new WaitForSeconds(.15f);
+            Audio.PlaySoundAtTransform("ScoreThresholdReached", transform);
             Debug.LogFormat("[Hanabi Poker #{0}]: And that's all you need! Chip goal reached. Module solved, but you can keep playing if you like.", _moduleId);
             Solved = true;
             Module.HandlePass();
@@ -1023,6 +1024,7 @@ public class FireworkCrate : MonoBehaviour
         Debug.Log(highscore);
         if (totalscore > highscore)
         {
+            Audio.PlaySoundAtTransform("NewHighScore", transform);
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n" + totalscore + ActiveModifierNames());
             for (int i = 0; i < 2; i++)
@@ -1033,6 +1035,14 @@ public class FireworkCrate : MonoBehaviour
         }
         else
         {
+            if (totalscore >= (ActiveModifiers[23] ? 225 : 150))
+            {
+                Audio.PlaySoundAtTransform("RoundFinishPass", transform);
+            }
+            else
+            {
+                Audio.PlaySoundAtTransform("RoundFinishFail", transform);
+            }
             for (int i = 0; i < 2; i++)
             {
                 HighScoreDisplay[i].text = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
