@@ -46,7 +46,7 @@ public class FireworkCrate : MonoBehaviour
     public Sprite[] SuitImages;
     public Sprite[] NumberNumbers;
 
-    private float[] HSV = { 0, 200f / 255f, 215f / 255f, 113f / 255f, 238f / 255f, 1, 1, 100f/255f, 116f/255, 98f/255, 110f/255, 96f/255f, 135f/255f  };
+    private float[] HSV = { 0, 200f / 255f, 215f / 255f, 113f / 255f, 238f / 255f, 1, 1, 100f / 255f, 116f / 255, 98f / 255, 110f / 255, 96f / 255f, 135f / 255f };
 
     public Transform[] WiggleTransforms;
     private float[] wigglenums;
@@ -255,7 +255,7 @@ public class FireworkCrate : MonoBehaviour
             };
             ModifierButtons[i].GetComponent<KMSelectable>().OnHighlightEnded += delegate
             {
-                    HL(false, i);
+                HL(false, i);
             };
         }
         StartButton.OnHighlight += delegate
@@ -266,7 +266,7 @@ public class FireworkCrate : MonoBehaviour
         };
         StartButton.OnHighlightEnded += delegate
         {
-                StartButton.transform.Find("Highlight").GetComponent<SpriteRenderer>().enabled = false;
+            StartButton.transform.Find("Highlight").GetComponent<SpriteRenderer>().enabled = false;
         };
         StartButton.OnInteract += delegate
         {
@@ -315,12 +315,12 @@ public class FireworkCrate : MonoBehaviour
         int score = 0;
         List<int> ActiveCards = new List<int>();
         yield return null;
-        if(CountNum(HandCards, 5) == 5)
+        if (CountNum(HandCards, 5) == 5)
         {
             playedhand = "Five Fives";
-            ActiveCards = new List<int> {0,1,2,3,4 };
+            ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 500;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveFives[Rnd.Range(0,HandResponses.FiveFives.Count())]);
+            Debug.LogFormat("[Hanabi Poker #{0}]: You played {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveFives[Rnd.Range(0, HandResponses.FiveFives.Count())]);
         }
         if (CountNum(HandCards, HandCards[0].Item2) == 5 && Flush(HandCards))
         {
@@ -329,7 +329,7 @@ public class FireworkCrate : MonoBehaviour
             score = 300;
             Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FlushFive[Rnd.Range(0, HandResponses.FlushFive.Count())]);
         }
-        else if(Flush(HandCards) && Straight(HandCards))
+        else if (Flush(HandCards) && Straight(HandCards))
         {
             playedhand = "Straight Flush";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
@@ -337,7 +337,7 @@ public class FireworkCrate : MonoBehaviour
             Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.StraightFlush[Rnd.Range(0, HandResponses.StraightFlush.Count())]);
 
         }
-        else if(Flush(HandCards) && FullHouse(HandCards))
+        else if (Flush(HandCards) && FullHouse(HandCards))
         {
             playedhand = "Flush House";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
@@ -418,11 +418,11 @@ public class FireworkCrate : MonoBehaviour
         }
 
         if (ActiveSuit.Count() > 5)
-        score = (int)(score * (5f / ActiveSuit.Count()));
-        if(ActiveSuit.Count() > 5)
-        Debug.LogFormat("[Hanabi Poker #{0}]: Due to your deck having {1} suits, your earned chips are now {2}.", _moduleId, ActiveSuit.Count(), score);
+            score = (int)(score * (5f / ActiveSuit.Count()));
+        if (ActiveSuit.Count() > 5)
+            Debug.LogFormat("[Hanabi Poker #{0}]: Due to your deck having {1} suits, your earned chips are now {2}.", _moduleId, ActiveSuit.Count(), score);
         int k = 0;
-        foreach(Tuple<string,int> card in HandCards)
+        foreach (Tuple<string, int> card in HandCards)
         {
             if (ActiveCards.Contains(k))
             {
@@ -440,7 +440,7 @@ public class FireworkCrate : MonoBehaviour
                 }
                 if (ActiveModifiers[14] && card.Item1 == "Light Pink")
                 {
-                    score += 5*HandCards.Where(x=>x.Item1=="Light Pink").Count();
+                    score += 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count();
                     Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Light Pink modifier, the used light pink card added {2} chips! Your earned chips are now {1}!", _moduleId, score, 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count());
 
                 }
@@ -453,7 +453,7 @@ public class FireworkCrate : MonoBehaviour
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Green modifier, the pair in your hand added five chips! Your earned chips are now {1}!", _moduleId, score);
 
         }
-        if (ActiveModifiers[13] && HandCards.Where(x=>x.Item1 == "Null").Count() == 1)
+        if (ActiveModifiers[13] && HandCards.Where(x => x.Item1 == "Null").Count() == 1)
         {
             discards++;
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Null modifier, your lone Null gifted you a discard! Your earned chips are now {1}!", _moduleId, score);
@@ -465,7 +465,7 @@ public class FireworkCrate : MonoBehaviour
         //Mult
         if (ActiveModifiers[1] && Straight(HandCards))
         {
-            score = (int)(score*1.2);
+            score = (int)(score * 1.2);
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Yellow modifier, your straight is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[3] && FullHouse(HandCards))
@@ -483,9 +483,9 @@ public class FireworkCrate : MonoBehaviour
             score = (int)(score * 1.3);
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Brown modifier, the three of a kind in your hand multiplies it by 1.3x! Your earned chips are now {1}!", _moduleId, score);
         }
-        for (int i = 0;i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
-            if (ActiveModifiers[10] && HandNumbers(HandCards).Where(x=> HandNumbers(HandCards).Where(y=>x==y).Count() > 1).Contains(HandCards[i].Item2) && HandCards[i].Item1 == "Pink")
+            if (ActiveModifiers[10] && HandNumbers(HandCards).Where(x => HandNumbers(HandCards).Where(y => x == y).Count() > 1).Contains(HandCards[i].Item2) && HandCards[i].Item1 == "Pink")
             {
                 score = (int)(score * 1.5);
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Pink modifier, the pink in a pair multiplies your chips by 1.5x! Your earned chips are now {1}!", _moduleId, score);
@@ -501,7 +501,7 @@ public class FireworkCrate : MonoBehaviour
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
             }
         }
-        if(score < 40)
+        if (score < 40)
             Audio.PlaySoundAtTransform("SmallHit", transform);
         else if (score < 100)
             Audio.PlaySoundAtTransform("MidHit", transform);
@@ -529,18 +529,18 @@ public class FireworkCrate : MonoBehaviour
         yield return new WaitForSeconds(1f);
         var benchmarkA = (score + 3) % 4;
         var benchmarkB = (score + 2) % 3;
-        while(score > 0)
+        while (score > 0)
         {
             totalscore += 1;
             score -= 1;
 
-            if(score % 3 == 0)
-            Audio.PlaySoundAtTransform(score % 4 == benchmarkA ? "TickBig" : "TickSmall", transform);
+            if (score % 3 == 0)
+                Audio.PlaySoundAtTransform(score % 4 == benchmarkA ? "TickBig" : "TickSmall", transform);
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             TotalScore[1].text = totalscore.ToString();
             TotalScore[0].text = totalscore.ToString();
-                yield return new WaitForSeconds(.03f);
+            yield return new WaitForSeconds(.03f);
         }
         Audio.PlaySoundAtTransform("Bank", transform);
         Debug.LogFormat("[Hanabi Poker #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
@@ -555,7 +555,7 @@ public class FireworkCrate : MonoBehaviour
         }
         yield return new WaitForSeconds(.2f);
         float wer = 0;
-        while(wer < 1)
+        while (wer < 1)
         {
             yield return null;
             wer += Time.deltaTime * 2f;
@@ -563,7 +563,7 @@ public class FireworkCrate : MonoBehaviour
             {
                 PlayDisplay[i].color = new Color(1 - i, 1 - i, 1 - i, 1 - wer);
                 AddedScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1 - wer);
-                TotalScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1-wer);
+                TotalScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1 - wer);
             }
         }
         for (int i = 0; i < 2; i++)
@@ -581,24 +581,24 @@ public class FireworkCrate : MonoBehaviour
         {
             Audio.PlaySoundAtTransform("Succ", transform);
             float t = 0;
-                while (t < 1)
+            while (t < 1)
+            {
+                t += Time.deltaTime * 8f;
+                for (int i = 0; i < HandCards.Count(); i++)
                 {
-                    t += Time.deltaTime * 8f;
-                    for (int i = 0; i < HandCards.Count(); i++)
+                    if (i == 0)
                     {
-                        if (i == 0)
-                        {
-                            Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 1][i], NullHand, easeInSine(t));
-                            Cards[i].localScale = Vector3.LerpUnclamped(One, Zero, easeInSine(t));
-                        }
-                        else
-                        {
-                            Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 1][i], HandPositions[HandCards.Count() - 2][i - 1], EaseOutBack(0, 1, t));
-                        }
+                        Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 1][i], NullHand, easeInSine(t));
+                        Cards[i].localScale = Vector3.LerpUnclamped(One, Zero, easeInSine(t));
                     }
-                    yield return null;
+                    else
+                    {
+                        Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 1][i], HandPositions[HandCards.Count() - 2][i - 1], EaseOutBack(0, 1, t));
+                    }
                 }
-                HandCards.RemoveAt(0);
+                yield return null;
+            }
+            HandCards.RemoveAt(0);
             for (int i = 0; i < 5; i++)
             {
                 if (HandCards.Count() > i)
@@ -616,13 +616,13 @@ public class FireworkCrate : MonoBehaviour
                     Cards[i].localScale = Zero;
                 }
             }
-                if (HandCards.Count() > 0)
-                    goto reset;
-                else
-                {
-                    break;
-                }
-            
+            if (HandCards.Count() > 0)
+                goto reset;
+            else
+            {
+                break;
+            }
+
         }
         yield return new WaitForSeconds(.2f);
         animating = false;
@@ -647,7 +647,7 @@ public class FireworkCrate : MonoBehaviour
     List<int> NotFirstNumberButWithListInt(List<int> hand)
     {
         var x = hand.Where(y => y != hand[0]).ToList();
-        return x.Count() == 0 ? new List<int> {0} : x;
+        return x.Count() == 0 ? new List<int> { 0 } : x;
     }
 
 
@@ -659,7 +659,7 @@ public class FireworkCrate : MonoBehaviour
     List<int> NumIndexes(List<Tuple<string, int>> hand, int number)
     {
         List<int> x = new List<int>();
-        for(int i =0;i<hand.Count(); i++)
+        for (int i = 0; i < hand.Count(); i++)
         {
             if (hand[i].Item2 == number) x.Add(HandCards.IndexOf(hand[i]));
         }
@@ -690,17 +690,17 @@ public class FireworkCrate : MonoBehaviour
     string ActiveModifierNames()
     {
         string allmods = "";
-        for(int i = 0; i < ActiveModifiers.Length; i++)
+        for (int i = 0; i < ActiveModifiers.Length; i++)
         {
             if (ActiveModifiers[i])
             {
-                if(i<5)
+                if (i < 5)
                     allmods += "\nAnti-" + SuitOrder[i];
                 else
-                allmods += "\n" + SuitOrder[i];
+                    allmods += "\n" + SuitOrder[i];
             }
         }
-        if(allmods == "")
+        if (allmods == "")
         {
             return "Base Deck";
         }
@@ -713,7 +713,7 @@ public class FireworkCrate : MonoBehaviour
         yield return null;
         float t = 0;
         if (!animating)
-            if(discards == 0 || (rank && HandCards.Where(x=> !Colorless.Contains(x.Item1)).Count() == 0) || (!rank && HandCards.Where(x => !Numberless.Contains(x.Item1)).Count() == 0))
+            if (discards == 0 || (rank && HandCards.Where(x => !Colorless.Contains(x.Item1)).Count() == 0) || (!rank && HandCards.Where(x => !Numberless.Contains(x.Item1)).Count() == 0))
             {
                 Audio.PlaySoundAtTransform("No", transform);
                 float angle = Rnd.Range(-20f, 20f);
@@ -757,7 +757,7 @@ public class FireworkCrate : MonoBehaviour
                         ClueValue++;
                         ClueValue %= 5;
                     }
-                    while (!anyclue && HandCards.Where(x => x.Item2 == ClueValue+1 && !Numberless.Contains(x.Item1)).Count() == 0);
+                    while (!anyclue && HandCards.Where(x => x.Item2 == ClueValue + 1 && !Numberless.Contains(x.Item1)).Count() == 0);
                 }
                 animating = true;
                 Cluing = 2;
@@ -779,7 +779,7 @@ public class FireworkCrate : MonoBehaviour
                 RealActiveSuit = ActiveSuit.Where(x => !Colorless.Contains(x) && !Multicolor.Contains(x)).ToList();
                 RealActiveSuit = RealActiveSuit.OrderBy(x => SuitOrder.IndexOf(x)).ToList();
                 //Debug.Log(RealActiveSuit.Join(" "));
-                if(HandCards.Where(x => Multicolor.Contains(x.Item1)).Count() != 0)
+                if (HandCards.Where(x => Multicolor.Contains(x.Item1)).Count() != 0)
                 {
                     anyclue = true;
                 }
@@ -791,7 +791,7 @@ public class FireworkCrate : MonoBehaviour
                         ClueValue++;
                         ClueValue %= RealActiveSuit.Count();
                     }
-                    
+
                 }
                 else
                 {
@@ -816,7 +816,6 @@ public class FireworkCrate : MonoBehaviour
                 }
                 animating = false;
             }
-        }
     }
 
     IEnumerator DiscardCards(bool rank, int clueval, bool all)
@@ -824,14 +823,14 @@ public class FireworkCrate : MonoBehaviour
         discards--;
         float y = 0;
         CardCounter.text = discards.ToString();
-        while(y < 1 && !all)
+        while (y < 1 && !all)
         {
-            y += Time.deltaTime *4f;
+            y += Time.deltaTime * 4f;
             CardCounter.transform.localScale = Vector3.Lerp(new Vector3(0f, 0f, 100f), new Vector3(1f, 1f, 100f), y);
             CardCounter.color = Color32.Lerp(new Color32(255, 0, 0, 255), new Color32(255, 0, 0, 0), easeInSine(y));
             CardCounter.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
             yield return null;
-           
+
         }
         yield return new WaitForSeconds(.2f);
         CardCounter.color = new Color32(255, 255, 255, 0);
@@ -839,16 +838,16 @@ public class FireworkCrate : MonoBehaviour
         yield return null;
         restart:
         int j = 0;
-        foreach(var card in HandCards)
+        foreach (var card in HandCards)
         {
-            if(all || (rank && (card.Item2 == clueval+1 || EveryNumber.Contains(card.Item1)) && !Numberless.Contains(card.Item1)) || (!rank && (card.Item1 == RealActiveSuit[clueval] || Multicolor.Contains(card.Item1))))
+            if (all || (rank && (card.Item2 == clueval + 1 || EveryNumber.Contains(card.Item1)) && !Numberless.Contains(card.Item1)) || (!rank && (card.Item1 == RealActiveSuit[clueval] || Multicolor.Contains(card.Item1))))
             {
                 Audio.PlaySoundAtTransform("Succ", transform);
                 float t = 0;
-                while(t < 1)
+                while (t < 1)
                 {
                     t += Time.deltaTime * 5f;
-                    for(int i = 0; i < HandCards.Count(); i++)
+                    for (int i = 0; i < HandCards.Count(); i++)
                     {
                         if (i == j)
                         {
@@ -857,7 +856,7 @@ public class FireworkCrate : MonoBehaviour
                         }
                         else if (i > j)
                         {
-                            Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 1][i], HandPositions[HandCards.Count() - 2][i -1], EaseOutBack(0, 1, t));
+                            Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 1][i], HandPositions[HandCards.Count() - 2][i - 1], EaseOutBack(0, 1, t));
                         }
                         else
                         {
@@ -880,7 +879,7 @@ public class FireworkCrate : MonoBehaviour
                     }
                     else
                     {
-                        Cards[i].localPosition = new Vector3(0,0,0);
+                        Cards[i].localPosition = new Vector3(0, 0, 0);
                         Cards[i].localScale = Zero;
                     }
                 }
@@ -889,8 +888,8 @@ public class FireworkCrate : MonoBehaviour
             j++;
         }
         yield return new WaitForSeconds(.25f);
-        if(!all)
-        StartCoroutine(DrawToFive());
+        if (!all)
+            StartCoroutine(DrawToFive());
     }
 
     void GenerateDeck()
@@ -931,11 +930,11 @@ public class FireworkCrate : MonoBehaviour
         speed = 3;
         yield return new WaitForSeconds(0.25f);
         SetupScale.position = new Vector3(1203f, 0f, 0f);
-        if(ActiveModifiers.Where(x=>x).Count() == 0)
+        if (ActiveModifiers.Where(x => x).Count() == 0)
         {
-            Debug.LogFormat("[Hanabi Poker #{0}]: Shuffling a regular deck together for round {1}!", _moduleId,Round);
+            Debug.LogFormat("[Hanabi Poker #{0}]: Shuffling a regular deck together for round {1}!", _moduleId, Round);
         }
-        else if(ActiveModifiers.Where(x => x).Count() == 1)
+        else if (ActiveModifiers.Where(x => x).Count() == 1)
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: Shuffling a deck together with the modifier {1} for round {2}!", _moduleId, (Array.IndexOf(SuitOrder, ActiveSuit[0]) < 5 ? "Anti-" : "") + ActiveSuit[0], Round);
         }
@@ -949,7 +948,7 @@ public class FireworkCrate : MonoBehaviour
             {
                 ActiveSuit.Add(Modifiers[i + 2]);
                 ActiveModifiers[SuitOrder.IndexOf(Modifiers[i + 2])] = true;
-                Debug.LogFormat("[Hanabi Poker #{0}]: Riff-Raff adds {1} to the fray!", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[i+2]) < 5 ? "Anti-" : "") + Modifiers[i+2]);
+                Debug.LogFormat("[Hanabi Poker #{0}]: Riff-Raff adds {1} to the fray!", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[i + 2]) < 5 ? "Anti-" : "") + Modifiers[i + 2]);
             }
             ActiveSuit.Remove("Riff-Raff");
         }
@@ -957,7 +956,7 @@ public class FireworkCrate : MonoBehaviour
         {
             if (ActiveSuit.Contains(SuitOrder[i]))
                 ActiveSuit.Remove(SuitOrder[i]);
-            else ActiveSuit.Insert(0,SuitOrder[i]);
+            else ActiveSuit.Insert(0, SuitOrder[i]);
         }
         foreach (string suit in ActiveSuit)
         {
@@ -997,11 +996,11 @@ public class FireworkCrate : MonoBehaviour
         if (totalscore > highscore)
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n"+totalscore+ ActiveModifierNames());
-            for(int i = 0; i < 2; i++)
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n" + totalscore + ActiveModifierNames());
+            for (int i = 0; i < 2; i++)
             {
                 HighScoreDisplay[i].text = "NEW HIGH SCORE!\n" + File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
-            
+
             }
         }
         else
@@ -1049,7 +1048,7 @@ public class FireworkCrate : MonoBehaviour
             Debug.LogFormat("[Hanabi Poker #{0}]: {1} is availiable. [{2}]. If taken, {3}.", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[j]) < 5 ? "Anti-" : "") + Modifiers[j], ModifierList[Modifiers[j]].Item1, ModifierList[Modifiers[j]].Item2);
             for (int i = 0; i < 2; i++)
             {
-                
+
                 ModName(modbutton)[i].text = ModifierList[Modifiers[j]].Item1;
                 ModEffect(modbutton)[i].text = ModifierList[Modifiers[j]].Item2;
                 ModColor(modbutton)[i].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j])];
@@ -1065,7 +1064,7 @@ public class FireworkCrate : MonoBehaviour
 
             yield return null;
             f += Time.deltaTime * 1f;
-            TotalScore[0].color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine((5f-f)/2f));
+            TotalScore[0].color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine((5f - f) / 2f));
             TotalScore[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
             HighScoreDisplay[0].color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine((5f - f) / 2f));
             HighScoreDisplay[1].color = Color32.Lerp(new Color32(0, 0, 0, 255), new Color32(0, 0, 0, 0), easeInSine((5f - f) / 2f));
@@ -1082,121 +1081,121 @@ public class FireworkCrate : MonoBehaviour
     {
         play = false;
         yield return null;
-        if (Deck.Count() < 5 && HandCards.Count() ==0 )
+        if (Deck.Count() < 5 && HandCards.Count() == 0)
         {
             StartCoroutine(ResetMod());
         }
         else
-        while (HandCards.Count < 5)
-        {
-            if(Deck.Count == 0)
+            while (HandCards.Count < 5)
             {
-                StartCoroutine(ResetMod());
-                break;
-            }
-
-            int j = 0;
-            for (int i = 0; i < HandCards.Count; i++)
-            {
-                if (Array.IndexOf(SuitOrder, HandCards[i].Item1) < Array.IndexOf(SuitOrder, Deck.First().Item1))
+                if (Deck.Count == 0)
                 {
-                    j++;
-                }
-                else if (Array.IndexOf(SuitOrder, HandCards[i].Item1) == Array.IndexOf(SuitOrder, Deck.First().Item1))
-                {
-                    if (HandCards[i].Item2 < Deck.First().Item2)
-                    {
-                        j++;
-                    }
-                    else if (HandCards[i].Item2 == Deck.First().Item2)
-                    {
-                        j++;
-                        break;
-                    }
-                }
-            }
-            HandCards.Insert(j, Deck.First());
-            Deck.Remove(Deck.First());
-            if(Deck.Count() < 16)
-            {
-                speed = 2;
-                if (Deck.Count() < 5)
-                {
-                    speed = 1;
-                }
-            }
-            for (int i = 0; i < HandCards.Count; i++)
-            {
-                CardSuit(Cards[i]).sprite = SuitImages[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
-                CardNumber(Cards[i]).sprite = NumberNumbers[HandCards[i].Item2 - 1];
-                CardNumber(Cards[i]).color = NumberColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
-                CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
-                if (i != j)
-                {
-                    Cards[i].localPosition = HandPositions[HandCards.Count() - 1][i];
-                    Cards[i].localScale = One;
-                }
-                else
-                {
-                    CardRenderer(Cards[i]).sprite = CardBacks[1];
-                    CardRenderer(Cards[i]).color = Color.white;
-                    CardRenderer(Cards[i]).sortingOrder += 5;
+                    StartCoroutine(ResetMod());
+                    break;
                 }
 
-            }
-            CardCounter.text = Deck.Count().ToString();
-
-            Audio.PlaySoundAtTransform("Deal", transform);
-            float angle = Rnd.Range(-20f, 20f);
-            float Timer = 0;
-            bool donethateverytime = false;
-            while (Timer < 1)
-            {
-                Timer += Time.deltaTime * 4f;
-                CardCounter.transform.localScale = Vector3.Lerp(new Vector3(0f, 0f, 100f), new Vector3(1f, 1f, 100f), Timer);
-                CardCounter.color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine(Timer));
-                CardCounter.transform.localEulerAngles = Vector3.Lerp(new Vector3(90f, 0f, 0f), new Vector3(90f, angle, 0f), Timer);
+                int j = 0;
                 for (int i = 0; i < HandCards.Count; i++)
                 {
-                    if (i == j)
+                    if (Array.IndexOf(SuitOrder, HandCards[i].Item1) < Array.IndexOf(SuitOrder, Deck.First().Item1))
                     {
-                        if (!donethateverytime && Timer > .5f)
-                        {
-                            donethateverytime = true;
-                            CardRenderer(Cards[i]).sprite = CardBacks[0];
-                            CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
-                            CardRenderer(Cards[i]).sortingOrder -= 5;
-                        }
-                        Cards[i].localPosition = Vector3.LerpUnclamped(NullHand, HandPositions[HandCards.Count() - 1][i], EaseOutBack(0, 1, Timer));
-                        Cards[i].localScale = Vector3.LerpUnclamped(Zero, One, EaseOutBack(0, 1, Timer));
-                        Cards[i].localEulerAngles = Vector3.LerpUnclamped(new Vector3(-90, 90, 90), new Vector3(90, 90, 90), Timer);
+                        j++;
                     }
-                    else if (i > j)
+                    else if (Array.IndexOf(SuitOrder, HandCards[i].Item1) == Array.IndexOf(SuitOrder, Deck.First().Item1))
                     {
-                        Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 2][i - 1], HandPositions[HandCards.Count() - 1][i], EaseOutBack(0, 1, Timer));
+                        if (HandCards[i].Item2 < Deck.First().Item2)
+                        {
+                            j++;
+                        }
+                        else if (HandCards[i].Item2 == Deck.First().Item2)
+                        {
+                            j++;
+                            break;
+                        }
+                    }
+                }
+                HandCards.Insert(j, Deck.First());
+                Deck.Remove(Deck.First());
+                if (Deck.Count() < 16)
+                {
+                    speed = 2;
+                    if (Deck.Count() < 5)
+                    {
+                        speed = 1;
+                    }
+                }
+                for (int i = 0; i < HandCards.Count; i++)
+                {
+                    CardSuit(Cards[i]).sprite = SuitImages[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                    CardNumber(Cards[i]).sprite = NumberNumbers[HandCards[i].Item2 - 1];
+                    CardNumber(Cards[i]).color = NumberColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                    CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                    if (i != j)
+                    {
+                        Cards[i].localPosition = HandPositions[HandCards.Count() - 1][i];
+                        Cards[i].localScale = One;
                     }
                     else
                     {
-                        Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 2][i], HandPositions[HandCards.Count() - 1][i], EaseOutBack(0, 1, Timer));
+                        CardRenderer(Cards[i]).sprite = CardBacks[1];
+                        CardRenderer(Cards[i]).color = Color.white;
+                        CardRenderer(Cards[i]).sortingOrder += 5;
                     }
+
                 }
-                yield return null;
+                CardCounter.text = Deck.Count().ToString();
+
+                Audio.PlaySoundAtTransform("Deal", transform);
+                float angle = Rnd.Range(-20f, 20f);
+                float Timer = 0;
+                bool donethateverytime = false;
+                while (Timer < 1)
+                {
+                    Timer += Time.deltaTime * 4f;
+                    CardCounter.transform.localScale = Vector3.Lerp(new Vector3(0f, 0f, 100f), new Vector3(1f, 1f, 100f), Timer);
+                    CardCounter.color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine(Timer));
+                    CardCounter.transform.localEulerAngles = Vector3.Lerp(new Vector3(90f, 0f, 0f), new Vector3(90f, angle, 0f), Timer);
+                    for (int i = 0; i < HandCards.Count; i++)
+                    {
+                        if (i == j)
+                        {
+                            if (!donethateverytime && Timer > .5f)
+                            {
+                                donethateverytime = true;
+                                CardRenderer(Cards[i]).sprite = CardBacks[0];
+                                CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                                CardRenderer(Cards[i]).sortingOrder -= 5;
+                            }
+                            Cards[i].localPosition = Vector3.LerpUnclamped(NullHand, HandPositions[HandCards.Count() - 1][i], EaseOutBack(0, 1, Timer));
+                            Cards[i].localScale = Vector3.LerpUnclamped(Zero, One, EaseOutBack(0, 1, Timer));
+                            Cards[i].localEulerAngles = Vector3.LerpUnclamped(new Vector3(-90, 90, 90), new Vector3(90, 90, 90), Timer);
+                        }
+                        else if (i > j)
+                        {
+                            Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 2][i - 1], HandPositions[HandCards.Count() - 1][i], EaseOutBack(0, 1, Timer));
+                        }
+                        else
+                        {
+                            Cards[i].localPosition = Vector3.LerpUnclamped(HandPositions[HandCards.Count() - 2][i], HandPositions[HandCards.Count() - 1][i], EaseOutBack(0, 1, Timer));
+                        }
+                    }
+                    yield return null;
+                }
+                for (int i = 0; i < 5; i++)
+                {
+                    Cards[i].localEulerAngles = new Vector3(90, 90, 90);
+                }
+                for (int i = 0; i < HandCards.Count; i++)
+                {
+                    Cards[i].localPosition = HandPositions[HandCards.Count() - 1][i];
+                    Cards[i].localScale = One;
+                    CardSuit(Cards[i]).sprite = SuitImages[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                    CardNumber(Cards[i]).sprite = NumberNumbers[HandCards[i].Item2 - 1];
+                    CardNumber(Cards[i]).color = NumberColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                    CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                }
+                yield return new WaitForSeconds(.0001f);
             }
-            for (int i = 0; i < 5; i++)
-            {
-                Cards[i].localEulerAngles = new Vector3(90, 90, 90);
-            }
-            for (int i = 0; i < HandCards.Count; i++)
-            {
-                Cards[i].localPosition = HandPositions[HandCards.Count() - 1][i];
-                Cards[i].localScale = One;
-                CardSuit(Cards[i]).sprite = SuitImages[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
-                CardNumber(Cards[i]).sprite = NumberNumbers[HandCards[i].Item2 - 1];
-                CardNumber(Cards[i]).color = NumberColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
-                CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
-            }
-            yield return new WaitForSeconds(.0001f);
-        }
         play = true;
 
         animating = false;
@@ -1240,7 +1239,7 @@ public class FireworkCrate : MonoBehaviour
                 if (green[i])
                     highlight.color = new Color32(53, 210, 93, 255);
             }
-            if (Modifiers[i] == "Riff-Raff" && Rnd.Range(0,25) == 0)
+            if (Modifiers[i] == "Riff-Raff" && Rnd.Range(0, 25) == 0)
             {
                 riffrafftimer = 5;
                 ledge = Rnd.Range(2, edging + 1);
@@ -1296,17 +1295,17 @@ public class FireworkCrate : MonoBehaviour
         Debug.LogFormat("[Hanabi Poker #{0}]: For round {1}, the following modifications are available:", _moduleId, Round);
         foreach (var modbutton in ModifierButtons)
         {
-            Debug.LogFormat("[Hanabi Poker #{0}]: {1} is availiable. [{2}]. If taken, {3}.", _moduleId, (Array.IndexOf(SuitOrder,Modifiers[j]) < 5 ? "Anti-" : "") + Modifiers[j], ModifierList[Modifiers[j]].Item1, ModifierList[Modifiers[j]].Item2);
+            Debug.LogFormat("[Hanabi Poker #{0}]: {1} is availiable. [{2}]. If taken, {3}.", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[j]) < 5 ? "Anti-" : "") + Modifiers[j], ModifierList[Modifiers[j]].Item1, ModifierList[Modifiers[j]].Item2);
             for (int i = 0; i < 2; i++)
             {
-                
+
                 ModName(modbutton)[i].text = ModifierList[Modifiers[j]].Item1;
                 ModEffect(modbutton)[i].text = ModifierList[Modifiers[j]].Item2;
                 ModColor(modbutton)[i].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j])];
                 if (Modifiers[j] == "Riff-Raff")
-                ModColor(modbutton)[i].sprite = CardBacks[3];
+                    ModColor(modbutton)[i].sprite = CardBacks[3];
                 else
-                ModColor(modbutton)[i].sprite = CardBacks[2];
+                    ModColor(modbutton)[i].sprite = CardBacks[2];
             }
             j++;
         }
@@ -1326,24 +1325,24 @@ public class FireworkCrate : MonoBehaviour
         }
         else
             PlayScale.localPosition = new Vector3(0, 0, 0);
-            for (int j = 0; j < 4; j++)
-            {
-                ModColor(ModifierButtons[j / 2])[j % 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j / 2])];
-            }
-        if(riffrafftimer >= 0)
-        riffrafftimer--;
-        if (riffrafftimer > 0)
-        for(int p=0;p<4;p++)
+        for (int j = 0; j < 4; j++)
         {
+            ModColor(ModifierButtons[j / 2])[j % 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j / 2])];
+        }
+        if (riffrafftimer >= 0)
+            riffrafftimer--;
+        if (riffrafftimer > 0)
+            for (int p = 0; p < 4; p++)
+            {
                 if (Modifiers[p % 2] == "Riff-Raff")
                 {
-                    ModName(ModifierButtons[p%2])[p/2].text = ModifierList[Modifiers[ledge]].Item1;
+                    ModName(ModifierButtons[p % 2])[p / 2].text = ModifierList[Modifiers[ledge]].Item1;
                     ModEffect(ModifierButtons[p % 2])[p / 2].text = ModifierList[Modifiers[ledge]].Item2;
                     ModColor(ModifierButtons[p % 2])[p / 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[ledge])];
                     ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[2];
                 }
-                
-        }
+
+            }
         else
         {
             for (int p = 0; p < 4; p++)
@@ -1353,7 +1352,7 @@ public class FireworkCrate : MonoBehaviour
                     ModName(ModifierButtons[p % 2])[p / 2].text = ModifierList["Riff-Raff"].Item1;
                     ModEffect(ModifierButtons[p % 2])[p / 2].text = ModifierList["Riff-Raff"].Item2;
                     ModColor(ModifierButtons[p % 2])[p / 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, "Riff-Raff")];
-                        ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[3];
+                    ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[3];
                 }
             }
         }
@@ -1385,10 +1384,10 @@ public class FireworkCrate : MonoBehaviour
             SuitColors[11] = omniman;
             NumberColors[11] = omniman;
             SelectButtonColors[11] = omniman;
-                for (int j = 0; j < 4; j++)
-                {
-                    ModColor(ModifierButtons[j / 2])[j % 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j / 2])];
-                }
+            for (int j = 0; j < 4; j++)
+            {
+                ModColor(ModifierButtons[j / 2])[j % 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j / 2])];
+            }
             for (int j = 0; j < HandCards.Count; j++)
             {
                 if (HandCards[j].Item1 == "Omni")
