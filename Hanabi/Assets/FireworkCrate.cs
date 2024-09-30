@@ -78,6 +78,10 @@ public class FireworkCrate : MonoBehaviour
     private int discards = 4;
     private int totalscore = 0;
 
+    private int edging = 1;
+    private int riffrafftimer = 0;
+    private int ledge = 0;
+
     private Vector3 NullHand = new Vector3(0, .016f, 0f);
     private Vector3 Zero = new Vector3(0, 0, 1);
     private Vector3 One = new Vector3(0.005f, 0.005f, 1);
@@ -932,7 +936,6 @@ public class FireworkCrate : MonoBehaviour
         }
         if (ActiveSuit.Contains("Riff-Raff"))
         {
-            int edging = Rnd.Range(2, 5);
             for (int i = 0; i < edging; i++)
             {
                 ActiveSuit.Add(Modifiers[i + 2]);
@@ -975,6 +978,7 @@ public class FireworkCrate : MonoBehaviour
 
     IEnumerator ResetMod()
     {
+        edging = Rnd.Range(2, 5);
         Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         string HSText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
@@ -1026,7 +1030,7 @@ public class FireworkCrate : MonoBehaviour
         speed = 5;
         float f = 3;
         Modifiers = Modifiers.Shuffle();
-        ActiveModifiers = new bool[Modifiers.Length];
+        ActiveModifiers = new bool[SuitOrder.Length];
         SetupScale.localPosition = Vector3.zero;
         int j = 0;
         foreach (var modbutton in ModifierButtons)
@@ -1223,6 +1227,11 @@ public class FireworkCrate : MonoBehaviour
                 if (green[i])
                     highlight.color = new Color32(53, 210, 93, 255);
             }
+            if (Modifiers[i] == "Riff-Raff" && Rnd.Range(0,25) == 0)
+            {
+                riffrafftimer = 5;
+                ledge = Rnd.Range(2, edging + 1);
+            }
             ActiveSuit.Add(Modifiers[i]);
             ActiveModifiers[Array.IndexOf(SuitOrder, Modifiers[i])] = true;
         }
@@ -1241,6 +1250,7 @@ public class FireworkCrate : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        edging = Rnd.Range(2, 5);
         if (!File.Exists(Path.Combine(Application.persistentDataPath, "HPHighScore.txt")))
         {
             Debug.LogFormat("No saved high score!");
@@ -1307,6 +1317,33 @@ public class FireworkCrate : MonoBehaviour
             {
                 ModColor(ModifierButtons[j / 2])[j % 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j / 2])];
             }
+        if(riffrafftimer != 0)
+        riffrafftimer--;
+        if (riffrafftimer >= 0)
+        for(int p=0;p<4;p++)
+        {
+                if (Modifiers[p % 2] == "Riff-Raff")
+                {
+                    ModName(ModifierButtons[p%2])[p/2].text = ModifierList[Modifiers[ledge]].Item1;
+                    ModEffect(ModifierButtons[p % 2])[p / 2].text = ModifierList[Modifiers[ledge]].Item2;
+                    ModColor(ModifierButtons[p % 2])[p / 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[ledge])];
+                    ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[2];
+                }
+                
+        }
+        else
+        {
+            for (int p = 0; p < 4; p++)
+            {
+                if (Modifiers[p % 2] == "Riff-Raff")
+                {
+                    ModName(ModifierButtons[p % 2])[p / 2].text = ModifierList["Riff-Raff"].Item1;
+                    ModEffect(ModifierButtons[p % 2])[p / 2].text = ModifierList["Riff-Raff"].Item2;
+                    ModColor(ModifierButtons[p % 2])[p / 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, "Riff-Raff")];
+                        ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[3];
+                }
+            }
+        }
         for (int j = 0; j < HandCards.Count; j++)
         {
             if (HandCards[j].Item1 == "Rainbow")
