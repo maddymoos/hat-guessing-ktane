@@ -98,6 +98,7 @@ public class FireworkCrate : MonoBehaviour
     private List<Tuple<string, int>> HandCards = new List<Tuple<string, int>>();
     private List<string> RealActiveSuit = new List<string>();
     private Coroutine[] ButtonAnims = new Coroutine[3];
+    private Coroutine ChipCountCoroutine;
 
     private String[] SuitOrder =
     {
@@ -415,7 +416,8 @@ public class FireworkCrate : MonoBehaviour
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 1;
         }
-        if(ActiveSuit.Count() > 5)
+
+        if (ActiveSuit.Count() > 5)
         score = (int)(score * (5f / ActiveSuit.Count()));
         if(ActiveSuit.Count() > 5)
         Debug.LogFormat("[Hanabi Poker #{0}]: Due to your deck having {1} suits, your earned chips are now {2}.", _moduleId, ActiveSuit.Count(), score);
@@ -500,11 +502,11 @@ public class FireworkCrate : MonoBehaviour
             }
         }
         if(score < 40)
-            Audio.PlaySoundAtTransform("SmallHit", Module.transform);
+            Audio.PlaySoundAtTransform("SmallHit", transform);
         else if (score < 100)
-            Audio.PlaySoundAtTransform("MidHit", Module.transform);
+            Audio.PlaySoundAtTransform("MidHit", transform);
         else
-            Audio.PlaySoundAtTransform("BigHit", Module.transform);
+            Audio.PlaySoundAtTransform("BigHit", transform);
 
 
         for (int i = 0; i < 2; i++)
@@ -525,19 +527,22 @@ public class FireworkCrate : MonoBehaviour
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"), "Best Hand\n" + score + "\n" + playedhand + ActiveModifierNames());
         }
         yield return new WaitForSeconds(1f);
+        var benchmarkA = (score + 3) % 4;
+        var benchmarkB = (score + 2) % 3;
         while(score > 0)
         {
             totalscore += 1;
             score -= 1;
 
-            if(score%3==0)
-            Audio.PlaySoundAtTransform(score % 2 == 0 ? "Boop" : "Beep", Module.transform);
+            if(score % 3 == 0)
+            Audio.PlaySoundAtTransform(score % 4 == benchmarkA ? "TickBig" : "TickSmall", transform);
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             TotalScore[1].text = totalscore.ToString();
             TotalScore[0].text = totalscore.ToString();
                 yield return new WaitForSeconds(.03f);
         }
+        Audio.PlaySoundAtTransform("Bank", transform);
         Debug.LogFormat("[Hanabi Poker #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
         if (totalscore >= 150 && !Solved)
         {
@@ -710,6 +715,7 @@ public class FireworkCrate : MonoBehaviour
         if (!animating)
             if(discards == 0 || (rank && HandCards.Where(x=> !Colorless.Contains(x.Item1)).Count() == 0) || (!rank && HandCards.Where(x => !Numberless.Contains(x.Item1)).Count() == 0))
             {
+                Audio.PlaySoundAtTransform("No", transform);
                 float angle = Rnd.Range(-20f, 20f);
                 CardCounter.text = "X";
                 while (t < 1)
@@ -723,12 +729,13 @@ public class FireworkCrate : MonoBehaviour
             }
             else if ((rank && Cluing == 1) || (!rank && Cluing == 2))
             {
+                Audio.PlaySoundAtTransform("SideConfirm", transform);
                 animating = true;
                 StartCoroutine(DiscardCards(!rank, ClueValue, false));
             }
             else if (rank)
             {
-                
+                Audio.PlaySoundAtTransform("SidePress", transform);
                 if (HandCards.Where(x => EveryNumber.Contains(x.Item1)).Count() != 0)
                 {
                     anyclue = true;
@@ -768,6 +775,7 @@ public class FireworkCrate : MonoBehaviour
             }
             else
             {
+                Audio.PlaySoundAtTransform("SidePress", transform);
                 RealActiveSuit = ActiveSuit.Where(x => !Colorless.Contains(x) && !Multicolor.Contains(x)).ToList();
                 RealActiveSuit = RealActiveSuit.OrderBy(x => SuitOrder.IndexOf(x)).ToList();
                 //Debug.Log(RealActiveSuit.Join(" "));
@@ -808,6 +816,7 @@ public class FireworkCrate : MonoBehaviour
                 }
                 animating = false;
             }
+        }
     }
 
     IEnumerator DiscardCards(bool rank, int clueval, bool all)
@@ -983,6 +992,8 @@ public class FireworkCrate : MonoBehaviour
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         string HSText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         int highscore = int.Parse(Regex.Match(HSText, @"\n([1234567890]+)").ToString());
+        Debug.Log(HSText);
+        Debug.Log(highscore);
         if (totalscore > highscore)
         {
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
@@ -1189,6 +1200,8 @@ public class FireworkCrate : MonoBehaviour
         play = true;
 
         animating = false;
+
+        Audio.PlaySoundAtTransform("Ready", transform);
     }
     void HL(bool b, int i)
     {
