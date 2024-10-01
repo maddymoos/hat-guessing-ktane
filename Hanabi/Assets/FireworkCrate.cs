@@ -19,6 +19,7 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.SocialPlatforms.Impl;
 using System.IO;
 using UnityEditorInternal;
+using Newtonsoft.Json.Linq;
 public class FireworkCrate : MonoBehaviour
 {
 
@@ -46,7 +47,13 @@ public class FireworkCrate : MonoBehaviour
     public Sprite[] SuitImages;
     public Sprite[] NumberNumbers;
 
-    private float[] HSV = { 0, 200f / 255f, 215f / 255f, 113f / 255f, 238f / 255f, 1, 1, 100f / 255f, 116f / 255, 98f / 255, 110f / 255, 96f / 255f, 135f / 255f };
+    private float[] HSV = { 0, 
+        200f / 255f, 215f / 255f, 
+        113f / 255f, 238f / 255f, 
+        1, 1, 
+        100f / 255f, 116f / 255,
+        98f / 255, 110f / 255, 
+        96f / 255f, 135f / 255f };
 
     public Transform[] WiggleTransforms;
     private float[] wigglenums;
@@ -104,7 +111,7 @@ public class FireworkCrate : MonoBehaviour
     private Coroutine[] ButtonAnims = new Coroutine[3];
     private Coroutine ChipCountCoroutine;
 
-    private String[] SuitOrder =
+    private string[] SuitOrder =
     {
         "Red",
         "Yellow",
@@ -129,9 +136,10 @@ public class FireworkCrate : MonoBehaviour
         "Gray Pink",
         "Dark Pink",
         "Dark Omni",
+        "Risky Dice",
         "Riff-Raff"
     };
-    private String[] Modifiers =
+    private string[] Modifiers =
     {
         "Red",
         "Yellow",
@@ -149,9 +157,10 @@ public class FireworkCrate : MonoBehaviour
         "Null",
         "Light Pink",
         "Dark Null",
+        "Risky Dice",
         "Riff-Raff"
     };
-    private String[] Colorless =
+    private string[] Colorless =
     {
         "White",
         "Null",
@@ -161,7 +170,7 @@ public class FireworkCrate : MonoBehaviour
         "Dark Null",
         "Riff-Raff"
     };
-    private String[] Multicolor =
+    private string[] Multicolor =
     {
         "Rainbow",
         "Omni",
@@ -170,7 +179,7 @@ public class FireworkCrate : MonoBehaviour
         "Cocoa Rainbow",
         "Dark Omni"
     };
-    private String[] Numberless =
+    private string[] Numberless =
     {
         "Brown",
         "Null",
@@ -180,7 +189,7 @@ public class FireworkCrate : MonoBehaviour
         "Cocoa Rainbow",
         "Riff-Raff"
     };
-    private String[] EveryNumber =
+    private string[] EveryNumber =
     {
         "Pink",
         "Omni",
@@ -189,7 +198,7 @@ public class FireworkCrate : MonoBehaviour
         "Dark Omni",
         "Gray Pink"
     };
-    private String[] Singlet =
+    private string[] Singlet =
     {
         "Black",
         "Dark Null",
@@ -203,30 +212,31 @@ public class FireworkCrate : MonoBehaviour
     };
     private Dictionary<string, Tuple<string, string>> ModifierList = new Dictionary<string, Tuple<string, string>>
     {
-        {"Red",    new Tuple<string,string>("Anti-Red (-1 Suit)", "Fives +15")},
-        {"Yellow", new Tuple < string, string >("Anti-Yellow (-1 Suit)", "Straight x1.2")},
-        {"Green", new Tuple < string, string >("Anti-Green (-1 Suit)", "Pairs +5")},
-        {"Blue", new Tuple < string, string >("Anti-Blue (-1 Suit)", "Full House x1.2")},
-        {"Purple", new Tuple < string, string >("Anti-Purple (-1 Suit)", "Threes Wild Colors")},
-        {"Teal", new Tuple < string, string >("Teal (+1 Suit)", "Flush x1.2")},
-        {"Black", new Tuple < string, string >("Black (+1 [X] Suit)", "Black +10")},
-        {"Rainbow", new Tuple < string, string >("Rainbow (+1 [M] Suit)", "Rainbows Wild Color")},
-        {"Brown", new Tuple < string, string >("Brown (+1 [0] Suit)", "3 Of A Kind x1.3")},
-        {"White", new Tuple < string, string >("White (+1 [C] Suit)", "Ignored For Flush")},
-        {"Pink", new Tuple < string, string >("Pink (+1 [#] Suit)", "Pink in Pairs x1.5")},
-        {"Omni", new Tuple < string, string >("Omni (+1 [#M] Suit)", "Every Omni x1.75")},
-        {"Muddy Rainbow", new Tuple < string, string >("Mud R. (+1 [0M] Suit)", "Unused M. R. x2")},
-        {"Null", new Tuple < string, string >("Null (+1 [0C] Suit)", "Single Null +Discard")},
-        {"Light Pink", new Tuple < string, string >("L Pink (+1 [#C] Suit)", "L. Pink +5xL. Pink")},
-        {"Dark Null", new Tuple < string, string >("D Null (+1 [S0C] Suit)", "One-Time Use x2.5")},
-        {"Dark Brown", new Tuple < string, string >("Dark Brown (+1 [S0] Suit)", "Placeholder")},
-        {"Cocoa Rainbow", new Tuple < string, string >("Cocoa R (+1 [S0M] Suit)", "Placeholder")},
-        {"Gray", new Tuple < string, string >("Gray (+1 [SC] Suit)", "Placeholder")},
-        {"Dark Rainbow", new Tuple < string, string >("Dark R (+1 [SM] Suit)", "Placeholder")},
-        {"Gray Pink", new Tuple < string, string >("Gray Pink (+1 [S#C] Suit)", "Placeholder")},
-        {"Dark Pink", new Tuple < string, string >("Dark Pink (+1 [S#] Suit)", "Placeholder")},
-        {"Dark Omni", new Tuple < string, string >("Dark Omni (+1 [S#M] Suit)", "Placeholder")},
-        {"Riff-Raff", new Tuple < string, string >("Riff-Raff [E]", "+2 to 4 Modifiers")}
+        {"Red",           "Anti-Red (-1 Suit)",        "Fives +15"},
+        {"Yellow",        "Anti-Yellow (-1 Suit)",     "Straight x1.2"},
+        {"Green",         "Anti-Green (-1 Suit)",      "Pairs +5"},
+        {"Blue",          "Anti-Blue (-1 Suit)",       "Full House x1.2"},
+        {"Purple",        "Anti-Purple (-1 Suit)",     "Threes Wild Colors"},
+        {"Teal",          "Teal (+1 Suit)",            "Flush x1.2"},
+        {"Black",         "Black (+1 [X] Suit)",       "Black +10"},
+        {"Rainbow",       "Rainbow (+1 [M] Suit)",     "Rainbows Wild Color"},
+        {"Brown",         "Brown (+1 [0] Suit)",       "3 Of A Kind x1.3"},
+        {"White",         "White (+1 [C] Suit)",       "Ignored For Flush"},
+        {"Pink",          "Pink (+1 [#] Suit)",        "Pink in Pairs x1.5"},
+        {"Omni",          "Omni (+1 [#M] Suit)",       "Every Omni x1.75"},
+        {"Muddy Rainbow", "Mud R. (+1 [0M] Suit)",     "Unused Muddy R. x2"},
+        {"Null",          "Null (+1 [0C] Suit)",       "Single Null +Discard"},
+        {"Light Pink",    "L Pink (+1 [#C] Suit)",     "L. Pink +5xL. Pink"},
+        {"Dark Null",     "D Null (+1 [S0C] Suit)",    "One-Time Use x2.5"},
+        {"Dark Brown",    "Dark Brown (+1 [S0] Suit)", "Straights Need 4"},
+        {"Cocoa Rainbow", "Cocoa R (+1 [S0M] Suit)",   " "},
+        {"Gray",          "Gray (+1 [SC] Suit)",       "Flushes Need 4"},
+        {"Dark Rainbow",  "Dark R (+1 [SM] Suit)",     "See The Future"},
+        {"Gray Pink",     "Gray Pink (+1 [S#C] Suit)", " "},
+        {"Dark Pink",     "Dark Pink (+1 [S#] Suit)",  " "},
+        {"Dark Omni",     "Dark Omni (+1 [S#M] Suit)", "Hand Streaks x2"},
+        {"Risky Dice",    "Risky Dice (+1 6 Suit)",    "Risky Dice are 6"},
+        {"Riff-Raff",     "Riff-Raff [E]",             "+2 to 4 Modifiers"}
     };
 
     private float ButtonEasing(float t)
@@ -327,7 +337,7 @@ public class FireworkCrate : MonoBehaviour
             score = 500;
             Debug.LogFormat("[Hanabi Poker #{0}]: You played {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveFives[Rnd.Range(0, HandResponses.FiveFives.Count())]);
         }
-        if (CountNum(HandCards, HandCards[0].Item2) == 5 && Flush(HandCards))
+        else if (CountNum(HandCards, HandCards[0].Item2) == 5 && Flush(HandCards))
         {
             playedhand = "Flush Five";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
@@ -420,6 +430,7 @@ public class FireworkCrate : MonoBehaviour
             playedhand = "Trash!";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 1;
+            Debug.LogFormat("[Hanabi Poker #{0}]: You played {1} It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Trash[Rnd.Range(0, HandResponses.Trash.Count())]);
         }
 
         if (ActiveSuit.Count() > 5)
@@ -506,17 +517,23 @@ public class FireworkCrate : MonoBehaviour
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
             }
         }
+        if(!playedhands.IsNullOrEmpty() && playedhands.Last() == playedhand && ActiveModifiers[22])
+        {
+            score *= 2;
+            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Omni! Your score is multiplied by x2 to {1}.", _moduleId, score);
+        }
         if (playedhands.Contains(playedhand) && ActiveModifiers[15])
         {
             score = 0;
-            Debug.LogFormat("[Hanabi Poker #{0}]: Your Dark Null has unfortunately nullified this hand. You've already used it.", _moduleId, score);
+            Debug.LogFormat("[Hanabi Poker #{0}]: You have been cursed by Dark Null. You've already used this hand.", _moduleId, score);
         }
         else if (ActiveModifiers[15])
         {
             score = (int)(score * 2.5);
-            Debug.LogFormat("[Hanabi Poker #{0}]: Your Dark Null amplifies this hand! Your score is multiplied by x2.5 to {1}.", _moduleId, score);
-            playedhands.Add(playedhand);
+            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Null! Your score is multiplied by x2.5 to {1}.", _moduleId, score);
+            
         }
+        playedhands.Add(playedhand);
         if (score !=0 && score < 40)
             Audio.PlaySoundAtTransform("SmallHit", transform);
         else if (score < 100)
@@ -560,7 +577,7 @@ public class FireworkCrate : MonoBehaviour
         }
         Audio.PlaySoundAtTransform("Bank", transform);
         Debug.LogFormat("[Hanabi Poker #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
-        if (totalscore >= (ActiveModifiers[23] ? 225 : 150) && !Solved)
+        if (totalscore >= (ActiveModifiers[24] ? 225 : 150) && !Solved)
         {
             yield return new WaitForSeconds(.15f);
             Audio.PlaySoundAtTransform("ScoreThresholdReached", transform);
@@ -686,14 +703,55 @@ public class FireworkCrate : MonoBehaviour
     bool Flush(List<Tuple<string, int>> hand)
     {
         for (int i = 0; i < hand.Count(); i++)
+        {
             if (hand.Where(x => x.Item1 == hand[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 5)
                 return true;
+            if (ActiveModifiers[18] && hand.Where(x => x.Item1 == hand[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
+            {
+                Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                return true;
+            }
+        }
+        
         return false;
     }
+    new int[][] Straights =
+    {
+        new int[] {1,2,3,4,5},
+        new int[] {6,2,3,4,5},
+    };
+    new int[][] FStraights =
+    {
+        new int[] {1,2,3,4},
+        new int[] {2,3,4,5},
+        new int[] {3,4,5,6 },
+    };
 
     bool Straight(List<Tuple<string, int>> hand)
     {
-        return hand.Where(x => HandNumbers(hand).Where(y => x.Item2 == y).Count() == 1).Count() == 5;
+        for (int l = 0; l < 2; l++)
+            for (int i = 0; i < 5; i++) {
+                if (hand.Where(x => x.Item2 == Straights[l][i]).Count() < 1)
+                {
+                    break;
+                }
+                if (i == 4)
+                    return true;
+            }
+        for (int l = 0; l < 3; l++)
+            for (int i = 0; i < 4; i++)
+            {
+                if (!ActiveModifiers[16]|| hand.Where(x => x.Item2 == FStraights[l][i]).Count() < 1)
+                {
+                    break;
+                }
+                if (i == 3)
+                {
+                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Brown! This hand is a Straight.", _moduleId);
+                    return true;
+                }
+            }
+        return false;
     }
     bool FullHouse(List<Tuple<string, int>> hand)
     {
@@ -763,7 +821,7 @@ public class FireworkCrate : MonoBehaviour
                     while (!anyclue && HandCards.Where(x => x.Item2 == ClueValue + 1 && !Numberless.Contains(x.Item1)).Count() == 0)
                     {
                         ClueValue++;
-                        ClueValue %= 5;
+                        ClueValue %= ActiveModifiers[23] ? 6 : 5;
                     }
 
                 }
@@ -772,7 +830,7 @@ public class FireworkCrate : MonoBehaviour
                     do
                     {
                         ClueValue++;
-                        ClueValue %= 5;
+                        ClueValue %= ActiveModifiers[23] ? 6 : 5;
                     }
                     while (!anyclue && HandCards.Where(x => x.Item2 == ClueValue + 1 && !Numberless.Contains(x.Item1)).Count() == 0);
                 }
@@ -1004,7 +1062,12 @@ public class FireworkCrate : MonoBehaviour
         }
         foreach (string suit in ActiveSuit)
         {
-            if (!Singlet.Contains(suit))
+            if(suit == "Risky Dice")
+            {
+                for (int i = 0; i < 10; i++)
+                    Deck.Add(new Tuple<string, int>(suit, 6));
+            }
+            else if (!Singlet.Contains(suit))
             {
                 for (int i = 0; i < 3; i++)
                     Deck.Add(new Tuple<string, int>(suit, 1));
@@ -1051,7 +1114,7 @@ public class FireworkCrate : MonoBehaviour
         }
         else
         {
-            if (totalscore >= (ActiveModifiers[23] ? 225 : 150))
+            if (totalscore >= (ActiveModifiers[24] ? 225 : 150))
             {
                 Audio.PlaySoundAtTransform("RoundFinishPass", transform);
             }
@@ -1449,6 +1512,12 @@ public class FireworkCrate : MonoBehaviour
                 {
                     CardRenderer(Cards[j]).color = SuitColors[11];
                     CardNumber(Cards[j]).color = NumberColors[11];
+                    CardSuit(Cards[j]).sprite = SuitImages[11];
+                    if (Rnd.Range(0, 8196) == 0)
+                    {
+                        Audio.PlaySoundAtTransform("bwomp", transform);
+                        CardSuit(Cards[j]).sprite = CardBacks[4];
+                    }
                 }
             }
         }
@@ -1605,4 +1674,16 @@ public class FireworkCrate : MonoBehaviour
         return 1 - Mathf.Cos((x * Mathf.PI) / 2);
     }
 
+}
+static class DictionaryTupleDuckTyping
+{
+    public static void Add<TKey, TValue1, TValue2>(
+        this Dictionary<TKey, Tuple<TValue1, TValue2>> dictionary,
+        TKey key,
+        TValue1 value1,
+        TValue2 value2
+    )
+    {
+        dictionary.Add(key, new Tuple<TValue1, TValue2>(value1, value2));
+    }
 }

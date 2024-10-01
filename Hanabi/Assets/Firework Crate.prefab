@@ -2137,7 +2137,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1280156630373804}
   m_LocalRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_LocalPosition: {x: 0, y: -0.0054, z: 0}
+  m_LocalPosition: {x: 0, y: -0.0099, z: 0}
   m_LocalScale: {x: 0.005, y: 0.005, z: 1}
   m_Children:
   - {fileID: 4900464945520060}
@@ -4762,6 +4762,7 @@ MonoBehaviour:
   - {r: 0.9821501, g: 0.6764706, b: 1, a: 1}
   - {r: 0.9821501, g: 0.6764706, b: 1, a: 1}
   - {r: 0.9821501, g: 0.6764706, b: 1, a: 1}
+  - {r: 0.9264706, g: 0.61310554, b: 0.14305799, a: 1}
   - {r: 0.62251294, g: 0.6432257, b: 0.74264705, a: 1}
   SuitColors:
   - {r: 0.7941176, g: 0.3970588, b: 0.3970588, a: 1}
@@ -4787,6 +4788,7 @@ MonoBehaviour:
   - {r: 1, g: 0.8161765, b: 0.979716, a: 1}
   - {r: 1, g: 0.8161765, b: 0.979716, a: 1}
   - {r: 1, g: 0.8161765, b: 0.979716, a: 1}
+  - {r: 1, g: 0.75010145, b: 0.43382353, a: 1}
   - {r: 0.6901961, g: 0.043137256, b: 0.4117647, a: 1}
   NumberColors:
   - {r: 1, g: 0, b: 0, a: 1}
@@ -4812,12 +4814,14 @@ MonoBehaviour:
   - {r: 1, g: 0.58823526, b: 0.97160244, a: 1}
   - {r: 1, g: 0.58823526, b: 0.97160244, a: 1}
   - {r: 1, g: 0.58823526, b: 0.97160244, a: 1}
+  - {r: 1, g: 0.6, b: 0, a: 1}
   - {r: 0.6901961, g: 0.043137256, b: 0.4117647, a: 1}
   CardBacks:
   - {fileID: 21300000, guid: 79aa14f51f92b7e478d1921cfa824f5c, type: 3}
   - {fileID: 21300000, guid: 3337f2ddc59ff0a46bcc047a4e74f2c9, type: 3}
   - {fileID: 21300000, guid: d50f15139956af442aa382c9ebbde0ec, type: 3}
   - {fileID: 21300000, guid: e66f7b9f56e8659439b68a7364d7798e, type: 3}
+  - {fileID: 21300000, guid: 23f5392517504b848b46dda5a785597a, type: 3}
   SuitImages:
   - {fileID: 21300000, guid: c6c74870cb812994384191bb3dc9915d, type: 3}
   - {fileID: 21300000, guid: ace6c490c7bd2414a90a56dffb4552ef, type: 3}
@@ -4835,12 +4839,22 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 546a5c3464525a448b61de1c04adf23f, type: 3}
   - {fileID: 21300000, guid: 1c79053cc37e3174fb0f23ce6bfb7c23, type: 3}
   - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
+  - {fileID: 21300000, guid: ed1ebf39cbbf4b44392e52f56a80dbb2, type: 3}
+  - {fileID: 21300000, guid: 2a94f47049056af4684bc62c9f4de774, type: 3}
   NumberNumbers:
   - {fileID: 21300000, guid: a2b96625087add144be079f7639d84d7, type: 3}
   - {fileID: 21300000, guid: 0fc1ca22cbe77464d855aaa799097d6a, type: 3}
   - {fileID: 21300000, guid: 424b308e934e54e4098f7e599f932f5f, type: 3}
   - {fileID: 21300000, guid: fcccbcdc74dd75648b9911cb79840982, type: 3}
   - {fileID: 21300000, guid: cb2446707a6c8d24a9340d33d043fd04, type: 3}
+  - {fileID: 21300000, guid: cb0b1ae3980c35445839b8bcf71d9d56, type: 3}
   WiggleTransforms:
   - {fileID: 4872774322389534}
   - {fileID: 4562816376572056}

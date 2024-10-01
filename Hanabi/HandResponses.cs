@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class HandResponses
+public static class HandResponses
 {
     public static string[] FiveFives = new string[]
     {
@@ -110,5 +110,11 @@ public class HandResponses
         "Free money! Not so free cards, though.",
         "Watch your cards! You just lost 5 for this!",
         "Careful now! The deck ain't infinite!"
+    };
+    public static string[] Trash = new string[]
+    {
+        "those really are some risky dice",
+        "stupid",
+        "You don't have infinite clues!"
     };
 }
