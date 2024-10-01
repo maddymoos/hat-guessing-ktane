@@ -83,6 +83,9 @@ public class FireworkCrate : MonoBehaviour
     private int riffrafftimer = 0;
     private int ledge = 0;
 
+    private string lasthand = "";
+    private List<string> playedhands = new List<string>();
+
     private Vector3 NullHand = new Vector3(0, .016f, 0f);
     private Vector3 Zero = new Vector3(0, 0, 1);
     private Vector3 One = new Vector3(0.005f, 0.005f, 1);
@@ -145,6 +148,7 @@ public class FireworkCrate : MonoBehaviour
         "Muddy Rainbow",
         "Null",
         "Light Pink",
+        "Dark Null",
         "Riff-Raff"
     };
     private String[] Colorless =
@@ -214,7 +218,7 @@ public class FireworkCrate : MonoBehaviour
         {"Muddy Rainbow", new Tuple < string, string >("Mud R. (+1 [0M] Suit)", "Unused M. R. x2")},
         {"Null", new Tuple < string, string >("Null (+1 [0C] Suit)", "Single Null +Discard")},
         {"Light Pink", new Tuple < string, string >("L Pink (+1 [#C] Suit)", "L. Pink +5xL. Pink")},
-        {"Dark Null", new Tuple < string, string >("Dark Null (+1 [S0C] Suit)", "Placeholder")},
+        {"Dark Null", new Tuple < string, string >("D Null (+1 [S0C] Suit)", "One-Time Use x2.5")},
         {"Dark Brown", new Tuple < string, string >("Dark Brown (+1 [S0] Suit)", "Placeholder")},
         {"Cocoa Rainbow", new Tuple < string, string >("Cocoa R (+1 [S0M] Suit)", "Placeholder")},
         {"Gray", new Tuple < string, string >("Gray (+1 [SC] Suit)", "Placeholder")},
@@ -502,7 +506,18 @@ public class FireworkCrate : MonoBehaviour
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
             }
         }
-        if (score < 40)
+        if (playedhands.Contains(playedhand) && ActiveModifiers[15])
+        {
+            score = 0;
+            Debug.LogFormat("[Hanabi Poker #{0}]: Your Dark Null has unfortunately nullified this hand. You've already used it.", _moduleId, score);
+        }
+        else if (ActiveModifiers[15])
+        {
+            score = (int)(score * 2.5);
+            Debug.LogFormat("[Hanabi Poker #{0}]: Your Dark Null amplifies this hand! Your score is multiplied by x2.5 to {1}.", _moduleId, score);
+            playedhands.Add(playedhand);
+        }
+        if (score !=0 && score < 40)
             Audio.PlaySoundAtTransform("SmallHit", transform);
         else if (score < 100)
             Audio.PlaySoundAtTransform("MidHit", transform);
@@ -1015,8 +1030,9 @@ public class FireworkCrate : MonoBehaviour
 
     IEnumerator ResetMod()
     {
-        edging = Rnd.Range(2, 5);
-        Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
+       playedhands = new List<string>();
+      edging = Rnd.Range(2, 5);
+         Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         string HSText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         int highscore = int.Parse(Regex.Match(HSText, @"\n([1234567890]+)").ToString());
