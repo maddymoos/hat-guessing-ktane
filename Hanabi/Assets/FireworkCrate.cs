@@ -47,18 +47,12 @@ public class FireworkCrate : MonoBehaviour
     public Sprite[] SuitImages;
     public Sprite[] NumberNumbers;
 
-    private float[] HSV = { 0, 
-        200f / 255f, 215f / 255f, 
-        113f / 255f, 238f / 255f, 
-        1, 1, 
-        100f / 255f, 116f / 255,
-        98f / 255, 110f / 255, 
-        96f / 255f, 135f / 255f };
 
     public Transform[] WiggleTransforms;
     private float[] wigglenums;
     private bool[] wiggleup;
 
+    public Transform[] Psychic;
     public Transform[] Cards;
     public TextMesh CardCounter;
     public TextMesh[] PlayDisplay;
@@ -77,6 +71,7 @@ public class FireworkCrate : MonoBehaviour
     private bool anyclue;
     private bool newbest;
     private int Round;
+    private int OmniStreak;
 
     private bool Solved;
     public TextMesh[] SolvedText;
@@ -154,9 +149,13 @@ public class FireworkCrate : MonoBehaviour
         "Pink",
         "Omni",
         "Muddy Rainbow",
+        "Dark Rainbow",
         "Null",
         "Light Pink",
         "Dark Null",
+        "Dark Brown",
+        "Gray",
+        "Dark Omni",
         "Risky Dice",
         "Riff-Raff"
     };
@@ -228,13 +227,13 @@ public class FireworkCrate : MonoBehaviour
         {"Null",          "Null (+1 [0C] Suit)",       "Single Null +Discard"},
         {"Light Pink",    "L Pink (+1 [#C] Suit)",     "L. Pink +5xL. Pink"},
         {"Dark Null",     "D Null (+1 [S0C] Suit)",    "One-Time Use x2.5"},
-        {"Dark Brown",    "Dark Brown (+1 [S0] Suit)", "Straights Need 4"},
+        {"Dark Brown",    "D Brown (+1 [S0] Suit)",    "Straights Need 4"},
         {"Cocoa Rainbow", "Cocoa R (+1 [S0M] Suit)",   " "},
         {"Gray",          "Gray (+1 [SC] Suit)",       "Flushes Need 4"},
         {"Dark Rainbow",  "Dark R (+1 [SM] Suit)",     "See The Future"},
-        {"Gray Pink",     "Gray Pink (+1 [S#C] Suit)", " "},
-        {"Dark Pink",     "Dark Pink (+1 [S#] Suit)",  " "},
-        {"Dark Omni",     "Dark Omni (+1 [S#M] Suit)", "Hand Streaks x2"},
+        {"Gray Pink",     "G Pink (+1 [S#C] Suit)", " "},
+        {"Dark Pink",     "D Pink (+1 [S#] Suit)",  " "},
+        {"Dark Omni",     "D Omni (+1 [S#M] Suit)",    "Hands x1.5^Streak"},
         {"Risky Dice",    "Risky Dice (+1 6 Suit)",    "Risky Dice are 6"},
         {"Riff-Raff",     "Riff-Raff [E]",             "+2 to 4 Modifiers"}
     };
@@ -519,8 +518,18 @@ public class FireworkCrate : MonoBehaviour
         }
         if(!playedhands.IsNullOrEmpty() && playedhands.Last() == playedhand && ActiveModifiers[22])
         {
-            score *= 2;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Omni! Your score is multiplied by x2 to {1}.", _moduleId, score);
+            if(OmniStreak == 0)
+            {
+                OmniStreak = 1;
+            }
+            OmniStreak++;
+            score = (int)(score * Mathf.Pow(1.5f, OmniStreak));
+            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Omni! With your streak of {2}, your score is multiplied by x1.5 ^ {2} to {1}.", _moduleId, score, OmniStreak);
+            
+        }
+        else
+        {
+            OmniStreak = 0;
         }
         if (playedhands.Contains(playedhand) && ActiveModifiers[15])
         {
@@ -996,6 +1005,11 @@ public class FireworkCrate : MonoBehaviour
             f -= Time.deltaTime * 2f;
             Background.material.color = Color32.Lerp(new Color32(15, 26, 19, 255), new Color32(92, 206, 132, 255), easeInSine((5f - f) / 2f));
             SetupScale.localScale = Vector3.Lerp(new Vector3(.1f, .1f, 1f), new Vector3(0f, 0f, 1f), easeInSine((5f - f) / 2f));
+            if (ActiveModifiers[19])
+            {
+                Psychic[0].GetComponent<SpriteRenderer>().color = Color32.Lerp(new Color32(255,255,255,0), new Color32(255, 255, 255, 45), (5f - f) / 2f);
+                Psychic[1].GetComponent<SpriteRenderer>().color = Color32.Lerp(new Color32(255, 255, 255, 0), new Color32(255, 255, 255, 45), (5f - f) / 2f);
+            }
         }
 
         TotalScore[0].color = new Color32(255, 255, 255, 0);
@@ -1020,12 +1034,17 @@ public class FireworkCrate : MonoBehaviour
         if (ActiveSuit.Contains("Riff-Raff"))
         {
             float t = 0;
+            speed = 2;
+            Audio.PlaySoundAtTransform("Outsiders-Test", transform);
             while (t < 1)
             {
                 yield return null;
-                t += Time.deltaTime * 3f;
+                t += Time.deltaTime;
                 RiffRaffOverlay.color = Color.Lerp(new Color(1,1,1,0), new Color(1,1,1,.5f), t);
+                Background.material.color = Color32.Lerp(new Color32(15, 26, 19, 255), new Color32(92, 206, 132, 255), easeInSine(1-t));
             }
+            yield return new WaitForSeconds(1.5f);
+            speed = 1;
             for (int i = 0; i < edging; i++)
             {
                 ActiveSuit.Add(Modifiers[i + 2]);
@@ -1048,11 +1067,14 @@ public class FireworkCrate : MonoBehaviour
             while (t >0)
             {
                 yield return null;
-                t -= Time.deltaTime * 3f;
+                t -= Time.deltaTime;
+                Background.material.color = Color32.Lerp(new Color32(15, 26, 19, 255), new Color32(92, 206, 132, 255), easeInSine(1-t));
                 RiffRaffOverlay.color = Color.Lerp(new Color(1, 1, 1, 0), new Color(1, 1, 1, .5f), t);
             }
+            speed = 3;
             RiffRaffOverlay.color = new Color(1, 1, 1, 00);
             ActiveSuit.Remove("Riff-Raff");
+            yield return new WaitForSeconds(.5f);
         }
         for (int i = 0; i < 5; i++)
         {
@@ -1093,7 +1115,9 @@ public class FireworkCrate : MonoBehaviour
 
     IEnumerator ResetMod()
     {
-       playedhands = new List<string>();
+        Psychic[0].GetComponent<SpriteRenderer>().color = new Color32(255,255,255,0);
+        Psychic[1].GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+        playedhands = new List<string>();
       edging = Rnd.Range(2, 5);
          Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
@@ -1432,11 +1456,46 @@ public class FireworkCrate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int j = 0; j < HandCards.Count; j++)
+        {
+            if (HandCards[j].Item1 == "Rainbow")
+            {
+                CardRenderer(Cards[j]).sprite = CardBacks[12];
+            }
+            else if (HandCards[j].Item1 == "Muddy Rainbow")
+            {
+                CardRenderer(Cards[j]).sprite = CardBacks[5];
 
+            }
+            else if (HandCards[j].Item1 == "Cocoa Rainbow")
+            {
+                CardRenderer(Cards[j]).sprite = CardBacks[7];
+
+            }
+            else if (HandCards[j].Item1 == "Dark Rainbow")
+            {
+                CardRenderer(Cards[j]).sprite = CardBacks[6];
+            }
+            else
+            {
+                CardRenderer(Cards[j]).sprite = CardBacks[0];
+            }
+
+        }
     }
 
     void FixedUpdate()
     {
+        if (ActiveModifiers[19] && !Deck.IsNullOrEmpty())
+        {
+            Psychic[0].GetComponent<SpriteRenderer>().sprite = SuitImages[SuitOrder.IndexOf(Deck.First().Item1)];
+            Psychic[1].GetComponent<SpriteRenderer>().sprite = NumberNumbers[Deck.First().Item2 - 1];
+        }
+        if (ActiveModifiers[19] && Deck.Count() == 0 && speed == 1)
+        {
+            Psychic[0].GetComponent<SpriteRenderer>().color = new Color(0,0,0,0);
+            Psychic[1].GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        }
         if (!play)
         {
             PlayScale.position = new Vector3(123132f, 1231f, 1231243f);
@@ -1472,36 +1531,37 @@ public class FireworkCrate : MonoBehaviour
                     ModColor(ModifierButtons[p % 2])[p / 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, "Riff-Raff")];
                     ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[3];
                 }
+                if (Modifiers[p % 2] == "Rainbow")
+                {
+                    ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[8];
+                }
+                if (Modifiers[p % 2] == "Muddy Rainbow")
+                {
+                    ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[9];
+                }
+                if (Modifiers[p % 2] == "Cocoa Rainbow")
+                {
+                    ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[11];
+                }
+                if (Modifiers[p % 2] == "Dark Rainbow")
+                {
+                    ModColor(ModifierButtons[p % 2])[p / 2].sprite = CardBacks[10];
+                }
             }
         }
-        for (int j = 0; j < HandCards.Count; j++)
-        {
-            if (HandCards[j].Item1 == "Rainbow")
-            {
-                CardRenderer(Cards[j]).color = SuitColors[7];
-                CardNumber(Cards[j]).color = NumberColors[7];
-            }
-            if (HandCards[j].Item1 == "Muddy Rainbow")
-            {
-                CardRenderer(Cards[j]).color = SuitColors[12];
-                CardNumber(Cards[j]).color = NumberColors[12];
-            }
-        }
-        HSV[0]++;
-        SelectButtonColors[7] = HsvToRgb(HSV[0], HSV[1], HSV[2]);
-        SuitColors[7] = HsvToRgb(HSV[0], HSV[3], HSV[4]);
-        NumberColors[7] = HsvToRgb(HSV[0], HSV[5], HSV[6]);
-        SelectButtonColors[12] = HsvToRgb(HSV[0], HSV[7], HSV[8]);
-        SuitColors[12] = HsvToRgb(HSV[0], HSV[9], HSV[10]);
-        NumberColors[12] = HsvToRgb(HSV[0], HSV[11], HSV[12]);
+        
         bgoffset++;
         Background.material.mainTextureOffset = new Vector2(.25f * (bgoffset / (int)speed % 4), .5f * (bgoffset / (int)speed / 4 % 2));
         if (bgoffset % 50 == 0)
         {
-            Color32 omniman = new Color32((byte)Rnd.Range(0, 256), (byte)Rnd.Range(0, 256), (byte)Rnd.Range(0, 256), 255);
+            Color32 omniman = new Color32((byte)Rnd.Range(125, 256), (byte)Rnd.Range(125, 256), (byte)Rnd.Range(125, 256), 255);
+            Color32 omniman2 = new Color32((byte)Rnd.Range(0, 125), (byte)Rnd.Range(0, 125), (byte)Rnd.Range(0, 125), 255);
             SuitColors[11] = omniman;
             NumberColors[11] = omniman;
             SelectButtonColors[11] = omniman;
+            SuitColors[22] = omniman2;
+            NumberColors[22] = omniman2;
+            SelectButtonColors[22] = omniman2;
             for (int j = 0; j < 4; j++)
             {
                 ModColor(ModifierButtons[j / 2])[j % 2].color = SelectButtonColors[Array.IndexOf(SuitOrder, Modifiers[j / 2])];
@@ -1513,6 +1573,17 @@ public class FireworkCrate : MonoBehaviour
                     CardRenderer(Cards[j]).color = SuitColors[11];
                     CardNumber(Cards[j]).color = NumberColors[11];
                     CardSuit(Cards[j]).sprite = SuitImages[11];
+                    if (Rnd.Range(0, 8196) == 0)
+                    {
+                        Audio.PlaySoundAtTransform("bwomp", transform);
+                        CardSuit(Cards[j]).sprite = CardBacks[4];
+                    }
+                }
+                if (HandCards[j].Item1 == "Dark Omni")
+                {
+                    CardRenderer(Cards[j]).color = SuitColors[22];
+                    CardNumber(Cards[j]).color = NumberColors[22];
+                    CardSuit(Cards[j]).sprite = SuitImages[22];
                     if (Rnd.Range(0, 8196) == 0)
                     {
                         Audio.PlaySoundAtTransform("bwomp", transform);
@@ -1551,104 +1622,7 @@ public class FireworkCrate : MonoBehaviour
     {
         return new SpriteRenderer[] { button.Find("Highlight").GetComponent<SpriteRenderer>(), button.Find("HighlightSmall").GetComponent<SpriteRenderer>() };
     }
-    Color HsvToRgb(double h, double S, double V)
-    {
-        double H = h;
-        while (H < 0) { H += 360; };
-        while (H >= 360) { H -= 360; };
-        double R, G, B;
-        if (V <= 0)
-        { R = G = B = 0; }
-        else if (S <= 0)
-        {
-            R = G = B = V;
-        }
-        else
-        {
-            double hf = H / 60.0;
-            int i = (int)Math.Floor(hf);
-            double f = hf - i;
-            double pv = V * (1 - S);
-            double qv = V * (1 - S * f);
-            double tv = V * (1 - S * (1 - f));
-            switch (i)
-            {
-
-                // Red is the dominant color
-
-                case 0:
-                    R = V;
-                    G = tv;
-                    B = pv;
-                    break;
-
-                // Green is the dominant color
-
-                case 1:
-                    R = qv;
-                    G = V;
-                    B = pv;
-                    break;
-                case 2:
-                    R = pv;
-                    G = V;
-                    B = tv;
-                    break;
-
-                // Blue is the dominant color
-
-                case 3:
-                    R = pv;
-                    G = qv;
-                    B = V;
-                    break;
-                case 4:
-                    R = tv;
-                    G = pv;
-                    B = V;
-                    break;
-
-                // Red is the dominant color
-
-                case 5:
-                    R = V;
-                    G = pv;
-                    B = qv;
-                    break;
-
-                // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
-
-                case 6:
-                    R = V;
-                    G = tv;
-                    B = pv;
-                    break;
-                case -1:
-                    R = V;
-                    G = pv;
-                    B = qv;
-                    break;
-
-                // The color is not defined, we should throw an error.
-
-                default:
-                    //LFATAL("i Value error in Pixel conversion, Value is %d", i);
-                    R = G = B = V; // Just pretend its black/white
-                    break;
-            }
-        }
-        return new Color((float)R, (float)G, (float)B);
-    }
-
-    /// <summary>
-    /// Clamp a value to 0-255
-    /// </summary>
-    int Clamp(int i)
-    {
-        if (i < 0) return 0;
-        if (i > 255) return 255;
-        return i;
-    }
+   
 
     SpriteRenderer CardNumber(Transform card)
     {

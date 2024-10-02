@@ -156,6 +156,10 @@ Prefab:
       propertyPath: m_Name
       value: Hat Guessing
       objectReference: {fileID: 0}
+    - target: {fileID: 1909986744195948, guid: a8f5171cd00daf04f899f2015d98c64d, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a8f5171cd00daf04f899f2015d98c64d, type: 2}
   m_IsPrefabParent: 0
@@ -357,7 +361,7 @@ Prefab:
     - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
       propertyPath: AudioClips.Array.size
-      value: 29
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 439642, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
       propertyPath: m_LocalPosition.x
@@ -520,7 +524,7 @@ Prefab:
         type: 2}
       propertyPath: AudioClips.Array.data[29]
       value: 
-      objectReference: {fileID: 8300000, guid: a6b702d68268cbe4bbd4996d948f99dd, type: 3}
+      objectReference: {fileID: 8300000, guid: f8b866c404e0f8b4584b2cafa2924334, type: 3}
     - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
       propertyPath: AudioClips.Array.data[30]
