@@ -485,7 +485,7 @@ public class FireworkCrate : MonoBehaviour
             Audio.PlaySoundAtTransform("MidHit", transform);
         else
             Audio.PlaySoundAtTransform("BigHit", transform);
-        yield return new WaitForSeconds(0.45f);
+        yield return new WaitForSeconds(0.65f);
         int k = 0;
         float gaptime = .5f;
         float lowergap = .15f;
