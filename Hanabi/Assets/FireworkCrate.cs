@@ -344,6 +344,14 @@ public class FireworkCrate : MonoBehaviour
             playedhand = "Flush Five";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 300;
+            for(int i=0;i<5;i++)
+            if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
+            {
+                Audio.PlaySoundAtTransform("DWhiteSplash", transform);
+                Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                    yield return new WaitForSeconds(.4f);
+                    break;
+            }
             Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FlushFive[Rnd.Range(0, HandResponses.FlushFive.Count())]);
         }
         else if (Flush(HandCards) && Straight(HandCards))
@@ -351,6 +359,14 @@ public class FireworkCrate : MonoBehaviour
             playedhand = "Straight Flush";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 250;
+            for (int i = 0; i < 5; i++)
+                if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
+                {
+                    Audio.PlaySoundAtTransform("DWhiteSplash", transform);
+                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                    yield return new WaitForSeconds(.4f);
+                    break;
+                }
             Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.StraightFlush[Rnd.Range(0, HandResponses.StraightFlush.Count())]);
 
         }
@@ -359,6 +375,14 @@ public class FireworkCrate : MonoBehaviour
             playedhand = "Flush House";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 100;
+            for (int i = 0; i < 5; i++)
+                if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
+                {
+                    Audio.PlaySoundAtTransform("DWhiteSplash", transform);
+                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                    yield return new WaitForSeconds(.4f);
+                    break;
+                }
             Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FlushHouse[Rnd.Range(0, HandResponses.FlushHouse.Count())]);
         }
         else if (Straight(HandCards))
@@ -373,6 +397,14 @@ public class FireworkCrate : MonoBehaviour
             playedhand = "Flush";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 40;
+            for (int i = 0; i < 5; i++)
+                if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
+                {
+                    Audio.PlaySoundAtTransform("DWhiteSplash", transform);
+                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                    yield return new WaitForSeconds(.4f);
+                    break;
+                }
             Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Flush[Rnd.Range(0, HandResponses.Flush.Count())]);
 
         }
@@ -783,7 +815,6 @@ public class FireworkCrate : MonoBehaviour
                 return true;
             if (ActiveModifiers[18] && hand.Where(x => x.Item1 == hand[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
             {
-                Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
                 return true;
             }
         }
