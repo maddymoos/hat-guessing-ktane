@@ -103,6 +103,9 @@ public class FireworkCrate : MonoBehaviour
     private List<Tuple<string, int>> Deck = new List<Tuple<string, int>>();
     private List<Tuple<string, int>> HandCards = new List<Tuple<string, int>>();
     private List<string> RealActiveSuit = new List<string>();
+
+    public AudioSource[] LoopingSounds;
+
     private Coroutine[] ButtonAnims = new Coroutine[3];
     private Coroutine ChipCountCoroutine;
 
@@ -436,6 +439,21 @@ public class FireworkCrate : MonoBehaviour
             score = (int)(score * (5f / ActiveSuit.Count()));
         if (ActiveSuit.Count() > 5)
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to your deck having {1} suits, your earned chips are now {2}.", _moduleId, ActiveSuit.Count(), score);
+        for (int i = 0; i < 2; i++)
+        {
+            PlayDisplay[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
+            AddedScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
+            TotalScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
+            PlayDisplay[i].text = playedhand;
+            AddedScore[i].text = "+" + score;
+        }
+        if (score != 0 && score < 20)
+            Audio.PlaySoundAtTransform("SmallHit", transform);
+        else if (score < 45)
+            Audio.PlaySoundAtTransform("MidHit", transform);
+        else
+            Audio.PlaySoundAtTransform("BigHit", transform);
+        yield return new WaitForSeconds(0.45f);
         int k = 0;
         foreach (Tuple<string, int> card in HandCards)
         {
@@ -444,18 +462,30 @@ public class FireworkCrate : MonoBehaviour
                 if (ActiveModifiers[0] && card.Item2 == 5)
                 {
                     score += 15;
+                    AddedScore[0].text = "+" + score;
+                    AddedScore[1].text = "+" + score;
+                    Audio.PlaySoundAtTransform("SmallHit", transform);
+                    yield return new WaitForSeconds(0.3f);
                     Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Red modifier, the used 5 added fifteen chips! Your earned chips are now {1}!", _moduleId, score);
 
                 }
                 if (ActiveModifiers[6] && card.Item1 == "Black")
                 {
                     score += 10;
+                    AddedScore[0].text = "+" + score;
+                    AddedScore[1].text = "+" + score;
+                    Audio.PlaySoundAtTransform("SmallHit", transform);
+                    yield return new WaitForSeconds(0.3f);
                     Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Black modifier, the used black card added ten chips! Your earned chips are now {1}!", _moduleId, score);
 
                 }
                 if (ActiveModifiers[14] && card.Item1 == "Light Pink")
                 {
                     score += 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count();
+                    AddedScore[0].text = "+" + score;
+                    AddedScore[1].text = "+" + score;
+                    Audio.PlaySoundAtTransform("SmallHit", transform);
+                    yield return new WaitForSeconds(0.3f);
                     Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Light Pink modifier, the used light pink card added {2} chips! Your earned chips are now {1}!", _moduleId, score, 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count());
 
                 }
@@ -465,6 +495,10 @@ public class FireworkCrate : MonoBehaviour
         if (ActiveModifiers[2] && CountNum(HandCards, NotAlone(HandCards)[0]) >= 2)
         {
             score += 5;
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            Audio.PlaySoundAtTransform("SmallHit", transform);
+            yield return new WaitForSeconds(0.3f);
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Green modifier, the pair in your hand added five chips! Your earned chips are now {1}!", _moduleId, score);
 
         }
@@ -481,21 +515,37 @@ public class FireworkCrate : MonoBehaviour
         if (ActiveModifiers[1] && Straight(HandCards))
         {
             score = (int)(score * 1.2);
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            Audio.PlaySoundAtTransform("SmallHit", transform);
+            yield return new WaitForSeconds(0.3f);
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Yellow modifier, your straight is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[3] && FullHouse(HandCards))
         {
             score = (int)(score * 1.2);
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            Audio.PlaySoundAtTransform("SmallHit", transform);
+            yield return new WaitForSeconds(0.3f);
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Blue modifier, your full house is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[5] && Flush(HandCards))
         {
             score = (int)(score * 1.2);
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            Audio.PlaySoundAtTransform("SmallHit", transform);
+            yield return new WaitForSeconds(0.3f);
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Teal modifier, your flush is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[8] && (CountNum(HandCards, NotAlone(HandCards)[0]) >= 3 || FullHouse(HandCards)))
         {
             score = (int)(score * 1.3);
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            Audio.PlaySoundAtTransform("SmallHit", transform);
+            yield return new WaitForSeconds(0.3f);
             Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Brown modifier, the three of a kind in your hand multiplies it by 1.3x! Your earned chips are now {1}!", _moduleId, score);
         }
         for (int i = 0; i < 5; i++)
@@ -503,16 +553,28 @@ public class FireworkCrate : MonoBehaviour
             if (ActiveModifiers[10] && HandNumbers(HandCards).Where(x => HandNumbers(HandCards).Where(y => x == y).Count() > 1).Contains(HandCards[i].Item2) && HandCards[i].Item1 == "Pink")
             {
                 score = (int)(score * 1.5);
+                AddedScore[0].text = "+" + score;
+                AddedScore[1].text = "+" + score;
+                Audio.PlaySoundAtTransform("SmallHit", transform);
+                yield return new WaitForSeconds(0.3f);
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Pink modifier, the pink in a pair multiplies your chips by 1.5x! Your earned chips are now {1}!", _moduleId, score);
             }
             if (ActiveModifiers[11] && HandCards[i].Item1 == "Omni" && ActiveCards.Contains(i))
             {
                 score = (int)(score * 1.75);
+                AddedScore[0].text = "+" + score;
+                AddedScore[1].text = "+" + score;
+                Audio.PlaySoundAtTransform("SmallHit", transform);
+                yield return new WaitForSeconds(0.3f);
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Omni modifier, the omni multiplies your chips by 1.75x! Your earned chips are now {1}!", _moduleId, score);
             }
             if (ActiveModifiers[12] && HandCards[i].Item1 == "Muddy Rainbow" && !ActiveCards.Contains(i))
             {
                 score = (int)(score * 2);
+                AddedScore[0].text = "+" + score;
+                AddedScore[1].text = "+" + score;
+                Audio.PlaySoundAtTransform("SmallHit", transform);
+                yield return new WaitForSeconds(0.3f);
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
             }
         }
@@ -523,7 +585,15 @@ public class FireworkCrate : MonoBehaviour
                 OmniStreak = 1;
             }
             OmniStreak++;
-            score = (int)(score * Mathf.Pow(1.5f, OmniStreak));
+            LoopingSounds[0].Play();
+            for (int i = 0; i < OmniStreak; i++)
+            {
+                score = (int)(score * 1.5f);
+                AddedScore[0].text = "+" + score;
+                AddedScore[1].text = "+" + score;
+                yield return new WaitForSeconds(0.9f);
+            }
+            LoopingSounds[0].Stop();
             Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Omni! With your streak of {2}, your score is multiplied by x1.5 ^ {2} to {1}.", _moduleId, score, OmniStreak);
             
         }
@@ -534,31 +604,27 @@ public class FireworkCrate : MonoBehaviour
         if (playedhands.Contains(playedhand) && ActiveModifiers[15])
         {
             score = 0;
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            Audio.PlaySoundAtTransform("DNullShatter", transform);
+            yield return new WaitForSeconds(0.5f);
             Debug.LogFormat("[Hanabi Poker #{0}]: You have been cursed by Dark Null. You've already used this hand.", _moduleId, score);
         }
         else if (ActiveModifiers[15])
         {
             score = (int)(score * 2.5);
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            Audio.PlaySoundAtTransform("DNullUse", transform);
+            yield return new WaitForSeconds(0.5f);
             Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Null! Your score is multiplied by x2.5 to {1}.", _moduleId, score);
             
         }
         playedhands.Add(playedhand);
-        if (score !=0 && score < 40)
-            Audio.PlaySoundAtTransform("SmallHit", transform);
-        else if (score < 100)
-            Audio.PlaySoundAtTransform("MidHit", transform);
-        else
-            Audio.PlaySoundAtTransform("BigHit", transform);
 
 
-        for (int i = 0; i < 2; i++)
-        {
-            PlayDisplay[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
-            AddedScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
-            TotalScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
-            PlayDisplay[i].text = playedhand;
-            AddedScore[i].text = "+" + score;
-        }
+
+       
         //Debug.LogFormat("[Hanabi Poker #{0}]: This leaves a total of {1} chips! Nice hand.", _moduleId, score);
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"));
         int besthand = int.Parse(Regex.Match(BHText, @"\n([1234567890]+)").ToString());
@@ -568,7 +634,7 @@ public class FireworkCrate : MonoBehaviour
             Debug.LogFormat("[Hanabi Poker #{0}]: That's a new best hand!", _moduleId);
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"), "Best Hand\n" + score + "\n" + playedhand + ActiveModifierNames());
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.25f);
         var benchmarkA = (score + 3) % 4;
         var benchmarkB = (score + 2) % 3;
         while (score > 0)
@@ -1144,7 +1210,7 @@ public class FireworkCrate : MonoBehaviour
             }
             else
             {
-                Audio.PlaySoundAtTransform("RoundFinishFail", transform);
+                Audio.PlaySoundAtTransform("RoundFinishfail", transform);
             }
             for (int i = 0; i < 2; i++)
             {
