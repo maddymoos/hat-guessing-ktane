@@ -1216,6 +1216,7 @@ GameObject:
   - component: {fileID: 23685668274194050}
   - component: {fileID: 95736886539475034}
   - component: {fileID: 114292338929773650}
+  - component: {fileID: 82413200816076500}
   m_Layer: 0
   m_Name: Component_PuzzleBackground
   m_TagString: Untagged
@@ -3651,6 +3652,86 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 5.000001, z: 0.001}
   m_Center: {x: 0, y: -0.0000009536743, z: -0.0000000037252903}
+--- !u!82 &82413200816076500
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1931440585413488}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!82 &82786979730092194
 AudioSource:
   m_ObjectHideFlags: 1
@@ -5066,6 +5147,35 @@ MonoBehaviour:
   Module: {fileID: 114757289796683554}
   Bomb: {fileID: 114091077761810612}
   Background: {fileID: 23685668274194050}
+  RiffRaffAudio:
+  - {fileID: 8300000, guid: 5b48ce1d31b774e4e93a34f650e09951, type: 3}
+  - {fileID: 8300000, guid: d8470e70397e826458163c27157edf82, type: 3}
+  - {fileID: 8300000, guid: 3ebeeb8353400f14fa99ba0593eed018, type: 3}
+  - {fileID: 8300000, guid: e9dc87d410e62124b8118f48157cad4f, type: 3}
+  - {fileID: 8300000, guid: f1813eb0879ad7a4ea75cd573c9ae443, type: 3}
+  - {fileID: 8300000, guid: 9db811e4283192a479728fe729cee04b, type: 3}
+  - {fileID: 8300000, guid: e3c6232fccdfe004db834f173c807d3d, type: 3}
+  - {fileID: 8300000, guid: d33005b5be95f704e9d1c043c0b587fc, type: 3}
+  - {fileID: 8300000, guid: 888fb0810ad320a4488bc0567ce2b3eb, type: 3}
+  - {fileID: 8300000, guid: 677d2167793bd6644a0ccaf0ebbf7841, type: 3}
+  - {fileID: 8300000, guid: 91a808e36d97ae940842ae73a5763912, type: 3}
+  - {fileID: 8300000, guid: 5e657b6a86b09a442ab8749bc392b4cd, type: 3}
+  - {fileID: 8300000, guid: 74b71661be676ea4d84c6c699e930cae, type: 3}
+  - {fileID: 8300000, guid: 5310414309116d24bbfce4cd1c32229a, type: 3}
+  - {fileID: 8300000, guid: 8e1e71bc23461db4d8f8aaab30e1ed2a, type: 3}
+  - {fileID: 8300000, guid: cfa0ee95450919a45b2fdd1a141c1ca4, type: 3}
+  - {fileID: 8300000, guid: ba4712ca94862d74da60661aa519108d, type: 3}
+  - {fileID: 8300000, guid: 71287e94dc96a9641b75a56f3aa59aa1, type: 3}
+  - {fileID: 8300000, guid: 90188f8d782982f46a63867af0b2f26a, type: 3}
+  - {fileID: 8300000, guid: 49989c0e3bc0d024db01ecbbf569dfe3, type: 3}
+  - {fileID: 8300000, guid: 260291f3815913448b5ea37fc7709c79, type: 3}
+  - {fileID: 8300000, guid: 50f02df81431147409c521c381d6b003, type: 3}
+  - {fileID: 8300000, guid: 604595d1a033e764bb01e9fc07d39a6e, type: 3}
+  - {fileID: 8300000, guid: 5c6bd81704a18974b936af4499bd6a3d, type: 3}
+  - {fileID: 8300000, guid: 5fb57266a4e803347963ca7719bb5a54, type: 3}
+  - {fileID: 8300000, guid: 0dc6341c4a555cb4082dadcb32a7698b, type: 3}
+  - {fileID: 8300000, guid: 374fe2e3db9ee9840a02fb86dc5f8c49, type: 3}
+  RiffRaffSource: {fileID: 82413200816076500}
   ModifierButtons:
   - {fileID: 4562816376572056}
   - {fileID: 4155103642237740}

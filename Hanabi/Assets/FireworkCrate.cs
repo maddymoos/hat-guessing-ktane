@@ -20,6 +20,7 @@ using UnityEngine.SocialPlatforms.Impl;
 using System.IO;
 using UnityEditorInternal;
 using Newtonsoft.Json.Linq;
+using Wawa.Modules;
 public class FireworkCrate : MonoBehaviour
 {
 
@@ -33,6 +34,8 @@ public class FireworkCrate : MonoBehaviour
     private int bgoffset;
     private float speed = 5;
 
+    public AudioClip[] RiffRaffAudio;
+    public AudioSource RiffRaffSource;
     public Transform[] ModifierButtons;
     public KMSelectable StartButton;
     public KMSelectable[] PlayButtons;
@@ -108,6 +111,8 @@ public class FireworkCrate : MonoBehaviour
 
     private Coroutine[] ButtonAnims = new Coroutine[3];
     private Coroutine ChipCountCoroutine;
+
+    private Dictionary<string, AudioClip> RRAudio = new Dictionary<string, AudioClip>();
 
     private string[] SuitOrder =
     {
@@ -254,6 +259,7 @@ public class FireworkCrate : MonoBehaviour
 
     void Awake()
     {
+        RRAudio = RiffRaffAudio.ToDictionary(x => x.name, x => x);
 
         //do you have QKRisi's? if not, ya ur outdated
         _moduleId = _moduleIdCounter++;
@@ -1191,15 +1197,17 @@ public class FireworkCrate : MonoBehaviour
         {
             float t = 0;
             speed = 2;
-            Audio.PlaySoundAtTransform("Outsiders-Test", transform);
+           int  riffraffintro = Rnd.Range(0, 3);
+            RiffRaffSource.PlayOneShot(RRAudio["RRIntro" + (riffraffintro + 1)]);
+            
             while (t < 1)
             {
                 yield return null;
-                t += Time.deltaTime;
+                t += Time.deltaTime / RRAudio["RRIntro" + (riffraffintro + 1)].length;
                 RiffRaffOverlay.color = Color.Lerp(new Color(1,1,1,0), new Color(1,1,1,.5f), t);
                 Background.material.color = Color32.Lerp(new Color32(15, 26, 19, 255), new Color32(92, 206, 132, 255), easeInSine(1-t));
             }
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(.25f);
             speed = 1;
             for (int i = 0; i < edging; i++)
             {
@@ -1207,17 +1215,18 @@ public class FireworkCrate : MonoBehaviour
                 ActiveModifiers[SuitOrder.IndexOf(Modifiers[i + 2])] = true;
                 Debug.LogFormat("[Hanabi Poker #{0}]: Riff-Raff adds {1} to the fray!", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[i + 2]) < 5 ? "Anti-" : "") + Modifiers[i + 2]);
                 float angle = Rnd.Range(-20f, 20f);
+                RiffRaffSource.PlayOneShot(RRAudio["RR" + Modifiers[i + 2]]);
                 SuitClue.sprite = SuitImages[Array.IndexOf(SuitOrder, Modifiers[i+2])];
                  t = 0;
                 while (t < 1)
                 {
                     yield return null;
-                    t += Time.deltaTime * 2f;
+                    t += Time.deltaTime / ((RRAudio["RR" + Modifiers[i + 2]].length) - .5f);
                     SuitClue.transform.localScale = Vector3.Lerp(new Vector3(0f, 0f, 100f), new Vector3(0.0025f, 0.0025f, 100f), t);
                     SuitClue.color = Color32.Lerp(new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 0), easeInSine(t));
                     SuitClue.transform.localEulerAngles = Vector3.Lerp(new Vector3(90f, 0f, 0f), new Vector3(90f, angle, 0f), t);
                 }
-                yield return new WaitForSeconds(.05f);
+                yield return new WaitForSeconds(.5f);
             }
              t = 1;
             while (t >0)
