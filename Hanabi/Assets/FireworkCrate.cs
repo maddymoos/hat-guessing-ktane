@@ -160,6 +160,8 @@ public class FireworkCrate : MonoBehaviour
         "Gray",
         "Dark Omni",
         "Risky Dice",
+        "Cocoa Rainbow",
+        "Gray Pink",
         "Riff-Raff"
     };
     private string[] Colorless =
@@ -231,14 +233,14 @@ public class FireworkCrate : MonoBehaviour
         {"Light Pink",    "L Pink (+1 [#C] Suit)",     "L. Pink +5xL. Pink"},
         {"Dark Null",     "D Null (+1 [S0C] Suit)",    "One-Time Use x2.5"},
         {"Dark Brown",    "D Brown (+1 [S0] Suit)",    "Straights Need 4"},
-        {"Cocoa Rainbow", "Cocoa R (+1 [S0M] Suit)",   " "},
+        {"Cocoa Rainbow", "Cocoa R (+1 [S0M] Suit)",   "Discarded Cards +2"},
         {"Gray",          "Gray (+1 [SC] Suit)",       "Flushes Need 4"},
         {"Dark Rainbow",  "Dark R (+1 [SM] Suit)",     "See The Future"},
-        {"Gray Pink",     "G Pink (+1 [S#C] Suit)",    " "},
+        {"Gray Pink",     "G Pink (+1 [S#C] Suit)",    "0 Discards x2"},
         {"Dark Pink",     "D Pink (+1 [S#] Suit)",     " "},
         {"Dark Omni",     "D Omni (+1 [S#M] Suit)",    "Hands x1.5^Streak"},
         {"Risky Dice",    "Risky Dice (+1 6 Suit)",    "Risky Dice are 6"},
-        {"Riff-Raff",     "Riff-Raff [E]",             "+2 to 4 Modifiers"}
+        {"Riff-Raff",     "Riff-Raff [E]",             "+2 to 6 Modifiers"}
     };
 
     private float ButtonEasing(float t)
@@ -638,7 +640,17 @@ public class FireworkCrate : MonoBehaviour
                 Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
             }
         }
-        if(!playedhands.IsNullOrEmpty() && playedhands.Last() == playedhand && ActiveModifiers[22])
+        if (discards == 0 && ActiveModifiers[20])
+        {
+            score = (int)(score * 2f);
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            //Audio.PlaySoundAtTransform("DNullShatter", transform);
+            Debug.LogWarning("GrayPink is missing a unique sound");
+            yield return new WaitForSeconds(0.5f);
+            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray Pink. Your chips are multiplied by x2 to {1}.", _moduleId, score);
+        }
+        if (!playedhands.IsNullOrEmpty() && playedhands.Last() == playedhand && ActiveModifiers[22])
         {
             if(OmniStreak == 0)
             {
@@ -1057,6 +1069,14 @@ public class FireworkCrate : MonoBehaviour
         {
             if (all || (rank && (card.Item2 == clueval + 1 || EveryNumber.Contains(card.Item1)) && !Numberless.Contains(card.Item1)) || (!rank && (card.Item1 == RealActiveSuit[clueval] || Multicolor.Contains(card.Item1))))
             {
+                if (ActiveModifiers[17])
+                {
+                    TotalScore[0].color = new Color(1,1,1,1);
+                    TotalScore[1].color = new Color(0,0,0,1);
+                    totalscore+=2;
+                    TotalScore[0].text = totalscore.ToString();
+                    TotalScore[1].text = totalscore.ToString();
+                }
                 Audio.PlaySoundAtTransform("Succ", transform);
                 float t = 0;
                 while (t < 1)
@@ -1103,6 +1123,11 @@ public class FireworkCrate : MonoBehaviour
             j++;
         }
         yield return new WaitForSeconds(.25f);
+        if (ActiveModifiers[17])
+        {
+            TotalScore[0].color = new Color(1, 1, 1, 0);
+            TotalScore[1].color = new Color(0, 0, 0, 0);
+        }
         if (!all)
             StartCoroutine(DrawToFive());
     }
@@ -1201,6 +1226,11 @@ public class FireworkCrate : MonoBehaviour
                 t -= Time.deltaTime;
                 Background.material.color = Color32.Lerp(new Color32(15, 26, 19, 255), new Color32(92, 206, 132, 255), easeInSine(1-t));
                 RiffRaffOverlay.color = Color.Lerp(new Color(1, 1, 1, 0), new Color(1, 1, 1, .5f), t);
+                if (ActiveModifiers[19])
+                {
+                    Psychic[0].GetComponent<SpriteRenderer>().color = Color32.Lerp(new Color32(255, 255, 255, 0), new Color32(255, 255, 255, 45), 1-t);
+                    Psychic[1].GetComponent<SpriteRenderer>().color = Color32.Lerp(new Color32(255, 255, 255, 0), new Color32(255, 255, 255, 45), 1-t);
+                }
             }
             speed = 3;
             RiffRaffOverlay.color = new Color(1, 1, 1, 00);
@@ -1249,7 +1279,7 @@ public class FireworkCrate : MonoBehaviour
         Psychic[0].GetComponent<SpriteRenderer>().color = new Color32(255,255,255,0);
         Psychic[1].GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
         playedhands = new List<string>();
-      edging = Rnd.Range(2, 5);
+      edging = Rnd.Range(2, 7);
          Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         string HSText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
@@ -1535,7 +1565,7 @@ public class FireworkCrate : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        edging = Rnd.Range(2, 5);
+        edging = Rnd.Range(2, 7);
         if (!File.Exists(Path.Combine(Application.persistentDataPath, "HPHighScore.txt")))
         {
             Debug.LogFormat("No saved high score!");

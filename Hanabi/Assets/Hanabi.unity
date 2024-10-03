@@ -163,6 +163,144 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a8f5171cd00daf04f899f2015d98c64d, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &600488427
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631595808966604, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_Name
+      value: Firework Crate (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &611150968
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631595808966604, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_Name
+      value: Firework Crate (5)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &942615007
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631595808966604, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_Name
+      value: Firework Crate (6)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &962514365
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +366,52 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &1027673542
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631595808966604, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_Name
+      value: Firework Crate (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1042264731
 Prefab:
   m_ObjectHideFlags: 0
@@ -572,4 +756,142 @@ Prefab:
       objectReference: {fileID: 8300000, guid: 72fe14e1c57ac2041b44e6a81faec616, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1377995287
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631595808966604, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_Name
+      value: Firework Crate (7)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1750617204
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631595808966604, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_Name
+      value: Firework Crate (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1821054638
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044947485301008, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631595808966604, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
+      propertyPath: m_Name
+      value: Firework Crate (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8e0f886e3854ca46ad46729fcfb5d81, type: 2}
   m_IsPrefabParent: 0
