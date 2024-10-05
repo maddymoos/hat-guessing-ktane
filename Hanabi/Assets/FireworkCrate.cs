@@ -160,6 +160,7 @@ public class FireworkCrate : MonoBehaviour
         "Dark Rainbow",
         "Null",
         "Light Pink",
+        "Dark Pink",
         "Dark Null",
         "Dark Brown",
         "Gray",
@@ -242,7 +243,7 @@ public class FireworkCrate : MonoBehaviour
         {"Gray",          "Gray (+1 [SC] Suit)",       "Flushes Need 4"},
         {"Dark Rainbow",  "Dark R (+1 [SM] Suit)",     "See The Future"},
         {"Gray Pink",     "G Pink (+1 [S#C] Suit)",    "0 Discards x2"},
-        {"Dark Pink",     "D Pink (+1 [S#] Suit)",     " "},
+        {"Dark Pink",     "D Pink (+1 [S#] Suit)",     "Discards +x.1"},
         {"Dark Omni",     "D Omni (+1 [S#M] Suit)",    "Hands x1.5^Streak"},
         {"Risky Dice",    "Risky Dice (+1 6 Suit)",    "Risky Dice are 6"},
         {"Riff-Raff",     "Riff-Raff [E]",             "+2 to 6 Modifiers"}
@@ -655,6 +656,16 @@ public class FireworkCrate : MonoBehaviour
             Debug.LogWarning("GrayPink is missing a unique sound");
             yield return new WaitForSeconds(0.5f);
             Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray Pink. Your chips are multiplied by x2 to {1}.", _moduleId, score);
+        }
+        if (discards != 0 && ActiveModifiers[21])
+        {
+            score = (int)(score * ( 1f + .1f * discards));
+            AddedScore[0].text = "+" + score;
+            AddedScore[1].text = "+" + score;
+            //Audio.PlaySoundAtTransform("DNullShatter", transform);
+            Debug.LogWarning("DarkPink is missing a unique sound");
+            yield return new WaitForSeconds(0.5f);
+            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Pink. Your chips are multiplied by x{2} to {1}.", _moduleId, score, 1f + .1f*discards);
         }
         if (!playedhands.IsNullOrEmpty() && playedhands.Last() == playedhand && ActiveModifiers[22])
         {
@@ -1117,6 +1128,28 @@ public class FireworkCrate : MonoBehaviour
                         CardNumber(Cards[i]).sprite = NumberNumbers[HandCards[i].Item2 - 1];
                         CardNumber(Cards[i]).color = NumberColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
                         CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                        if (HandCards[i].Item1 == "Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[12];
+                        }
+                        else if (HandCards[i].Item1 == "Muddy Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[5];
+
+                        }
+                        else if (HandCards[i].Item1 == "Cocoa Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[7];
+
+                        }
+                        else if (HandCards[i].Item1 == "Dark Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[6];
+                        }
+                        else
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[0];
+                        }
                     }
                     else
                     {
@@ -1452,6 +1485,30 @@ public class FireworkCrate : MonoBehaviour
                         CardRenderer(Cards[i]).color = Color.white;
                         CardRenderer(Cards[i]).sortingOrder += 5;
                     }
+                        if (HandCards[i].Item1 == "Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[12];
+                        }
+                        else if (HandCards[i].Item1 == "Muddy Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[5];
+
+                        }
+                        else if (HandCards[i].Item1 == "Cocoa Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[7];
+
+                        }
+                        else if (HandCards[i].Item1 == "Dark Rainbow")
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[6];
+                        }
+                        else
+                        {
+                            CardRenderer(Cards[i]).sprite = CardBacks[0];
+                        }
+
+                    
 
                 }
                 CardCounter.text = Deck.Count().ToString();
@@ -1504,6 +1561,28 @@ public class FireworkCrate : MonoBehaviour
                     CardNumber(Cards[i]).sprite = NumberNumbers[HandCards[i].Item2 - 1];
                     CardNumber(Cards[i]).color = NumberColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
                     CardRenderer(Cards[i]).color = SuitColors[Array.IndexOf(SuitOrder, HandCards[i].Item1)];
+                    if (HandCards[i].Item1 == "Rainbow")
+                    {
+                        CardRenderer(Cards[i]).sprite = CardBacks[12];
+                    }
+                    else if (HandCards[i].Item1 == "Muddy Rainbow")
+                    {
+                        CardRenderer(Cards[i]).sprite = CardBacks[5];
+
+                    }
+                    else if (HandCards[i].Item1 == "Cocoa Rainbow")
+                    {
+                        CardRenderer(Cards[i]).sprite = CardBacks[7];
+
+                    }
+                    else if (HandCards[i].Item1 == "Dark Rainbow")
+                    {
+                        CardRenderer(Cards[i]).sprite = CardBacks[6];
+                    }
+                    else
+                    {
+                        CardRenderer(Cards[i]).sprite = CardBacks[0];
+                    }
                 }
                 yield return new WaitForSeconds(.0001f);
             }
