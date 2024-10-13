@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1">
-    <title>Hat Guessing — Keep Talking and Nobody Explodes Module</title>
+    <title>Firework Crate — Keep Talking and Nobody Explodes Module</title>
     <link rel="stylesheet" type="text/css" href="css/font.css">
     <link rel="stylesheet" type="text/css" href="css/normalize.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -26,12 +26,12 @@
         <div class="page page-bg-01">
             <div class="page-header">
                 <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
-                <span class="page-header-section-title">Hanabi Poker</span>
+                <span class="page-header-section-title">Firework Crate</span>
             </div>
             <div class="page-content">
-                <img src="img/Component/Hat Guessing.svg" class="diagram">
-                <h2>On the Subject of Hanabi Poker</h2>
-                <p class="flavour-text">Why rip off one game at a time, when you could rip off *two*?</p>
+                <img src="img/Component/Firework Crate.svg" class="diagram">
+                <h2>On the Subject of The Firework Crate</h2>
+                <p class="flavour-text">ninety percent of hanabi players quit right before they hit that 25</p>
 
                 <p>
                     Before the module begins, there are three buttons.
@@ -78,7 +78,7 @@
         <div class="page page-bg-02">
             <div class="page-header">
                 <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
-                <span class="page-header-section-title">Hanabi Poker</span>
+                <span class="page-header-section-title">Firework Crate</span>
             </div>
             <div class="page-content">
 				
@@ -149,13 +149,18 @@
 				<th>5</th>
 				<td>Two cards of one rank.</td>
 				</tr>
+				<tr>
+				<th>Trash!</th>
+				<th>2</th>
+				<td>Nothing!</td>
+				</tr>
 				</table>
 				<p>
 				These shorthands are used for certain modifiers in the coming pages.
 				</p>
 				<table>
 				<tr>
-				<th>[X]</th>
+				<th>[S]</th>
 				<td>Singlet Suit</td>
 				<td>Only one copy of each card in the deck.</td>
 				<th>[E]</th>
@@ -186,7 +191,7 @@
         <div class="page page-bg-03">
             <div class="page-header">
                 <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
-                <span class="page-header-section-title">Hanabi Poker</span>
+                <span class="page-header-section-title">Firework Crate</span>
             </div>
             <div class="page-content">
                 <table>
@@ -194,81 +199,97 @@
 				<th width="150px">Suit</th>
 				<th width="100px">Shorthand</th>
 				<th>Effect</th>
+				<th>Icon</th>
 				</tr>
 				<tr>
 				<th width="150px">Anti-Red</th>
 				<th width="100px">-1 Suit</th>
 				<td>Fives used in scoring hands add 15 chips.</td>
+				<th><img src="img/HanabiSuits/red.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Anti-Yellow</th>
 				<th>-1 Suit</th>
 				<td>Multiplies the chip value of all Straight hands by x1.2.</td>
+				<th><img src="img/HanabiSuits/yellow.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Anti-Green</th>
 				<th>-1 Suit</th>
 				<td>Hands containing Pairs are worth 5 more chips.</td>
+				<th><img src="img/HanabiSuits/green.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Anti-Blue</th>
 				<th>-1 Suit</th>
 				<td>Multiplies the chip value of all Full House hands by x1.2.</td>
+				<th><img src="img/HanabiSuits/blue.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Anti-Purple</th>
 				<th>-1 Suit</th>
 				<td>Threes are considered all suits for the purpose of Flushes.</td>
+				<th><img src="img/HanabiSuits/purple.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Teal</th>
 				<th>+1 Suit</th>
 				<td>Multiplies the chip value of all Flush hands by x1.2.</td>
+								<th><img src="img/HanabiSuits/teal.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Black</th>
-				<th>+1 [X] Suit</th>
+				<th>+1 [S] Suit</th>
 				<td>Blacks used in scoring hands add 10 chips.</td>
+				<th><img src="img/HanabiSuits/black.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Rainbow</th>
 				<th>+1 [M] Suit</th>
 				<td>Rainbows are considered all colors for the purpose of Flushes.</td>
+				<th><img src="img/HanabiSuits/rainbow.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Brown</th>
 				<th>+1 [0] Suit</th>
 				<td>Multiplies the chip value of hands containing a Three of a Kind by x1.3.</td>
+				<th><img src="img/HanabiSuits/brown.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>White</th>
 				<th>+1 [C] Suit</th>
 				<td>Whites are ignored for Flushes.</td>
+				<th><img src="img/HanabiSuits/white.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Pink</th>
 				<th>+1 [#] Suit</th>
 				<td>Each pink in a pair in your hand multiplies earned chips by x1.5.</td>
+				<th><img src="img/HanabiSuits/pink.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Omni</th>
 				<th>+1 [#M] Suit</th>
 				<td>Each used Omni multiplies earned chips by x1.75.</td>
+				<th><img src="img/HanabiSuits/omni.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Muddy Rainbow</th>
 				<th>+1 [0M] Suit</th>
 				<td>Muddy Rainbows that aren't used multiply earned chips by x2.</td>
+				<th><img src="img/HanabiSuits/muddyrainbow.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Light Pink</th>
 				<th>+1 [#C] Suit</th>
 				<td>Each used Light Pink gives chips equal to 5 times the number of Light Pinks in your hand.</td>
+				<th><img src="img/HanabiSuits/lpink.png" width="25" height="25"></th>
 				</tr>
 				<tr>
 				<th>Null</th>
 				<th>+1 [0C] Suit</th>
 				<td>If your hand contains <b>exactly</b> one Null, gain a clue when playing it.</td>
+				<th><img src="img/HanabiSuits/null.png" width="25" height="25"></th>
 				</tr>
 				</table>
             </div>
@@ -278,9 +299,78 @@
         <div class="page page-bg-04">
             <div class="page-header">
                 <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
-                <span class="page-header-section-title">Hat Guessing</span>
-            </div>
+                <span class="page-header-section-title">Firework Crate</span>
+				            </div>
             <div class="page-content">
+			<table>				
+			<tr>
+				<th width="150px">Suit</th>
+				<th width="100px">Shorthand</th>
+				<th>Effect</th>
+				<th>Icon</th>
+				</tr>
+				<tr>
+				<th>Dark Rainbow</th>
+				<th>+1 [SM] Suit</th>
+				<td>The next card of the deck is always shown.</td>
+				<th><img src="img/HanabiSuits/darkrainbow.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Dark Brown</th>
+				<th>+1 [S0] Suit</th>
+				<td>Straights only require 4 cards. (2,3,4,5,5 is a straight.)</td>
+				<th><img src="img/HanabiSuits/darkbrown.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Gray</th>
+				<th>+1 [SC] Suit</th>
+				<td>Flushes only require 4 cards. (RRRGR is a flush.)</td>
+				<th><img src="img/HanabiSuits/gray.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Dark Pink</th>
+				<th>+1 [S#] Suit</th>
+				<td>Each discard is worth +x.1. (If you had 2, you'd earn x1.2.)</td>
+				<th><img src="img/HanabiSuits/darkpink.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Dark Omni</th>
+				<th>+1 [S#M] Suit</th>
+				<td>If this hard is the same as the last, mutliply earned chips by x1.5^streak.</td>
+				<th><img src="img/HanabiSuits/darkomni.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Cooca Rainbow</th>
+				<th>+1 [S0M] Suit</th>
+				<td>Every card you discard gains you 2 chips.</td>
+				<th><img src="img/HanabiSuits/cocoarainbow.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Gray Pink</th>
+				<th>+1 [S#C] Suit</th>
+				<td>If you have no discards, multiply earned chips by x2.</td>
+				<th><img src="img/HanabiSuits/graypink.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Dark Null</th>
+				<th>+1 [S0C] Suit</th>
+				<td>The first time you play a hand, multiply earned chips by x2.5. If not, earn NO chips.</td>
+				<th><img src="img/HanabiSuits/darknull.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Risky Dice</th>
+				<th>+1 6 Suit</th>
+				<td>All 10 Risky Dice cards are 6's. Straights account for this.</td>
+				<th><img src="img/HanabiSuits/dice.png" width="25" height="25"></th>
+				</tr>
+				<tr>
+				<th>Riff-Raff</th>
+				<th>[Expert]</th>
+				<td>Riff-Raff adds 2 to 6 random other modifiers.</td>
+				<th><img src="img/HanabiSuits/riffraff.png" width="25" height="25"></th>
+				</tr>
+				</table>
+
 
                
             </div>

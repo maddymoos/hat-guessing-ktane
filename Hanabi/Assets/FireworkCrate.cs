@@ -21,6 +21,7 @@ using System.IO;
 using UnityEditorInternal;
 using Newtonsoft.Json.Linq;
 using Wawa.Modules;
+using System.Xml.Linq;
 public class FireworkCrate : MonoBehaviour
 {
 
@@ -228,7 +229,7 @@ public class FireworkCrate : MonoBehaviour
         {"Blue",          "Anti-Blue (-1 Suit)",       "Full House x1.2"},
         {"Purple",        "Anti-Purple (-1 Suit)",     "Threes Wild Colors"},
         {"Teal",          "Teal (+1 Suit)",            "Flush x1.2"},
-        {"Black",         "Black (+1 [X] Suit)",       "Black +10"},
+        {"Black",         "Black (+1 [S] Suit)",       "Black +10"},
         {"Rainbow",       "Rainbow (+1 [M] Suit)",     "Rainbows Wild Color"},
         {"Brown",         "Brown (+1 [0] Suit)",       "3 Of A Kind x1.3"},
         {"White",         "White (+1 [C] Suit)",       "Ignored For Flush"},
@@ -246,7 +247,7 @@ public class FireworkCrate : MonoBehaviour
         {"Dark Pink",     "D Pink (+1 [S#] Suit)",     "Discards +x.1"},
         {"Dark Omni",     "D Omni (+1 [S#M] Suit)",    "Hands x1.5^Streak"},
         {"Risky Dice",    "Risky Dice (+1 6 Suit)",    "Risky Dice are 6"},
-        {"Riff-Raff",     "Riff-Raff [E]",             "+2 to 6 Modifiers"}
+        {"Riff-Raff",     "Riff-Raff [E]",             "+2 to 5 Modifiers"}
     };
 
     private float ButtonEasing(float t)
@@ -346,7 +347,7 @@ public class FireworkCrate : MonoBehaviour
             playedhand = "Five Fives";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 500;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveFives[Rnd.Range(0, HandResponses.FiveFives.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveFives[Rnd.Range(0, HandResponses.FiveFives.Count())]);
         }
         else if (CountNum(HandCards, HandCards[0].Item2) == 5 && Flush(HandCards))
         {
@@ -357,11 +358,11 @@ public class FireworkCrate : MonoBehaviour
             if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
             {
                 Audio.PlaySoundAtTransform("DWhiteSplash", transform);
-                Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
                     yield return new WaitForSeconds(.4f);
                     break;
             }
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FlushFive[Rnd.Range(0, HandResponses.FlushFive.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FlushFive[Rnd.Range(0, HandResponses.FlushFive.Count())]);
         }
         else if (Flush(HandCards) && Straight(HandCards))
         {
@@ -372,11 +373,11 @@ public class FireworkCrate : MonoBehaviour
                 if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
                 {
                     Audio.PlaySoundAtTransform("DWhiteSplash", transform);
-                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                    Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
                     yield return new WaitForSeconds(.4f);
                     break;
                 }
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.StraightFlush[Rnd.Range(0, HandResponses.StraightFlush.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.StraightFlush[Rnd.Range(0, HandResponses.StraightFlush.Count())]);
 
         }
         else if (Flush(HandCards) && FullHouse(HandCards))
@@ -388,18 +389,18 @@ public class FireworkCrate : MonoBehaviour
                 if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
                 {
                     Audio.PlaySoundAtTransform("DWhiteSplash", transform);
-                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                    Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
                     yield return new WaitForSeconds(.4f);
                     break;
                 }
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FlushHouse[Rnd.Range(0, HandResponses.FlushHouse.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FlushHouse[Rnd.Range(0, HandResponses.FlushHouse.Count())]);
         }
         else if (Straight(HandCards))
         {
             playedhand = "Straight";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 50;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Straight[Rnd.Range(0, HandResponses.Straight.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Straight[Rnd.Range(0, HandResponses.Straight.Count())]);
         }
         else if (Flush(HandCards))
         {
@@ -410,11 +411,11 @@ public class FireworkCrate : MonoBehaviour
                 if (ActiveModifiers[18] && HandCards.Where(x => x.Item1 == HandCards[i].Item1 || x.Item1 == "Rainbow" || x.Item1 == "White" || (x.Item2 == 3 && ActiveModifiers[4])).Count() == 4)
                 {
                     Audio.PlaySoundAtTransform("DWhiteSplash", transform);
-                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
+                    Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Gray! This hand is a Flush.", _moduleId);
                     yield return new WaitForSeconds(.4f);
                     break;
                 }
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Flush[Rnd.Range(0, HandResponses.Flush.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Flush[Rnd.Range(0, HandResponses.Flush.Count())]);
 
         }
         else if (CountNum(HandCards, 1) == 5)
@@ -422,35 +423,35 @@ public class FireworkCrate : MonoBehaviour
             playedhand = "Five Ones";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 40;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveOnes[Rnd.Range(0, HandResponses.FiveOnes.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveOnes[Rnd.Range(0, HandResponses.FiveOnes.Count())]);
         }
         else if (CountNum(HandCards, HandCards[0].Item2) == 5)
         {
             playedhand = "Five Of A Kind";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 45;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveOAK[Rnd.Range(0, HandResponses.FiveOAK.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FiveOAK[Rnd.Range(0, HandResponses.FiveOAK.Count())]);
         }
         else if (CountNum(HandCards, NotAlone(HandCards)[0]) == 4)
         {
             playedhand = "Four Of A Kind";
             ActiveCards = NumIndexes(HandCards, NotAlone(HandCards)[0]);
             score = 30;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FourOAK[Rnd.Range(0, HandResponses.FourOAK.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FourOAK[Rnd.Range(0, HandResponses.FourOAK.Count())]);
         }
         else if (FullHouse(HandCards))
         {
             playedhand = "Full House";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 25;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FullHouse[Rnd.Range(0, HandResponses.FullHouse.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}! It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.FullHouse[Rnd.Range(0, HandResponses.FullHouse.Count())]);
         }
         else if (CountNum(HandCards, NotAlone(HandCards)[0]) == 3)
         {
             playedhand = "Three Of A Kind";
             ActiveCards = NumIndexes(HandCards, NotAlone(HandCards)[0]);
             score = 15;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}. It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.ThreeOAK[Rnd.Range(0, HandResponses.ThreeOAK.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}. It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.ThreeOAK[Rnd.Range(0, HandResponses.ThreeOAK.Count())]);
         }
         else if (CountNum(HandCards, NotAlone(HandCards)[0]) == 2 && CountNum(HandCards, NotFirstNumberButWithListInt(NotAlone(HandCards))[0]) == 2)
         {
@@ -459,27 +460,27 @@ public class FireworkCrate : MonoBehaviour
             foreach (int index in NumIndexes(HandCards, NotFirstNumberButWithListInt(NotAlone(HandCards))[0]))
                 ActiveCards.Add(index);
             score = 10;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}. It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.TwoPair[Rnd.Range(0, HandResponses.TwoPair.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}. It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.TwoPair[Rnd.Range(0, HandResponses.TwoPair.Count())]);
         }
         else if (CountNum(HandCards, NotAlone(HandCards)[0]) == 2)
         {
             playedhand = "Pair";
             ActiveCards = NumIndexes(HandCards, NotAlone(HandCards)[0]);
             score = 5;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played a {1}. It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Pair[Rnd.Range(0, HandResponses.Pair.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played a {1}. It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Pair[Rnd.Range(0, HandResponses.Pair.Count())]);
         }
         else
         {
             playedhand = "Trash!";
             ActiveCards = new List<int> { 0, 1, 2, 3, 4 };
             score = 1;
-            Debug.LogFormat("[Hanabi Poker #{0}]: You played {1} It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Trash[Rnd.Range(0, HandResponses.Trash.Count())]);
+            Debug.LogFormat("[Firework Crate #{0}]: You played {1} It scores a base of {2} chips. {3}", _moduleId, playedhand, score, HandResponses.Trash[Rnd.Range(0, HandResponses.Trash.Count())]);
         }
 
         if (ActiveSuit.Count() > 5)
             score = (int)(score * (5f / ActiveSuit.Count()));
         if (ActiveSuit.Count() > 5)
-            Debug.LogFormat("[Hanabi Poker #{0}]: Due to your deck having {1} suits, your earned chips are now {2}.", _moduleId, ActiveSuit.Count(), score);
+            Debug.LogFormat("[Firework Crate #{0}]: Due to your deck having {1} suits, your earned chips are now {2}.", _moduleId, ActiveSuit.Count(), score);
         for (int i = 0; i < 2; i++)
         {
             PlayDisplay[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
@@ -512,7 +513,7 @@ public class FireworkCrate : MonoBehaviour
                     yield return new WaitForSeconds(gaptime);
                     if(gaptime > mingap)
                     gaptime -= lowergap;
-                    Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Red modifier, the used 5 added fifteen chips! Your earned chips are now {1}!", _moduleId, score);
+                    Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Red modifier, the used 5 added fifteen chips! Your earned chips are now {1}!", _moduleId, score);
 
                 }
                 if (ActiveModifiers[6] && card.Item1 == "Black")
@@ -524,7 +525,7 @@ public class FireworkCrate : MonoBehaviour
                     yield return new WaitForSeconds(gaptime);
                     if (gaptime > mingap)
                         gaptime -= lowergap;
-                    Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Black modifier, the used black card added ten chips! Your earned chips are now {1}!", _moduleId, score);
+                    Debug.LogFormat("[Firework Crate #{0}]: Due to the Black modifier, the used black card added ten chips! Your earned chips are now {1}!", _moduleId, score);
 
                 }
                 if (ActiveModifiers[14] && card.Item1 == "Light Pink")
@@ -536,7 +537,7 @@ public class FireworkCrate : MonoBehaviour
                     yield return new WaitForSeconds(gaptime);
                     if (gaptime > mingap)
                         gaptime -= lowergap;
-                    Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Light Pink modifier, the used light pink card added {2} chips! Your earned chips are now {1}!", _moduleId, score, 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count());
+                    Debug.LogFormat("[Firework Crate #{0}]: Due to the Light Pink modifier, the used light pink card added {2} chips! Your earned chips are now {1}!", _moduleId, score, 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count());
 
                 }
             }
@@ -551,7 +552,7 @@ public class FireworkCrate : MonoBehaviour
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
-            Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Green modifier, the pair in your hand added five chips! Your earned chips are now {1}!", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Green modifier, the pair in your hand added five chips! Your earned chips are now {1}!", _moduleId, score);
 
         }
         if (ActiveModifiers[13] && HandCards.Where(x => x.Item1 == "Null").Count() == 1)
@@ -560,7 +561,7 @@ public class FireworkCrate : MonoBehaviour
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
-            Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Null modifier, your lone Null gifted you a discard! Your earned chips are now {1}!", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: Due to the Null modifier, your lone Null gifted you a discard! Your earned chips are now {1}!", _moduleId, score);
 
         }
 
@@ -576,7 +577,7 @@ public class FireworkCrate : MonoBehaviour
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
-            Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Yellow modifier, your straight is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Yellow modifier, your straight is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[3] && FullHouse(HandCards))
         {
@@ -587,7 +588,7 @@ public class FireworkCrate : MonoBehaviour
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
-            Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Anti-Blue modifier, your full house is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Blue modifier, your full house is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[5] && Flush(HandCards))
         {
@@ -598,7 +599,7 @@ public class FireworkCrate : MonoBehaviour
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
-            Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Teal modifier, your flush is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: Due to the Teal modifier, your flush is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[8] && (CountNum(HandCards, NotAlone(HandCards)[0]) >= 3 || FullHouse(HandCards)))
         {
@@ -609,7 +610,7 @@ public class FireworkCrate : MonoBehaviour
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
-            Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Brown modifier, the three of a kind in your hand multiplies it by 1.3x! Your earned chips are now {1}!", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: Due to the Brown modifier, the three of a kind in your hand multiplies it by 1.3x! Your earned chips are now {1}!", _moduleId, score);
         }
         for (int i = 0; i < 5; i++)
         {
@@ -622,7 +623,7 @@ public class FireworkCrate : MonoBehaviour
                 yield return new WaitForSeconds(gaptime);
                 if (gaptime > mingap)
                     gaptime -= lowergap;
-                Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Pink modifier, the pink in a pair multiplies your chips by 1.5x! Your earned chips are now {1}!", _moduleId, score);
+                Debug.LogFormat("[Firework Crate #{0}]: Due to the Pink modifier, the pink in a pair multiplies your chips by 1.5x! Your earned chips are now {1}!", _moduleId, score);
             }
             if (ActiveModifiers[11] && HandCards[i].Item1 == "Omni" && ActiveCards.Contains(i))
             {
@@ -633,7 +634,7 @@ public class FireworkCrate : MonoBehaviour
                 yield return new WaitForSeconds(gaptime);
                 if (gaptime > mingap)
                     gaptime -= lowergap;
-                Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Omni modifier, the omni multiplies your chips by 1.75x! Your earned chips are now {1}!", _moduleId, score);
+                Debug.LogFormat("[Firework Crate #{0}]: Due to the Omni modifier, the omni multiplies your chips by 1.75x! Your earned chips are now {1}!", _moduleId, score);
             }
             if (ActiveModifiers[12] && HandCards[i].Item1 == "Muddy Rainbow" && !ActiveCards.Contains(i))
             {
@@ -644,7 +645,7 @@ public class FireworkCrate : MonoBehaviour
                 yield return new WaitForSeconds(gaptime);
                 if (gaptime > mingap)
                     gaptime -= lowergap;
-                Debug.LogFormat("[Hanabi Poker #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
+                Debug.LogFormat("[Firework Crate #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
             }
         }
         if (discards == 0 && ActiveModifiers[20])
@@ -655,7 +656,7 @@ public class FireworkCrate : MonoBehaviour
             //Audio.PlaySoundAtTransform("DNullShatter", transform);
             Debug.LogWarning("GrayPink is missing a unique sound");
             yield return new WaitForSeconds(0.5f);
-            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Gray Pink. Your chips are multiplied by x2 to {1}.", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Gray Pink. Your chips are multiplied by x2 to {1}.", _moduleId, score);
         }
         if (discards != 0 && ActiveModifiers[21])
         {
@@ -665,7 +666,7 @@ public class FireworkCrate : MonoBehaviour
             //Audio.PlaySoundAtTransform("DNullShatter", transform);
             Debug.LogWarning("DarkPink is missing a unique sound");
             yield return new WaitForSeconds(0.5f);
-            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Pink. Your chips are multiplied by x{2} to {1}.", _moduleId, score, 1f + .1f*discards);
+            Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Pink. Your chips are multiplied by x{2} to {1}.", _moduleId, score, 1f + .1f*discards);
         }
         if (!playedhands.IsNullOrEmpty() && playedhands.Last() == playedhand && ActiveModifiers[22])
         {
@@ -683,7 +684,7 @@ public class FireworkCrate : MonoBehaviour
                 yield return new WaitForSeconds(0.9f);
             }
             LoopingSounds[0].Stop();
-            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Omni! With your streak of {2}, your chips are multiplied by x1.5 ^ {2} to {1}.", _moduleId, score, OmniStreak);
+            Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Omni! With your streak of {2}, your chips are multiplied by x1.5 ^ {2} to {1}.", _moduleId, score, OmniStreak);
             
         }
         else
@@ -697,7 +698,7 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("DNullShatter", transform);
             yield return new WaitForSeconds(0.5f);
-            Debug.LogFormat("[Hanabi Poker #{0}]: You have been cursed by Dark Null. You've already used this hand.", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: You have been cursed by Dark Null. You've already used this hand.", _moduleId, score);
         }
         else if (ActiveModifiers[15])
         {
@@ -706,7 +707,7 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("DNullUse", transform);
             yield return new WaitForSeconds(0.5f);
-            Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Null! Your chips are multiplied by x2.5 to {1}.", _moduleId, score);
+            Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Null! Your chips are multiplied by x2.5 to {1}.", _moduleId, score);
             
         }
         playedhands.Add(playedhand);
@@ -714,19 +715,19 @@ public class FireworkCrate : MonoBehaviour
 
 
        
-        //Debug.LogFormat("[Hanabi Poker #{0}]: This leaves a total of {1} chips! Nice hand.", _moduleId, score);
+        //Debug.LogFormat("[Firework Crate #{0}]: This leaves a total of {1} chips! Nice hand.", _moduleId, score);
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"));
         int besthand = int.Parse(Regex.Match(BHText, @"\n([1234567890]+)").ToString());
         if (score > besthand)
         {
             newbest = true;
-            Debug.LogFormat("[Hanabi Poker #{0}]: That's a new best hand!", _moduleId);
+            Debug.LogFormat("[Firework Crate #{0}]: That's a new best hand!", _moduleId);
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"), "Best Hand\n" + score + "\n" + playedhand + ActiveModifierNames());
         }
         if(score > (ActiveModifiers[24] ? 225 : 150))
         {
             Audio.PlaySoundAtTransform("holyheck", transform);
-            Debug.LogFormat("[Hanabi Poker #{0}]: HOLY HECK!", _moduleId);
+            Debug.LogFormat("[Firework Crate #{0}]: HOLY HECK!", _moduleId);
             yield return new WaitForSeconds(.25f);
         }
         yield return new WaitForSeconds(.25f);
@@ -746,12 +747,12 @@ public class FireworkCrate : MonoBehaviour
             yield return new WaitForSeconds(.03f);
         }
         Audio.PlaySoundAtTransform("Bank", transform);
-        Debug.LogFormat("[Hanabi Poker #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
+        Debug.LogFormat("[Firework Crate #{0}]: After adding to your total chips, you now have {1}.", _moduleId, totalscore);
         if (totalscore >= (ActiveModifiers[24] ? 225 : 150) && !Solved)
         {
             yield return new WaitForSeconds(.15f);
             Audio.PlaySoundAtTransform("ScoreThresholdReached", transform);
-            Debug.LogFormat("[Hanabi Poker #{0}]: And that's all you need! Chip goal reached. Module solved, but you can keep playing if you like.", _moduleId);
+            Debug.LogFormat("[Firework Crate #{0}]: And that's all you need! Chip goal reached. Module solved, but you can keep playing if you like.", _moduleId);
             Solved = true;
             Module.HandlePass();
             SolvedText[0].color = Color.white;
@@ -862,12 +863,23 @@ public class FireworkCrate : MonoBehaviour
 
     List<int> NumIndexes(List<Tuple<string, int>> hand, int number)
     {
-        List<int> x = new List<int>();
+        List<int> y = new List<int>();
         for (int i = 0; i < hand.Count(); i++)
         {
-            if (hand[i].Item2 == number) x.Add(HandCards.IndexOf(hand[i]));
+            if (hand[i].Item2 == number)
+            {
+                var handCardValidIndices = hand
+                .Select((x, w) => new KeyValuePair<Tuple<string, int>, int>(x, w))
+                .Where(x => x.Key == hand[i])
+                .Select(x => x.Value)
+                .Where(x => !y.Contains(x));
+
+                foreach (int j in handCardValidIndices)
+                y.Add(j);
+            }
+
         }
-        return x;
+        return y;
     }
 
     bool Flush(List<Tuple<string, int>> hand)
@@ -916,7 +928,7 @@ public class FireworkCrate : MonoBehaviour
                 }
                 if (i == 3)
                 {
-                    Debug.LogFormat("[Hanabi Poker #{0}]: You have been blessed by Dark Brown! This hand is a Straight.", _moduleId);
+                    Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Brown! This hand is a Straight.", _moduleId);
                     return true;
                 }
             }
@@ -1216,15 +1228,15 @@ public class FireworkCrate : MonoBehaviour
         SetupScale.position = new Vector3(1203f, 0f, 0f);
         if (ActiveModifiers.Where(x => x).Count() == 0)
         {
-            Debug.LogFormat("[Hanabi Poker #{0}]: Shuffling a regular deck together for round {1}!", _moduleId, Round);
+            Debug.LogFormat("[Firework Crate #{0}]: Shuffling a regular deck together for round {1}!", _moduleId, Round);
         }
         else if (ActiveModifiers.Where(x => x).Count() == 1)
         {
-            Debug.LogFormat("[Hanabi Poker #{0}]: Shuffling a deck together with the modifier {1} for round {2}!", _moduleId, (Array.IndexOf(SuitOrder, ActiveSuit[0]) < 5 ? "Anti-" : "") + ActiveSuit[0], Round);
+            Debug.LogFormat("[Firework Crate #{0}]: Shuffling a deck together with the modifier {1} for round {2}!", _moduleId, (Array.IndexOf(SuitOrder, ActiveSuit[0]) < 5 ? "Anti-" : "") + ActiveSuit[0], Round);
         }
         else
         {
-            Debug.LogFormat("[Hanabi Poker #{0}]: Shuffling a deck together with the modifiers {1} and {2} for round {3}!", _moduleId, (Array.IndexOf(SuitOrder, ActiveSuit[0]) < 5 ? "Anti-" : "") + ActiveSuit[0], (Array.IndexOf(SuitOrder, ActiveSuit[1]) < 5 ? "Anti-" : "") + ActiveSuit[1], Round);
+            Debug.LogFormat("[Firework Crate #{0}]: Shuffling a deck together with the modifiers {1} and {2} for round {3}!", _moduleId, (Array.IndexOf(SuitOrder, ActiveSuit[0]) < 5 ? "Anti-" : "") + ActiveSuit[0], (Array.IndexOf(SuitOrder, ActiveSuit[1]) < 5 ? "Anti-" : "") + ActiveSuit[1], Round);
         }
         if (ActiveSuit.Contains("Riff-Raff"))
         {
@@ -1246,7 +1258,7 @@ public class FireworkCrate : MonoBehaviour
             {
                 ActiveSuit.Add(Modifiers[i + 2]);
                 ActiveModifiers[SuitOrder.IndexOf(Modifiers[i + 2])] = true;
-                Debug.LogFormat("[Hanabi Poker #{0}]: Riff-Raff adds {1} to the fray!", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[i + 2]) < 5 ? "Anti-" : "") + Modifiers[i + 2]);
+                Debug.LogFormat("[Firework Crate #{0}]: Riff-Raff adds {1} to the fray!", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[i + 2]) < 5 ? "Anti-" : "") + Modifiers[i + 2]);
                 float angle = Rnd.Range(-20f, 20f);
                 RiffRaffSource.PlayOneShot(RRAudio["RR" + Modifiers[i + 2]]);
                 SuitClue.sprite = SuitImages[Array.IndexOf(SuitOrder, Modifiers[i+2])];
@@ -1321,8 +1333,8 @@ public class FireworkCrate : MonoBehaviour
         Psychic[0].GetComponent<SpriteRenderer>().color = new Color32(255,255,255,0);
         Psychic[1].GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
         playedhands = new List<string>();
-      edging = Rnd.Range(2, 7);
-         Debug.LogFormat("[Hanabi Poker #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
+      edging = Rnd.Range(2, 6);
+         Debug.LogFormat("[Firework Crate #{0}]: That marks the end of round {1}! Now, for round {2}, these modifiers are availiable:", _moduleId, Round, ++Round);
         string BHText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         string HSText = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"));
         int highscore = int.Parse(Regex.Match(HSText, @"\n([1234567890]+)").ToString());
@@ -1331,7 +1343,7 @@ public class FireworkCrate : MonoBehaviour
         if (totalscore > highscore)
         {
             Audio.PlaySoundAtTransform("NewHighScore", transform);
-            Debug.LogFormat("[Hanabi Poker #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
+            Debug.LogFormat("[Firework Crate #{0}]: That's a new high score! Nice one!", _moduleId, Round, ++Round);
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "HPHighScore.txt"), "High Score\n" + totalscore + ActiveModifierNames());
             for (int i = 0; i < 2; i++)
             {
@@ -1389,7 +1401,7 @@ public class FireworkCrate : MonoBehaviour
         int j = 0;
         foreach (var modbutton in ModifierButtons)
         {
-            Debug.LogFormat("[Hanabi Poker #{0}]: {1} is availiable. [{2}]. If taken, {3}.", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[j]) < 5 ? "Anti-" : "") + Modifiers[j], ModifierList[Modifiers[j]].Item1, ModifierList[Modifiers[j]].Item2);
+            Debug.LogFormat("[Firework Crate #{0}]: {1} is availiable. [{2}]. If taken, {3}.", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[j]) < 5 ? "Anti-" : "") + Modifiers[j], ModifierList[Modifiers[j]].Item1, ModifierList[Modifiers[j]].Item2);
             for (int i = 0; i < 2; i++)
             {
 
@@ -1653,7 +1665,7 @@ public class FireworkCrate : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        edging = Rnd.Range(2, 7);
+        edging = Rnd.Range(2, 6);
         if (!File.Exists(Path.Combine(Application.persistentDataPath, "HPHighScore.txt")))
         {
             Debug.LogFormat("No saved high score!");
@@ -1670,7 +1682,7 @@ public class FireworkCrate : MonoBehaviour
             BestHandDisplay[i].text = File.ReadAllText(Path.Combine(Application.persistentDataPath, "HPBestHand.txt"));
         }
         Round++;
-        Debug.LogFormat("[Hanabi Poker #{0}]: Welcome to Hanabi Poker!", _moduleId);
+        Debug.LogFormat("[Firework Crate #{0}]: Welcome to Firework Crate!", _moduleId);
         Background.material.color = new Color32(15, 26, 19, 255);
 
         Modifiers = Modifiers.Shuffle();
@@ -1683,10 +1695,10 @@ public class FireworkCrate : MonoBehaviour
             wiggleup[i] = Rnd.Range(0, 2) == 0;
         }
         int j = 0;
-        Debug.LogFormat("[Hanabi Poker #{0}]: For round {1}, the following modifications are available:", _moduleId, Round);
+        Debug.LogFormat("[Firework Crate #{0}]: For round {1}, the following modifications are available:", _moduleId, Round);
         foreach (var modbutton in ModifierButtons)
         {
-            Debug.LogFormat("[Hanabi Poker #{0}]: {1} is availiable. [{2}]. If taken, {3}.", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[j]) < 5 ? "Anti-" : "") + Modifiers[j], ModifierList[Modifiers[j]].Item1, ModifierList[Modifiers[j]].Item2);
+            Debug.LogFormat("[Firework Crate #{0}]: {1} is availiable. [{2}]. If taken, {3}.", _moduleId, (Array.IndexOf(SuitOrder, Modifiers[j]) < 5 ? "Anti-" : "") + Modifiers[j], ModifierList[Modifiers[j]].Item1, ModifierList[Modifiers[j]].Item2);
             for (int i = 0; i < 2; i++)
             {
 
