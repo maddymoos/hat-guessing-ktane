@@ -653,8 +653,7 @@ public class FireworkCrate : MonoBehaviour
             score = (int)(score * 2f);
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
-            //Audio.PlaySoundAtTransform("DNullShatter", transform);
-            Debug.LogWarning("GrayPink is missing a unique sound");
+            Audio.PlaySoundAtTransform("GrayPink", transform);
             yield return new WaitForSeconds(0.5f);
             Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Gray Pink. Your chips are multiplied by x2 to {1}.", _moduleId, score);
         }
@@ -663,8 +662,7 @@ public class FireworkCrate : MonoBehaviour
             score = (int)(score * ( 1f + .1f * discards));
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
-            //Audio.PlaySoundAtTransform("DNullShatter", transform);
-            Debug.LogWarning("DarkPink is missing a unique sound");
+            Audio.PlaySoundAtTransform("DPink", transform);
             yield return new WaitForSeconds(0.5f);
             Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Pink. Your chips are multiplied by x{2} to {1}.", _moduleId, score, 1f + .1f*discards);
         }
@@ -681,7 +679,7 @@ public class FireworkCrate : MonoBehaviour
                 score = (int)(score * 1.5f);
                 AddedScore[0].text = "+" + score;
                 AddedScore[1].text = "+" + score;
-                yield return new WaitForSeconds(0.9f);
+                yield return new WaitForSeconds(1f);
             }
             LoopingSounds[0].Stop();
             Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Omni! With your streak of {2}, your chips are multiplied by x1.5 ^ {2} to {1}.", _moduleId, score, OmniStreak);
