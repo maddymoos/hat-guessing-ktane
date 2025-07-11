@@ -64,6 +64,7 @@ public class FireworkCrate : MonoBehaviour
     public TextMesh[] BestHandDisplay;
     public TextMesh[] TotalScore;
     public TextMesh[] AddedScore;
+    public TextMesh[] Bonuses;
     public SpriteRenderer SuitClue;
     public SpriteRenderer RiffRaffOverlay;
     private bool[] green = new bool[2];
@@ -486,6 +487,7 @@ public class FireworkCrate : MonoBehaviour
             PlayDisplay[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
             AddedScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
             TotalScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
+            Bonuses[i].color = new Color(1 - i, 1 - i, 1 - i, 1);
             PlayDisplay[i].text = playedhand;
             AddedScore[i].text = "+" + score;
         }
@@ -510,9 +512,12 @@ public class FireworkCrate : MonoBehaviour
                     AddedScore[0].text = "+" + score;
                     AddedScore[1].text = "+" + score;
                     Audio.PlaySoundAtTransform("SmallHit", transform);
+                    Bonuses[0].text += "+ Anti-Red +15\n";
+                    Bonuses[1].text = Bonuses[0].text;
                     yield return new WaitForSeconds(gaptime);
                     if(gaptime > mingap)
                     gaptime -= lowergap;
+
                     Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Red modifier, the used 5 added fifteen chips! Your earned chips are now {1}!", _moduleId, score);
 
                 }
@@ -522,9 +527,12 @@ public class FireworkCrate : MonoBehaviour
                     AddedScore[0].text = "+" + score;
                     AddedScore[1].text = "+" + score;
                     Audio.PlaySoundAtTransform("SmallHit", transform);
+                    Bonuses[0].text += "+ Black +10\n";
+                    Bonuses[1].text = Bonuses[0].text;
                     yield return new WaitForSeconds(gaptime);
                     if (gaptime > mingap)
                         gaptime -= lowergap;
+
                     Debug.LogFormat("[Firework Crate #{0}]: Due to the Black modifier, the used black card added ten chips! Your earned chips are now {1}!", _moduleId, score);
 
                 }
@@ -534,12 +542,16 @@ public class FireworkCrate : MonoBehaviour
                     AddedScore[0].text = "+" + score;
                     AddedScore[1].text = "+" + score;
                     Audio.PlaySoundAtTransform("SmallHit", transform);
+                    Bonuses[0].text += "+ Light Pink +" + 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count() + "\n";
+                    Bonuses[1].text = Bonuses[0].text;
                     yield return new WaitForSeconds(gaptime);
                     if (gaptime > mingap)
                         gaptime -= lowergap;
+
                     Debug.LogFormat("[Firework Crate #{0}]: Due to the Light Pink modifier, the used light pink card added {2} chips! Your earned chips are now {1}!", _moduleId, score, 5 * HandCards.Where(x => x.Item1 == "Light Pink").Count());
 
                 }
+                
             }
             k++;
         }
@@ -549,18 +561,24 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("SmallHit", transform);
+            Bonuses[0].text += "+ Anti-Green +5\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
+
             Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Green modifier, the pair in your hand added five chips! Your earned chips are now {1}!", _moduleId, score);
 
         }
         if (ActiveModifiers[13] && HandCards.Where(x => x.Item1 == "Null").Count() == 1)
         {
             discards++;
+            Bonuses[0].text += "+ Null +Discard\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
+
             Debug.LogFormat("[Firework Crate #{0}]: Due to the Null modifier, your lone Null gifted you a discard! Your earned chips are now {1}!", _moduleId, score);
 
         }
@@ -574,9 +592,12 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("SmallHit", transform);
+            Bonuses[0].text += "+ Anti-Yellow x1.2\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
+
             Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Yellow modifier, your straight is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[3] && FullHouse(HandCards))
@@ -585,9 +606,12 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("SmallHit", transform);
+            Bonuses[0].text += "+ Anti-Blue x1.2\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
+
             Debug.LogFormat("[Firework Crate #{0}]: Due to the Anti-Blue modifier, your full house is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[5] && Flush(HandCards))
@@ -596,9 +620,12 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("SmallHit", transform);
+            Bonuses[0].text += "+ Teal x1.2\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
+
             Debug.LogFormat("[Firework Crate #{0}]: Due to the Teal modifier, your flush is multiplied by 1.2x! Your earned chips are now {1}!", _moduleId, score);
         }
         if (ActiveModifiers[8] && (CountNum(HandCards, NotAlone(HandCards)[0]) >= 3 || FullHouse(HandCards)))
@@ -607,9 +634,12 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("SmallHit", transform);
+            Bonuses[0].text += "+ Brown x1.3\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
+
             Debug.LogFormat("[Firework Crate #{0}]: Due to the Brown modifier, the three of a kind in your hand multiplies it by 1.3x! Your earned chips are now {1}!", _moduleId, score);
         }
         for (int i = 0; i < 5; i++)
@@ -620,9 +650,12 @@ public class FireworkCrate : MonoBehaviour
                 AddedScore[0].text = "+" + score;
                 AddedScore[1].text = "+" + score;
                 Audio.PlaySoundAtTransform("SmallHit", transform);
+                Bonuses[0].text += "+ Pink x1.5\n";
+                Bonuses[1].text = Bonuses[0].text;
                 yield return new WaitForSeconds(gaptime);
                 if (gaptime > mingap)
                     gaptime -= lowergap;
+
                 Debug.LogFormat("[Firework Crate #{0}]: Due to the Pink modifier, the pink in a pair multiplies your chips by 1.5x! Your earned chips are now {1}!", _moduleId, score);
             }
             if (ActiveModifiers[11] && HandCards[i].Item1 == "Omni" && ActiveCards.Contains(i))
@@ -631,9 +664,12 @@ public class FireworkCrate : MonoBehaviour
                 AddedScore[0].text = "+" + score;
                 AddedScore[1].text = "+" + score;
                 Audio.PlaySoundAtTransform("SmallHit", transform);
+                Bonuses[0].text += "+ Omni x1.75\n";
+                Bonuses[1].text = Bonuses[0].text;
                 yield return new WaitForSeconds(gaptime);
                 if (gaptime > mingap)
                     gaptime -= lowergap;
+
                 Debug.LogFormat("[Firework Crate #{0}]: Due to the Omni modifier, the omni multiplies your chips by 1.75x! Your earned chips are now {1}!", _moduleId, score);
             }
             if (ActiveModifiers[12] && HandCards[i].Item1 == "Muddy Rainbow" && !ActiveCards.Contains(i))
@@ -642,9 +678,12 @@ public class FireworkCrate : MonoBehaviour
                 AddedScore[0].text = "+" + score;
                 AddedScore[1].text = "+" + score;
                 Audio.PlaySoundAtTransform("SmallHit", transform);
+                Bonuses[0].text += "+ Mud. Rainbow x2\n";
+                Bonuses[1].text = Bonuses[0].text;
                 yield return new WaitForSeconds(gaptime);
                 if (gaptime > mingap)
                     gaptime -= lowergap;
+
                 Debug.LogFormat("[Firework Crate #{0}]: Due to the Muddy Rainbow modifier, the unused muddy rainbow multiplies your chips by 2x! Your earned chips are now {1}!", _moduleId, score);
             }
         }
@@ -654,7 +693,10 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("GrayPink", transform);
+            Bonuses[0].text += "+ Gray Pink x2\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(0.5f);
+
             Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Gray Pink. Your chips are multiplied by x2 to {1}.", _moduleId, score);
         }
         if (discards != 0 && ActiveModifiers[21])
@@ -663,7 +705,10 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("DPink", transform);
+            Bonuses[0].text += "+ Dark Pink x" + (1f + .1f * discards) + "\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(0.5f);
+
             Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Pink. Your chips are multiplied by x{2} to {1}.", _moduleId, score, 1f + .1f*discards);
         }
         if (!playedhands.IsNullOrEmpty() && playedhands.Last() == playedhand && ActiveModifiers[22])
@@ -676,6 +721,8 @@ public class FireworkCrate : MonoBehaviour
             LoopingSounds[0].Play();
             for (int i = 0; i < OmniStreak; i++)
             {
+                Bonuses[0].text += "+ Dark Omni x1.5\n";
+                Bonuses[1].text = Bonuses[0].text;
                 score = (int)(score * 1.5f);
                 AddedScore[0].text = "+" + score;
                 AddedScore[1].text = "+" + score;
@@ -695,6 +742,8 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("DNullShatter", transform);
+            Bonuses[0].text += "+ Dark Null x0\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(0.5f);
             Debug.LogFormat("[Firework Crate #{0}]: You have been cursed by Dark Null. You've already used this hand.", _moduleId, score);
         }
@@ -704,6 +753,8 @@ public class FireworkCrate : MonoBehaviour
             AddedScore[0].text = "+" + score;
             AddedScore[1].text = "+" + score;
             Audio.PlaySoundAtTransform("DNullUse", transform);
+            Bonuses[0].text += "+ Dark Null x2.5\n";
+            Bonuses[1].text = Bonuses[0].text;
             yield return new WaitForSeconds(0.5f);
             Debug.LogFormat("[Firework Crate #{0}]: You have been blessed by Dark Null! Your chips are multiplied by x2.5 to {1}.", _moduleId, score);
             
@@ -767,6 +818,7 @@ public class FireworkCrate : MonoBehaviour
                 PlayDisplay[i].color = new Color(1 - i, 1 - i, 1 - i, 1 - wer);
                 AddedScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1 - wer);
                 TotalScore[i].color = new Color(1 - i, 1 - i, 1 - i, 1 - wer);
+                Bonuses[i].color = new Color(1 - i, 1 - i, 1 - i, 1 - wer);
             }
         }
         for (int i = 0; i < 2; i++)
@@ -774,6 +826,8 @@ public class FireworkCrate : MonoBehaviour
             PlayDisplay[i].color = new Color(1 - i, 1 - i, 1 - i, 0);
             AddedScore[i].color = new Color(1 - i, 1 - i, 1 - i, 0);
             TotalScore[i].color = new Color(1 - i, 1 - i, 1 - i, 0);
+            Bonuses[i].color = new Color(1 - i, 1 - i, 1 - i, 0);
+            Bonuses[i].text = "";
         }
 
         discards += 1;
