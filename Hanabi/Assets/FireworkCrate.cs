@@ -575,6 +575,7 @@ public class FireworkCrate : MonoBehaviour
             discards++;
             Bonuses[0].text += "+ Null +Discard\n";
             Bonuses[1].text = Bonuses[0].text;
+            Audio.PlaySoundAtTransform("Null", transform);
             yield return new WaitForSeconds(gaptime);
             if (gaptime > mingap)
                 gaptime -= lowergap;
