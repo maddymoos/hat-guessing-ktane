@@ -11,13 +11,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
   m_Name: ModConfig
   m_EditorClassIdentifier: 
-  id: hatguessing
-  title: Hat Guessing
+  id: hanabiModules
+  title: Hanabi Modules
   author: MaddyMoos
-  description: 'THE FAULT LIES WITH YOU, M1N3C4RT
+  description: 'THE FAULT LIES WITH YOU, M1N3C4RT!
+
+    Using the Hat Guessing strategy, give an instruction to each other player.
 
 
-    Using the Hat Guessing strategy, give an instruction to each other player.'
+    Hanabi players quit right before they get that 25.
+
+    Use a full Hanabi deck (and extra suits you can add) to score enough points.
+
+
+    Manuals on ktane.timwi.de'
   version: 1.0
   outputFolder: build
   previewImage: {fileID: 2800000, guid: d12f20efeceedaa4092df28a6ef30802, type: 3}

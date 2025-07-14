@@ -1,7 +1,7 @@
 {
-  "name": "hatguessing-Editor",
+  "name": "hanabiModules-Editor",
   "references": [
-    "hatguessing"
+    "hanabiModules"
   ],
   "includePlatforms": [
     "Editor"
