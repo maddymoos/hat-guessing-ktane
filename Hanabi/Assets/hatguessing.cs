@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
-using System;
-using KModkit;
-using System.Text.RegularExpressions;
-using Rnd = UnityEngine.Random;
+﻿using HarmonyLib;
 using KeepCoding;
-using System.CodeDom.Compiler;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using UnityEngine;
+using Rnd = UnityEngine.Random;
 
-public class hatguessing : MonoBehaviour {
+public class hatguessing : MonoBehaviour
+{
 
     static private int _moduleIdCounter = 1;
     private int _moduleId;
@@ -34,7 +32,7 @@ public class hatguessing : MonoBehaviour {
         "1B","1B","1B","2B","2B","3B","3B","4B","4B","5B",
         "1P","1P","1P","2P","2P","3P","3P","4P","4P","5P",
     };
-     private string[] Names = { "Alice", "Bob", "Cathy", "Donald", "Emily", "Frank", "Grace", "Hnter", "J.C. Indo.", "Jackson", "Klyzx", "Logan", "Maddy", "Niel", "Oscar", "Phillip", "Quinn", "Rand", "Shareoff", "Tiger", "U.F.R.T.F.", "Vince", "Will", "Xavier", "You", "Zoe", "Mine" };
+    private string[] Names = { "Alice", "Bob", "Cathy", "Donald", "Emily", "Frank", "Grace", "Hnter", "J.C. Indo.", "Jackson", "Klyzx", "Logan", "Maddy", "Niel", "Oscar", "Phillip", "Quinn", "Rand", "Shareoff", "Tiger", "U.F.R.T.F.", "Vince", "Will", "Xavier", "You", "Zoe", "Mine" };
     static string[] LogText = { "First", "Then", "Next", "Finally" };
     private static Dictionary<string, string> NameExtensions = new Dictionary<string, string>
     {
@@ -72,7 +70,7 @@ public class hatguessing : MonoBehaviour {
     List<Tuple<int, int, string>> Fireworks = new List<Tuple<int, int, string>>();
     private int DeckPosition = 0;
     private static string Colorder = "RYGBP";
-    private static string[] ColorNames ={"red","yellow","green","blue","purple"};
+    private static string[] ColorNames = { "red", "yellow", "green", "blue", "purple" };
     private static int[] counts = { 3, 2, 2, 2, 1 };
     private static string[] order = { "1", "23", "123", "2345", "12345" };
     private int[] discards = { 0, 0, 0, 0, 0 };
@@ -119,8 +117,8 @@ public class hatguessing : MonoBehaviour {
 
     void Awake()
     {
-        
-            //do you have QKRisi's? if not, ya ur outdated
+
+        //do you have QKRisi's? if not, ya ur outdated
         _moduleId = _moduleIdCounter++;
         for (int j = 0; j < 16; j++)
         {
@@ -149,7 +147,7 @@ public class hatguessing : MonoBehaviour {
             position = button;
             suit = !suit;
             timer += .2f;
-            if(timer > 3f)
+            if (timer > 3f)
             {
                 timer = 3f;
             }
@@ -177,20 +175,20 @@ public class hatguessing : MonoBehaviour {
                 Fuse.GetComponent<MeshRenderer>().material.SetTextureScale("_MainTex", Vector2.Lerp(new Vector2(1, -15), new Vector2(1, 0), Mathf.Pow(1 - (timer / 3f), 2)));
                 Fuse.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", Vector2.Lerp(new Vector2(0, 0), new Vector2(0, -15), Mathf.Pow(1 - (timer / 3f), 2)));
                 yield return null;
-                timer -= Time.deltaTime*metatimer;
+                timer -= Time.deltaTime * metatimer;
                 //if (timer < 0) timer = 3f;
                 callouttimer += Time.deltaTime;
                 metatimer += Time.deltaTime / 10f;
             }
             FuseSounds[0].Stop();
-            if(Fusetaps > 10)
+            if (Fusetaps > 10)
             {
                 Debug.LogFormat("[Hat Guessing #{0}]: Having fun? You fuse-tapped {1} times, surviving for {2} seconds.", _moduleId, Fusetaps, (int)callouttimer);
             }
             CardRenderer(FuseFlame).enabled = false;
             bool correct = false;
             Debug.Log(suit + " " + position + " " + ((int)(position / 4) + 1 == (int)Math.Ceiling(((float)(Total + 1)) / 4f)) + " " + Total);
-            if(Total == 12)
+            if (Total == 12)
             {
                 if (position / 4 == 3)
                 {
@@ -198,36 +196,40 @@ public class hatguessing : MonoBehaviour {
                 }
             }
             else
-            switch (Total % 4)
-            {
-                case 0: Debug.Log("You must give a number clue that touches slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
-                        if (!suit && (int)(position / 4)+1 == (int)Math.Ceiling(((float)(Total + 1)) / 4f) && HandCards[(int)((Math.Ceiling(((float)(Total + 1)) / 4f) - 1) * 4) + 3].Item1 == HandCards[position].Item1)
+                switch (Total % 4)
+                {
+                    case 0:
+                        Debug.Log("You must give a number clue that touches slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
+                        if (!suit && (int)(position / 4) + 1 == (int)Math.Ceiling(((float)(Total + 1)) / 4f) && HandCards[(int)((Math.Ceiling(((float)(Total + 1)) / 4f) - 1) * 4) + 3].Item1 == HandCards[position].Item1)
                         {
                             correct = true; break;
                         }
                         correct = false;
                         break;
-                case 1: Debug.Log("You must give a color clue that touches slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
+                    case 1:
+                        Debug.Log("You must give a color clue that touches slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
                         if (suit && (int)(position / 4) + 1 == (int)Math.Ceiling(((float)(Total + 1)) / 4f) && HandCards[(int)((Math.Ceiling(((float)(Total + 1)) / 4f) - 1) * 4) + 3].Item2 == HandCards[position].Item2)
                         {
                             correct = true; break;
                         }
-                        correct = false; 
+                        correct = false;
                         break;
-                case 2: Debug.Log("You must give a number clue that does not touch slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
+                    case 2:
+                        Debug.Log("You must give a number clue that does not touch slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
                         if (!suit && (int)(position / 4) + 1 == (int)Math.Ceiling(((float)(Total + 1)) / 4f) && HandCards[(int)((Math.Ceiling(((float)(Total + 1)) / 4f) - 1) * 4) + 3].Item1 != HandCards[position].Item1)
                         {
                             correct = true; break;
                         }
                         correct = false; break;
-                case 3: Debug.Log("You must give a color clue that does not touch slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
+                    case 3:
+                        Debug.Log("You must give a color clue that does not touch slot one to player " + Math.Ceiling(((float)(Total + 1)) / 4f));
                         if (suit && (int)(position / 4) + 1 == (int)Math.Ceiling(((float)(Total + 1)) / 4f) && HandCards[(int)((Math.Ceiling(((float)(Total + 1)) / 4f) - 1) * 4) + 3].Item2 != HandCards[position].Item2)
                         {
                             correct = true; break;
                         }
                         correct = false;
                         break;
-            }
+                }
             bool suitstorage = suit;
             suit = false;
             anim = true; fuse = false;
@@ -245,10 +247,10 @@ public class hatguessing : MonoBehaviour {
                 yield return new WaitForSeconds(1f);
 
                 Module.HandlePass();
-                if((Rnd.Range(0,500) == 0 || Application.isEditor) && !strike)
+                if ((Rnd.Range(0, 500) == 0 || Application.isEditor) && !strike)
                 {
-                    for(int i=0;i<50; i++)
-                    Fireworks.Add(new Tuple<int, int, string>(Rnd.Range(0, 4), Rnd.Range(0, 5), ""));
+                    for (int i = 0; i < 50; i++)
+                        Fireworks.Add(new Tuple<int, int, string>(Rnd.Range(0, 4), Rnd.Range(0, 5), ""));
                     StartCoroutine(Transgender());
                 }
                 foreach (var firework in Fireworks)
@@ -273,8 +275,8 @@ public class hatguessing : MonoBehaviour {
                             yield return new WaitForSeconds(.3f);
 
                             break;
-                        case 1: 
-                            for(int i = 0; i < firework.Item2 + 1; i++)
+                        case 1:
+                            for (int i = 0; i < firework.Item2 + 1; i++)
                             {
                                 Audio.PlaySoundAtTransform("Save", Module.GetComponent<Transform>());
                                 yield return new WaitForSeconds(.5f / (firework.Item2 + 1 + Rnd.value));
@@ -287,7 +289,7 @@ public class hatguessing : MonoBehaviour {
                             break;
                     }
                 }
-                  
+
             }
             else
             {
@@ -305,8 +307,8 @@ public class hatguessing : MonoBehaviour {
                 Fuse.localPosition = Vector3.Lerp(new Vector3(0.0828f, 0.0137f, -0.0049f), new Vector3(0.0828f, 0.0137f, -0.0049f + .075f), 0);
                 Fuse.localScale = new Vector3(0.006f, .075f, .005f);
                 FuseFlame.localPosition = Vector3.Lerp(new Vector3(.0828f, .01675f, -.07997f), new Vector3(.0828f, .01675f, -.07997f + (.075f * 2f)), 0);
-                Fuse.GetComponent<MeshRenderer>().material.SetTextureScale("_MainTex", Vector2.Lerp(new Vector2(1, -15), new Vector2(1, 0),0));
-                Fuse.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", Vector2.Lerp(new Vector2(0, 0), new Vector2(0, -15),0));
+                Fuse.GetComponent<MeshRenderer>().material.SetTextureScale("_MainTex", Vector2.Lerp(new Vector2(1, -15), new Vector2(1, 0), 0));
+                Fuse.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", Vector2.Lerp(new Vector2(0, 0), new Vector2(0, -15), 0));
                 Module.HandleStrike();
                 GenerateModule();
             }
@@ -350,9 +352,9 @@ public class hatguessing : MonoBehaviour {
     {
         return x == 1 ? 1 : 1 - Mathf.Pow(2, -10 * x);
     }*/
-    
 
-void HL(bool SelectOn, int Position)
+
+    void HL(bool SelectOn, int Position)
     {
         if (SelectOn)
         {
@@ -408,7 +410,7 @@ void HL(bool SelectOn, int Position)
         Names = Names.Shuffle();
         for (int i = 0; i < 8; i++)
         {
-            NameText[i].text = Names[i%4];
+            NameText[i].text = Names[i % 4];
         }
         for (DeckPosition = 0; DeckPosition < 16; DeckPosition++)
         {
@@ -425,16 +427,16 @@ void HL(bool SelectOn, int Position)
             CardTouched(CurrentCard).enabled = false;
         }
         int DiscardCount = Rnd.Range(10, 20);
-        for(DeckPosition = 16; DeckPosition < DiscardCount+16; DeckPosition++)
+        for (DeckPosition = 16; DeckPosition < DiscardCount + 16; DeckPosition++)
         {
             suitother = DeckOfCards[DeckPosition][1].ToString();
             RankStorage = int.Parse(DeckOfCards[DeckPosition][0].ToString()) - 1;
             Discarded.Add(new Tuple<int, string>(RankStorage, suitother));
         }
-        List<Tuple<int,string>> temptuple = new List<Tuple<int,string>>();
+        List<Tuple<int, string>> temptuple = new List<Tuple<int, string>>();
         for (int i = 0; i < 6; i++)
         {
-            temptuple = Discarded.Where(x => x.Item1 == i+1).ToList();
+            temptuple = Discarded.Where(x => x.Item1 == i + 1).ToList();
             foreach (var card in temptuple)
             {
                 SuitStorage = Array.IndexOf(Colorder.ToArray(), Convert.ToChar(card.Item2));
@@ -444,17 +446,17 @@ void HL(bool SelectOn, int Position)
                 }
             }
         }
-        for(int i = 0;i < 5;i++)
+        for (int i = 0; i < 5; i++)
         {
             CardNumber(PlayPiles[i]).enabled = discards[i] != 0;
-            if (CardNumber(PlayPiles[i]).enabled) 
+            if (CardNumber(PlayPiles[i]).enabled)
             {
                 CardNumber(PlayPiles[i]).sprite = Numbers[discards[i] - 1];
             }
             CardRenderer(PlayPiles[i]).color = CardBackColors[discards[i] != 0 ? i : i + 5];
         }
         int k = -1;
-        foreach(var card in HandCards)
+        foreach (var card in HandCards)
         {
             k++;
             if (discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(card.Item2))] > card.Item1)
@@ -463,9 +465,9 @@ void HL(bool SelectOn, int Position)
                 CardSpecial(Cards[k]).sprite = Symbols[1];
                 CardSpecial(Cards[k]).enabled = true;
             }
-            for(int i = 0; i < card.Item1; i++)
+            for (int i = 0; i < card.Item1; i++)
             {
-                if(Discarded.Where(x => x.Item1 == i && x.Item2 == card.Item2).Count() == counts[i] && i > discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(card.Item2))])
+                if (Discarded.Where(x => x.Item1 == i && x.Item2 == card.Item2).Count() == counts[i] && i > discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(card.Item2))])
                 {
                     trash[k] = true;
                     CardSpecial(Cards[k]).sprite = Symbols[1];
@@ -480,7 +482,7 @@ void HL(bool SelectOn, int Position)
             }
         }
         //bug.Log(HandCards.Join(" , "));
-       //ebug.Log(Discarded.Join(" , "));
+        //ebug.Log(Discarded.Join(" , "));
 
         k = -1;
         int count = 0;
@@ -494,11 +496,11 @@ void HL(bool SelectOn, int Position)
                 if (discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(card.Item2))] == card.Item1 && !temptuple.Contains(card))
                 {
                     //Debug.Log("Cluing Card " + k);
-                    temptuple.Add(card);   
+                    temptuple.Add(card);
                     CardTouched(Cards[k]).enabled = true;
                     CardTouched(Cards[k]).color = TouchColors[0];
                     clue[k] = true;
-                    play[k] = true; 
+                    play[k] = true;
                     count++;
                 }
                 else
@@ -521,13 +523,13 @@ void HL(bool SelectOn, int Position)
                     count++;
                 }
             }
-            
+
         }
         k = -1;
         foreach (var card in HandCards)
         {
             k++;
-            if(temptuple.Contains(card) && !clue[k])
+            if (temptuple.Contains(card) && !clue[k])
             {
                 trash[k] = true;
             }
@@ -541,14 +543,14 @@ void HL(bool SelectOn, int Position)
         }
         else
         {
-            for (int i = 0; i< 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if(HandCards.Skip(i * 4).Take(4).Where(x => x.Item1 == HandCards[i * 4].Item1).Count() == 4 || HandCards.Skip(i * 4).Take(4).Where(x => x.Item2 == HandCards[i * 4].Item2).Count() == 4)
+                if (HandCards.Skip(i * 4).Take(4).Where(x => x.Item1 == HandCards[i * 4].Item1).Count() == 4 || HandCards.Skip(i * 4).Take(4).Where(x => x.Item2 == HandCards[i * 4].Item2).Count() == 4)
                 {
                     GenerateModule();
                     break;
                 }
-                if(i == 3)
+                if (i == 3)
                 {
                     Debug.LogFormat("[Hat Guessing #{0}]: Welcome{5} to Hat Guessing. Today, our players are {1}, {2}, {3}, and {4}.", _moduleId, NameExtensions[Names[0]], NameExtensions[Names[1]], NameExtensions[Names[2]], NameExtensions[Names[3]], strike ? " back" : "");
                     Debug.LogFormat("[Hat Guessing #{0}]: The play piles have {1}, {2}, {3}, {4}, and {5}.",
@@ -560,7 +562,7 @@ void HL(bool SelectOn, int Position)
                         "Purple on " + discards[4]
 
 
-                        ) ;
+                        );
                     for (int j = 0; j < 4; j++)
                         Debug.LogFormat("[Hat Guessing #{0}]: {23}, {1} {22} {2} {18}{3}{4} {5}, {6} {19}{7}{8} {9}, {10} {20}{11}{12} {13}, and {14} {21}{15}{16} {17}.",
                             _moduleId,
@@ -587,12 +589,12 @@ void HL(bool SelectOn, int Position)
                             (clue[j * 4] ? "clued " : ""),
                             Names[j] == "You" ? "hold" : "holds",
                             LogText[j]
-                            ) ;
+                            );
                     Debug.LogFormat("[Hat Guessing #{0}]: As for the clues you need to give;", _moduleId);
-SolveCards();
+                    SolveCards();
                 }
             }
-            
+
         }
     }
     void SolveCards()
@@ -601,11 +603,11 @@ SolveCards();
         bool reset = false;
         string responseorder = "";
         int[] playcounts = new int[4];
-        for(int j = 0; j < 4; j++)
+        for (int j = 0; j < 4; j++)
         {
-            playcounts[j] = play.Skip(j*4).Take(4).Where(x => x == true).Count();
+            playcounts[j] = play.Skip(j * 4).Take(4).Where(x => x == true).Count();
         }
-        for(int j = 0; j < 4; j++)
+        for (int j = 0; j < 4; j++)
         {
             for (int k = 0; k < 4; k++)
             {
@@ -615,22 +617,22 @@ SolveCards();
         }
         responseorder = responseorder.Reverse();
         int i = 0;
-        for(int k = 0; k < 4; k++)
+        for (int k = 0; k < 4; k++)
         {
             i = int.Parse(responseorder[k].ToString());
-            
-                reset = false;
-            for(int l = 3; l>=0; l--)
+
+            reset = false;
+            for (int l = 3; l >= 0; l--)
             {
-                if (clue[i * 4 + l] || MarkedForPlay.Contains(HandCards[i*4+l])) continue;
-                if (crit[i*4+l]&& discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))] == HandCards[i * 4 + l].Item1)
+                if (clue[i * 4 + l] || MarkedForPlay.Contains(HandCards[i * 4 + l])) continue;
+                if (crit[i * 4 + l] && discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))] == HandCards[i * 4 + l].Item1)
                 {
                     if (Names[i] != "You")
-                    Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Critical Playable] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i*4+l].Item2))], HandCards[i*4+l].Item1+1);
+                        Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Critical Playable] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
                     else
-                    Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Critical Playable] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
+                        Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Critical Playable] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
 
-                    Fireworks.Add(new Tuple<int,int,string>(0, HandCards[i * 4 + l].Item1, HandCards[i*4+l].Item2));
+                    Fireworks.Add(new Tuple<int, int, string>(0, HandCards[i * 4 + l].Item1, HandCards[i * 4 + l].Item2));
                     Total += 4 - l;
                     reset = true;
                     break;
@@ -640,7 +642,7 @@ SolveCards();
             for (int l = 3; l >= 0; l--)
             {
                 if (clue[i * 4 + l] || MarkedForPlay.Contains(HandCards[i * 4 + l])) continue;
-                if (HandCards.Skip(i * 4).Take(4).Where(x=> HandCards[i * 4 + l] == x).Count() == 2 && HandCards[i * 4 + l].Item1 != 0 && discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i*4+l].Item2))] == HandCards[i * 4 + l].Item1)
+                if (HandCards.Skip(i * 4).Take(4).Where(x => HandCards[i * 4 + l] == x).Count() == 2 && HandCards[i * 4 + l].Item1 != 0 && discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))] == HandCards[i * 4 + l].Item1)
                 {
                     if (Names[i] != "You")
                         Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [In-Hand Duplicate Playable] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
@@ -662,8 +664,8 @@ SolveCards();
                 {
                     if (Names[i] != "You")
                         Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Duplicate 1 Playable] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
-                   else
-                    Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Duplicate 1 Playable] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
+                    else
+                        Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Duplicate 1 Playable] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
                     Fireworks.Add(new Tuple<int, int, string>(0, HandCards[i * 4 + l].Item1, HandCards[i * 4 + l].Item2));
                     Total += 4 - l;
                     reset = true;
@@ -676,7 +678,7 @@ SolveCards();
             for (int l = 3; l >= 0; l--)
             {
                 if (clue[i * 4 + l] || MarkedForPlay.Contains(HandCards[i * 4 + l])) continue;
-                if (discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))] == HandCards[i * 4 + l].Item1 && temp.Item1 > HandCards[i*4+l].Item1)
+                if (discards[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))] == HandCards[i * 4 + l].Item1 && temp.Item1 > HandCards[i * 4 + l].Item1)
                 {
                     temp = HandCards[i * 4 + l];
                     temp2 = l;
@@ -698,7 +700,7 @@ SolveCards();
             for (int l = 3; l >= 0; l--)
             {
                 if (clue[i * 4 + l]) continue;
-                if (HandCards.Skip(i * 4).Take(4).Where(x => HandCards[i * 4 + l] == x && !trash[i*4+l]).Count() >= 2 && !temp3.Contains(HandCards[i*4+l]))
+                if (HandCards.Skip(i * 4).Take(4).Where(x => HandCards[i * 4 + l] == x && !trash[i * 4 + l]).Count() >= 2 && !temp3.Contains(HandCards[i * 4 + l]))
                 {
                     temp = HandCards[i * 4 + l];
                     temp3.Add(temp);
@@ -711,7 +713,7 @@ SolveCards();
             {
                 if (Names[i] != "You")
                     Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Rightmost-Leftmost Duplicate Discard] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(temp.Item2))], temp.Item1 + 1);
-                   else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Rightmost-Leftmost Duplicate Discard] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(temp.Item2))], temp.Item1 + 1);
+                else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Rightmost-Leftmost Duplicate Discard] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(temp.Item2))], temp.Item1 + 1);
                 Fireworks.Add(new Tuple<int, int, string>(1, HandCards[i * 4 + temp2].Item1, HandCards[i * 4 + temp2].Item2));
                 Total += 8 - temp2;
                 continue;
@@ -723,7 +725,7 @@ SolveCards();
                     reset = false;
                     break;
                 }
-                if (trash[i*4+l] && !reset)
+                if (trash[i * 4 + l] && !reset)
                 {
                     temp = HandCards[i * 4 + l];
                     temp2 = l;
@@ -733,8 +735,8 @@ SolveCards();
             if (reset)
             {
                 if (Names[i] != "You")
-                    Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Single Trash Discard] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(temp.Item2))], temp.Item1+1);
-                   else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Single Trash Discard] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(temp.Item2))], temp.Item1+1);
+                    Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Single Trash Discard] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(temp.Item2))], temp.Item1 + 1);
+                else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Single Trash Discard] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(temp.Item2))], temp.Item1 + 1);
                 Fireworks.Add(new Tuple<int, int, string>(1, HandCards[i * 4 + temp2].Item1, HandCards[i * 4 + temp2].Item2));
                 Total += 8 - temp2;
                 continue;
@@ -743,11 +745,11 @@ SolveCards();
             {
                 if (clue[i * 4 + l])
                     continue;
-                if (crit[i*4+l])
+                if (crit[i * 4 + l])
                 {
                     if (Names[i] != "You")
-                        Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Critical Save] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1+1);
-                        else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Critical Save] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1+1);
+                        Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Critical Save] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
+                    else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Critical Save] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
                     Fireworks.Add(new Tuple<int, int, string>(2, HandCards[i * 4 + l].Item1, HandCards[i * 4 + l].Item2));
                     Total += 12 - l;
                     reset = true;
@@ -762,8 +764,8 @@ SolveCards();
                 if (trash[i * 4 + l])
                 {
                     if (Names[i] != "You")
-                        Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Trash Discard] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1+1);
-                     else   Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Trash Discard] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1+1);
+                        Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Trash Discard] on their {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
+                    else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Trash Discard] on your {3} {4}.", _moduleId, LogText[k], NameExtensions[Names[i]], ColorNames[Array.IndexOf(Colorder.ToArray(), Convert.ToChar(HandCards[i * 4 + l].Item2))], HandCards[i * 4 + l].Item1 + 1);
                     Fireworks.Add(new Tuple<int, int, string>(1, HandCards[i * 4 + l].Item1, HandCards[i * 4 + l].Item2));
                     Total += 8 - l;
                     reset = true;
@@ -773,10 +775,10 @@ SolveCards();
             if (reset) continue;
             if (Names[i] != "You")
                 Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}'s clue is [Clue Clue].", _moduleId, LogText[k], NameExtensions[Names[i]]);
-           else     Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Clue Clue].", _moduleId, LogText[k], NameExtensions[Names[i]]);
+            else Debug.LogFormat("[Hat Guessing #{0}]: {1}, {2}r clue is [Clue Clue].", _moduleId, LogText[k], NameExtensions[Names[i]]);
             Fireworks.Add(new Tuple<int, int, string>(3, 0, ""));
         }
-        Debug.LogFormat("[Hat Guessing #{0}]: The total of these clues before modulo is {1}, making the Clue Value {2}.", _moduleId, Total, Total%13);
+        Debug.LogFormat("[Hat Guessing #{0}]: The total of these clues before modulo is {1}, making the Clue Value {2}.", _moduleId, Total, Total % 13);
         Total %= 13;
         if (Total == 12)
         {
@@ -786,14 +788,15 @@ SolveCards();
         {
             if (Names[i] != "You")
                 Debug.LogFormat("[Hat Guessing #{0}]: Since the Clue Value is {1}, you must give a {2} clue that {3} slot one to {4}.", _moduleId, Total, Total % 2 == 1 ? "color" : "number", Total % 4 > 1 ? "does not touch" : "touches", NameExtensions[Names[(int)(Math.Ceiling(((float)(Total + 1)) / 4f) - 1)]]);
-            else    Debug.LogFormat("[Hat Guessing #{0}]: Since the Clue Value is {1}, you must give a {2} clue that {3} slot one to yourself.", _moduleId, Total, Total % 2 == 1 ? "color" : "number", Total % 4 > 1 ? "does not touch" : "touches", NameExtensions[Names[(int)(Math.Ceiling(((float)(Total + 1)) / 4f) - 1)]]);
+            else Debug.LogFormat("[Hat Guessing #{0}]: Since the Clue Value is {1}, you must give a {2} clue that {3} slot one to yourself.", _moduleId, Total, Total % 2 == 1 ? "color" : "number", Total % 4 > 1 ? "does not touch" : "touches", NameExtensions[Names[(int)(Math.Ceiling(((float)(Total + 1)) / 4f) - 1)]]);
         }
         //if (!testma) GenerateModule();
         //testma balls complete 
-        }
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         foreach (var sound in FuseSounds)
         {
             sound.volume = ((float)Wawa.DDL.Preferences.Sound / Wawa.DDL.Preferences.MaxVolume);
@@ -807,30 +810,30 @@ SolveCards();
         NameText[3].text = "RIGHTS";
         NameText[0].text = "HAVE";
         NameText[1].text = "PRIDE";
-        NameText[2+4].text = "TRANS";
-        NameText[3+4].text = "RIGHTS";
-        NameText[0+4].text = "HAVE";
-        NameText[1+4].text = "PRIDE";
-        for(int i = 0; i < 16; i++)
+        NameText[2 + 4].text = "TRANS";
+        NameText[3 + 4].text = "RIGHTS";
+        NameText[0 + 4].text = "HAVE";
+        NameText[1 + 4].text = "PRIDE";
+        for (int i = 0; i < 16; i++)
         {
-            CardSpecial(Cards[i]).enabled =false;
+            CardSpecial(Cards[i]).enabled = false;
             clue[i] = false;
-            CardTouched(Cards[i]).enabled =false;
+            CardTouched(Cards[i]).enabled = false;
         }
         int gay = 0;
         while (true)
         {
             gay++;
-            for(int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
             {
 
                 CardNumber(Cards[i]).color = NumberColors[PrideOrder[(Pride[i] + gay) % 10]];
-                if(PrideOrder[(Pride[i] + gay) % 10] == 8)
+                if (PrideOrder[(Pride[i] + gay) % 10] == 8)
                 {
                     CardNumber(Cards[i]).enabled = false;
                 }
                 else
-                CardNumber(Cards[i]).enabled = true;
+                    CardNumber(Cards[i]).enabled = true;
                 CardSuit(Cards[i]).sprite = Suits[PrideOrder[(Pride[i] + gay) % 10]];
                 if (PrideOrder[(Pride[i] + gay) % 10] == 7)
                 {
@@ -844,10 +847,10 @@ SolveCards();
         }
     }
 
-	SpriteRenderer CardNumber(Transform card)
-	{
-		return card.Find("Count").GetComponent<SpriteRenderer>();
-	}
+    SpriteRenderer CardNumber(Transform card)
+    {
+        return card.Find("Count").GetComponent<SpriteRenderer>();
+    }
     SpriteRenderer CardSuit(Transform card)
     {
         return card.Find("Suit").GetComponent<SpriteRenderer>();
@@ -863,5 +866,30 @@ SolveCards();
     SpriteRenderer CardRenderer(Transform card)
     {
         return card.GetComponent<SpriteRenderer>();
+    }
+
+#pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} <player name> <card slot number> <number/color> [Give a <suit/color> to <player name> for their card on slot <card slot number>]";
+#pragma warning restore 414
+    private IEnumerator ProcessTwitchCommand(string command)
+    {
+        command = command.Trim().ToUpper();
+        string[] upperNames = Names.Take(4).Select(n => n.ToUpper()).ToArray();
+        string regexNames = string.Join("|", upperNames.Select(n=> n.Replace(".", "\\.")).ToArray());
+        string regex = $@"^({regexNames})\s+(1|2|3|4)\s+(NUMBER|COLOU?R)$";
+        Debug.Log(regex);
+        var res = Regex.Match(command, regex);
+        if (res.Success)
+        {
+            yield return null;
+            string[] commands = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            int playerIndex = Array.IndexOf(upperNames, res.Groups[1].Value);
+            int cardIndex = int.Parse(res.Groups[2].Value) - 1;
+            int howManyTaps = res.Groups[3].Value.Equals("NUMBER") ? 1 : 2;
+
+            for (int i = 0; i < howManyTaps; i++)
+                //3- because the rightmost cards are first on the list
+                Buttons[playerIndex * 4 + (3 - cardIndex)].OnInteract();
+        }
     }
 }
