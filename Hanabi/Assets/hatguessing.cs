@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using KeepCoding;
+﻿using KeepCoding;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -114,6 +113,11 @@ public class hatguessing : MonoBehaviour
     {
         0,14,1,2,3,4,10,11,12,13
     };
+
+    //TP variables to save the solution. If you want to use these for the solution check, be careful because there are a few shortcuts for the value=12 case.
+    private int playerSolution;
+    private bool mustTouchCardOne;
+    private bool isSolutionNumber;
 
     void Awake()
     {
@@ -783,12 +787,18 @@ public class hatguessing : MonoBehaviour
         if (Total == 12)
         {
             Debug.LogFormat("[Hat Guessing #{0}]: Since the Clue Value is 12, any clue to {1} is valid.", _moduleId, NameExtensions[Names[3]]);
+            playerSolution = 3;
+            mustTouchCardOne = true;
+            isSolutionNumber = true;
         }
         else
         {
             if (Names[i] != "You")
                 Debug.LogFormat("[Hat Guessing #{0}]: Since the Clue Value is {1}, you must give a {2} clue that {3} slot one to {4}.", _moduleId, Total, Total % 2 == 1 ? "color" : "number", Total % 4 > 1 ? "does not touch" : "touches", NameExtensions[Names[(int)(Math.Ceiling(((float)(Total + 1)) / 4f) - 1)]]);
             else Debug.LogFormat("[Hat Guessing #{0}]: Since the Clue Value is {1}, you must give a {2} clue that {3} slot one to yourself.", _moduleId, Total, Total % 2 == 1 ? "color" : "number", Total % 4 > 1 ? "does not touch" : "touches", NameExtensions[Names[(int)(Math.Ceiling(((float)(Total + 1)) / 4f) - 1)]]);
+            playerSolution = (int)(Math.Ceiling(((float)(Total + 1)) / 4f) - 1);
+            isSolutionNumber = Total % 2 == 0;
+            mustTouchCardOne = Total % 4 <= 1;
         }
         //if (!testma) GenerateModule();
         //testma balls complete 
@@ -875,7 +885,7 @@ public class hatguessing : MonoBehaviour
     {
         command = command.Trim().ToUpper();
         string[] upperNames = Names.Take(4).Select(n => n.ToUpper()).ToArray();
-        string regexNames = string.Join("|", upperNames.Select(n=> n.Replace(".", "\\.")).ToArray());
+        string regexNames = string.Join("|", upperNames.Select(n => n.Replace(".", "\\.")).ToArray());
         string regex = $@"^({regexNames})\s+(1|2|3|4)\s+(NUMBER|COLOU?R)$";
         Debug.Log(regex);
         var res = Regex.Match(command, regex);
@@ -890,6 +900,43 @@ public class hatguessing : MonoBehaviour
             for (int i = 0; i < howManyTaps; i++)
                 //3- because the rightmost cards are first on the list
                 Buttons[playerIndex * 4 + (3 - cardIndex)].OnInteract();
+        }
+    }
+    private IEnumerator TwitchHandleForcedSolve()
+    {
+        if (mustTouchCardOne)
+        {
+            for (int i = 0; i < (isSolutionNumber ? 1 : 2); i++)
+            {
+                Buttons[playerSolution * 4 + 3].OnInteract();
+            }
+            yield break;
+        }
+        else
+        {
+            var playerHandWithoutFirstCard = HandCards.Skip(playerSolution * 4).Take(3).ToArray();
+            var playerFirstCard = HandCards[playerSolution * 4 + 3];
+            for (int i = 0; i < 3; i++)
+            {
+                if (isSolutionNumber)
+                {
+                    if (playerFirstCard.Item1 != playerHandWithoutFirstCard[i].Item1)
+                    {
+                        Buttons[playerSolution * 4 + i].OnInteract();
+                        yield break;
+                    }
+
+                }
+                else
+                {
+                    if (playerFirstCard.Item2 != playerHandWithoutFirstCard[i].Item2)
+                    {
+                        Buttons[playerSolution * 4 + i].OnInteract();
+                        Buttons[playerSolution * 4 + i].OnInteract();
+                        yield break;
+                    }
+                }
+            }
         }
     }
 }
