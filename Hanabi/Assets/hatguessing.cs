@@ -910,7 +910,6 @@ public class hatguessing : MonoBehaviour
             {
                 Buttons[playerSolution * 4 + 3].OnInteract();
             }
-            yield break;
         }
         else
         {
